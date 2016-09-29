@@ -13,8 +13,26 @@
 \date{\today}
 \maketitle
 
-\begin{abstract}
-Abstract
+\begin{abstract} In software development, assigning a version number
+to each release is crucial. It allows customers and other developers
+to identify that a software package has changed from a previous
+iteration. It is especially important when considering libraries and
+frameworks, where changes can greatly affect applications built on top
+of them. \\ Different policies exist dictating how to assign version
+numbers, one of the most popular being \textit{Semantic
+Versioning}\cite{SemanticVersioning}, where the version gives
+information about how exactly the software package has changed. This
+allows for better estimation whether a new version of a library or a
+framework would result in incompatibilities.
+\\\\
+Regardless of
+policy, assigning version numbers is typically done manually and
+leaves room for human mistakes or deviations from the established
+scheme. We propose the tool \textit{autobump} that automatically
+inspects changes to a codebase and proposes the next version number
+according to semantic versioning. This reduces friction when releasing
+packages, and encourages more frequent, even fully automated,
+releases.
 \end{abstract}
 
 \educationalconsent
