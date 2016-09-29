@@ -5,6 +5,7 @@
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
 \def\UrlBreaks{\do\/\do-}
+\usepackage[T1]{fontenc}
 
 \begin{document}
 \title{Automatically determining next semantic version of a project by \\
@@ -42,6 +43,98 @@ releases.
 %% Contents
 \chapter{Introduction}
 \pagenumbering{arabic}
+
+\section{Versioning policies}
+
+There are different policies that dictate how versions of software
+projects change with new releases. Popular ones include:
+
+\begin{itemize}
+\item Using the revision control number - typically only used
+internally and can change multiple times per day. This can be a single
+number increasing incrementally, such as the revision in Subversion,
+or some hash.
+\item Code names - most frequent in consumer-facing software, such as
+\textit{macOS Sierra}. Code names are usually picked for marketing
+purposes, rather than telling users something meaningful about the
+software itself.
+\item Semantic Versioning (Semver)\cite{SemanticVersioning}.
+\end{itemize}
+
+Semver reveals information about how the software package has changed
+from a previous iteration by dividing the version into three
+independent numbers:
+\begin{center}
+\textbf{MAJOR.MINOR.PATCH}
+\end{center}
+
+\begin{itemize}
+\item \textbf{MAJOR} increments when incompatible changes to the API
+have been made.
+\item \textbf{MINOR} increments when new features has been added in a
+backwards-compatible manner.
+\item \textbf{PATCH} increments when bugs were fixed in a
+backwards-compatible manner.
+\end{itemize}
+
+Semver is especially useful for software meant for use by other
+software, such as libraries and frameworks. When a new version of a
+library is released, someone developing an application based on that
+library can quickly judge how the update affects their application.
+
+If only the minor or patch numbers have changed, then the application
+should work fine with the new version. If, however, the major number
+has increased, then further work on part of the application developer
+may be needed to make it compatible again with the library.
+
+This scheme also helps with automatic dependency management systems,
+like ones found in package managers. A developer can specify that
+their application relies on version \textit{2.4} of a particular
+library. Semver guarantees that versions of the form \textit{(2.x | x
+ > 4)} will contain all features found in \textit{2.4} and be backwards-compatible.
+If later on \textit{2.4.1} or \textit{2.5} come along, the
+library can be automatically upgraded without breaking the
+application, with the added benefit of fixing bugs.
+
+Semver only provides these benefits when it is applied consistently.
+If it is applied haphazardly, then two versions cannot be compared
+reliably and decisions made by simply examining version numbers are
+risky. A good example of that is the programming language PHP, where
+the behaviour comparison operator was changed in a patch release, and
+then restored in a minor release. Evaluating \texttt{'0xABCdef' == '
+0xABCdef'} produces \texttt{true} in PHP 5.0.2 but \texttt{false} in
+PHP 5.0.3. In PHP 5.2.0, it starts to produce \texttt{true} again.
+Applications relying on the behaviour of this operator will unexpectedly
+break, because there was an implicit (not reflected in the version number)
+breaking change.
+
+\section{Automatically determining next semantic version}
+The goal of this project was to build a tool that can intelligently propose
+the next semantic version of a software package by examining the codebase.
+
+The tool \textit{autobump} can compare two commits in a version controlled
+project and if the version number of the earlier commit is known, it can determine
+what the version number of the later commit should be. It adheres to the formal
+rules specified by Semver\cite{SemanticVersioning} and detects breaking changes,
+added features and bugfixes.
+
+%% TODO: A paragraph on language support.
+
+The tool can be used standalone as a sanity check for the developer, or integrated
+as part of a continuous deployment mechanism so that correct version numbers are
+automatically assigned to releases. Using it instead of assigning versions manually
+also leaves less room for human errors, such as presumably the one that caused PHP
+to have different behaviour in two consecutive patch releases.
+
+%% TODO: Also generate changelogs?
+
+\section{Similar work}
+Automatically assigning version numbers is not a new idea and projects
+exist that already do that to some extent.
+
+%% https://github.com/GitTools/GitVersion
+%% https://github.com/semantic-release/semantic-release
+%% https://github.com/endjin/Endjin.Assembly.ChangeDetection
 
 %% Bibliography
 \bibliographystyle{plain}
