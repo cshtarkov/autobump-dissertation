@@ -14,7 +14,8 @@
 \date{\today}
 \maketitle
 
-\begin{abstract} In software development, assigning a version number
+\begin{abstract}
+In software development, assigning a version number
 to each release is crucial. It allows customers and other developers
 to identify that a software package has changed from a previous
 iteration. It is especially important when considering libraries and
@@ -132,12 +133,47 @@ to have different behaviour in two consecutive patch releases.
 Automatically assigning version numbers is not a new idea and projects
 exist that already do that to some extent.
 
+\textit{semantic-release}\cite{SemanticRelease} is a Javascript tool
+for ``fully automated package publishing''. It tries to interpret Git
+commit messages and from that determines what the next version number
+should be. A minor (feature) release for example would be indicated by
+a commit message of the following format:
+\begin{center}
+\texttt{feat(pencil): add 'graphiteWidth' option}
+\end{center}
+This approach suffers from the same drawback as incrementing the
+version number manually does - it has to be done consistently.
+
+\textit{GitVersion}\cite{GitVersion} takes a different approach - it
+determines the next semantic version from looking at the Git history.
+By knowing in advance what workflow contributors to the repository are
+using, it can determine when breaking changes occur, when new features
+are being introduced and when it's only patches that are going
+through. Previous versions of GitVersion have implicit knowledge of
+the workflows \textit{GitFlow} and \textit{GitHubFlow}, but the
+current one at the time of writing can be configured to work with
+more custom workflows. This approach also suffers from serious
+drawbacks - it ties users to a particular source control system, and
+enforces a particular workflow for all its contributors.
+
+The tool we propose tries to take a very different approach from these two,
+one that requires no additional input from users and which makes no
+assumptions about the source control history. \textit{autobump} tries
+to examine how the code itself has change between two commits. A
+similar experiment has been conducted.
+\textit{Endjin.Assembly.ChangeDetection}\cite{Endjin} can identify
+breaking changes in .NET assemblies and propose the next valid
+semantic version. It does this by examining any changes made to public
+types in the assembly, such as removing them or changing their
+signature. However, this is not a tool that is ready for production
+use and it is quite specific to the .NET ecosystem.
+
 %% https://github.com/GitTools/GitVersion
 %% https://github.com/semantic-release/semantic-release
 %% https://github.com/endjin/Endjin.Assembly.ChangeDetection
 
 %% Bibliography
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
 \bibliography{dissertation}
 
 \end{document}
