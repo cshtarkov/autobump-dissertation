@@ -46,7 +46,7 @@ releases.
 \chapter{Introduction}
 \pagenumbering{arabic}
 
-\section{Versioning policies}
+\section{Semantic versioning}
 
 There are different policies that dictate how versions of software
 projects change with new releases. Popular ones include:
@@ -60,7 +60,10 @@ or some hash.
 \textit{macOS Sierra}. Code names are usually picked for marketing
 purposes, rather than telling users something meaningful about the
 software itself.
-\item Semantic Versioning (Semver)\cite{SemanticVersioning}.
+\item Semantic versioning (Semver)\cite{SemanticVersioning}. This is
+the most useful from a developer's point of view. A majority of
+software projects either outright follow Semver, or they closely
+approximate it without realising it.
 \end{itemize}
 
 Semver reveals information about how the software package has changed
@@ -110,27 +113,11 @@ Applications relying on the behaviour of this operator will unexpectedly
 break, because there was an implicit (not reflected in the version number)
 breaking change.
 
-\section{Automatically determining next semantic version}
-The goal of this project was to build a tool that can intelligently propose
-the next semantic version of a software package by examining the codebase.
+% TODO: PHP reference goes here.
+% TODO: Maybe this is a bad example?
 
-The tool \textit{autobump} can compare two commits in a version controlled
-project and if the version number of the earlier commit is known, it can determine
-what the version number of the later commit should be. It adheres to the formal
-rules specified by Semver\cite{SemanticVersioning} and detects breaking changes,
-added features and bugfixes.
+\section{Tools for automatically assigning semantic version numbers}
 
-%% TODO: A paragraph on language support.
-
-The tool can be used standalone as a sanity check for the developer, or integrated
-as part of a continuous deployment mechanism so that correct version numbers are
-automatically assigned to releases. Using it instead of assigning versions manually
-also leaves less room for human errors, such as presumably the one that caused PHP
-to have different behaviour in two consecutive patch releases.
-
-%% TODO: Also generate changelogs?
-
-\section{Similar work}
 Automatically assigning version numbers is not a new idea and projects
 exist that already do that to some extent.
 
@@ -141,17 +128,19 @@ for ``fully automated package publishing''. It tries to interpret Git
 commit messages and from that determines what the next version number
 should be. A minor (feature) release for example would be indicated by
 a commit message of the following format:
+
 \begin{center}
 \texttt{feat(pencil): add 'graphiteWidth' option}
 \end{center}
+
 This approach suffers from the same drawback as incrementing the
 version number manually does - it has to be done consistently.
 
 \subsection{GitVersion}
 
-\textit{GitVersion}\cite{GitVersion} takes a different approach - it
-determines the next semantic version from looking at the Git history.
-By knowing in advance what workflow contributors to the repository are
+\textit{GitVersion}\cite{GitVersion} ``looks at your Git history and
+works out the semantic version of the commit being built''.  By
+knowing in advance what workflow contributors to the repository are
 using, it can determine when breaking changes occur, when new features
 are being introduced and when it's only patches that are going
 through. Previous versions of GitVersion have implicit knowledge of
