@@ -1,19 +1,21 @@
 digraph gitversionexample {
     a -> b -> z -> c;
     b -> d;
-    d -> c;
+    d -> q;
+    q -> c;
     c -> y -> e -> f;
     c -> g;
     g -> f;
 
     a [label="0 (master)"]
     b [label="1 (master)"]
-    z [label="2 (master)"]
-    c [label="3 (master)"]
-    d [label="4 (feature-foo)"]
-    y [label="5 (master)"]
-    e [label="6 (master)"]
-    f [label="7 (master)"]
+    z [label="3 (master)"]
+    q [label="4 (release-1.1.0)"]
+    c [label="5 (master)"]
+    d [label="2 (feature-foo)"]
+    y [label="6 (master)"]
+    e [label="7 (master)"]
+    f [label="9 (master)"]
     g [label="8 (release-2.0.0)"]
 
     {rank=same; a b z c y e f}
