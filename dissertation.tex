@@ -6,6 +6,7 @@
 \usepackage[breaklinks]{hyperref}
 \def\UrlBreaks{\do\/\do-}
 \usepackage[T1]{fontenc}
+\usepackage{float}
 
 \begin{document}
 \title{Automatically determining next semantic version of a project by \\
@@ -158,18 +159,77 @@ the workflows \textit{GitFlow}\cite{GitFlow} and
 \textit{GitHubFlow}\cite{GitHubFlow}, but the current one (3.0) at the
 time of writing can be configured to work with more custom workflows.
 
+Consider an example usage of GitVersion on a history of commits.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/dot/gitversionexample}
+\caption{Example Git commit history}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|}
+\textbf{Commit} & \textbf{Version} & \textbf{Explanation}                              \\
+0      & 1.0.0                 & First commit that has a version.                      \\
+1      & 1.0.1+1               & Patch was introduced, and one commit since then.      \\
+2      & 1.0.1-feature-foo.1+1 & Feature was introduced, and one commit since then.    \\
+3      & 1.0.1+3               & Three commits since the last patch.                   \\
+4      & 1.1.0-rc.1            & First release candidate for the new feature.          \\
+5      & 1.1.0                 & Feature branch was merged.                            \\
+6      & 1.1.1+1               & Patch was introduced, and one commit since then.      \\
+7      & 1.1.1+2               & Patch was introduced, and two commits since then.     \\
+8      & 2.0.0-rc.1            & First release candidate for the new breaking changes. \\
+9      & 2.0.0                 & Breaking release branch was merged.
+\end{tabular}
+\caption{Proposed semantic version numbers by GitVersion, if every
+commit were to be released}
+\end{table}
+
+Notice that similarly to semantic-release, GitVersion relies on the
+naming of the branches. This results in the same set of drawbacks. It
+has to be applied consistently, and forces contributors to use one
+particular naming scheme. The latter one is somewhat alleviated in
+this case, as the workflow GitVersion expects is highly
+configurable\cite{GitVersionConfiguration}.
+
 \subsection{Endjin.Assembly.ChangeDetection}
 
-A similar experiment has been conducted.
-\textit{Endjin.Assembly.ChangeDetection}\cite{Endjin} can identify
-breaking changes in .NET assemblies and propose the next valid
-semantic version. It does this by examining any changes made to public
-types in the assembly, such as removing them or changing their
-signature. However, this is not a tool that is ready for production
-use and it is quite specific to the .NET ecosystem.
+\textit{Endjin.Assembly.ChangeDetection}\cite{Endjin} is a
+proof-of-concept project that takes a very different and less
+error-prone approach. It can identify breaking changes in .NET
+assemblies by looking at the assembly itself. It does this
+by examining any changes made to public types in the assembly, such as
+removing them or changing their signature.
+
+\section{Determining next semantic version through code analysis}
+
+The goal of this project was to build a tool that can intelligently propose
+the next semantic version of a software package by examining the codebase.
+
+The tool \textit{autobump} can compare two commits in a version controlled
+project and if the version number of the earlier commit is known, it can determine
+what the version number of the later commit should be. It adheres to the formal
+rules specified by Semver\cite{SemanticVersioning} and detects breaking changes,
+added features and bugfixes.
+
+%% TODO: A paragraph on language support.
+
+The tool can be used standalone as a sanity check for the developer, or integrated
+as part of a continuous deployment mechanism so that correct version numbers are
+automatically assigned to releases. Using it instead of assigning versions manually
+also leaves less room for human errors, such as presumably the one that caused PHP
+to have different behaviour in two consecutive patch releases.
+
+%% TODO: Also generate changelogs?
 
 %% Bibliography
 \bibliographystyle{ieeetr}
 \bibliography{dissertation}
 
 \end{document}
+
+% Local Variables:
+% eval: (auto-fill-mode 1)
+% End:
