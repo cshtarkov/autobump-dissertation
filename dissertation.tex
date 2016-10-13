@@ -142,10 +142,15 @@ exist that already do that to some extent.
 \subsection{semantic-release}
 
 \textit{semantic-release}\cite{SemanticRelease} is a Javascript tool
-for ``fully automated package publishing''. It tries to interpret Git
-commit messages and from that determines what the next version number
-should be. A minor (feature) release for example would be indicated by
-a commit message of the following format:
+for ``fully automated package publishing''. It can do a range of
+functions related to automated publishing of packages in the
+Javascript ecosystem through the Node Package Manager, but of interest
+are the two ways it can deal with proposing a new version number.
+
+One way is that it tries to interpret Git commit messages and from
+that determines what the next version number should be. A minor
+(feature) release for example would be indicated by a commit message
+of the following format:
 
 \begin{center}
 \texttt{feat(pencil): add 'graphiteWidth' option}
@@ -153,6 +158,28 @@ a commit message of the following format:
 
 This approach suffers from the same drawback as incrementing the
 version number manually does - it has to be done consistently.
+
+Another way is by employing an additional tool called
+\textit{cracks}\cite{Cracks}. According to the official description
+``this module can automatically detect breaking changes by running the
+test suite of your last-release against the current codebase. This
+shouldn't fail''. This is generally a good approach - by definition
+the test suite of the previous version should pass if the new one is
+not meant to be a major release. However, it raises some issues.
+
+\begin{itemize}
+\item It could be that the library in question has whitebox unit
+tests. If they start failing, that does not necessarily constitute a
+breaking change, because while the internal implementation of those
+methods may have changed, the public API is still the same. Cracks has
+no way of differentiating blackbox from whitebox tests unless manually
+specified.
+\item The unit tests may not cover the public API in its entirety.
+Modifying the signature of a public method, for example, that's not
+covered by the tests may go completely unnoticed.
+\item The library may be in a stage of development such that it has no
+unit tests, or they cover a very small portion of the public API, yet
+the authors still want to use semantic versioning.
 
 \subsection{GitVersion}
 
