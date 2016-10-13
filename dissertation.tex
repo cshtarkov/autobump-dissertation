@@ -86,15 +86,19 @@ backwards-compatible manner.
 backwards-compatible manner.
 \end{itemize}
 
+\subsection{Benefits}
+
 Semver is especially useful for software meant for use by other
 software, such as libraries and frameworks. When a new version of a
 library is released, someone developing an application based on that
 library can quickly judge how the update affects their application.
 
 If only the minor or patch numbers have changed, then the application
-should work fine with the new version. If, however, the major number
-has increased, then further work on part of the application developer
-may be needed to make it compatible again with the library.
+should work fine with the new version. That is because incrementing
+just those numbers implies that there are no breaking changes. If,
+however, the major number has increased, then further work on part of
+the application developer may be needed to make it compatible again
+with the library.
 
 This scheme also helps with automatic dependency management systems,
 like ones found in package managers. A developer can specify that
@@ -105,20 +109,30 @@ If later on \textit{2.4.1} or \textit{2.5} come along, the
 library can be automatically upgraded without breaking the
 application, with the added benefit of fixing bugs.
 
-Semver only provides these benefits when it is applied consistently.
-If it is applied haphazardly, then two versions cannot be compared
-reliably and decisions made by simply examining version numbers are
-risky. A good example of that is the programming language PHP, where
-the behaviour comparison operator was changed in a patch release, and
-then restored in a minor release. Evaluating \texttt{'0xABCdef' == '
-0xABCdef'} produces \texttt{true} in PHP 5.0.2 but \texttt{false} in
-PHP 5.0.3. In PHP 5.2.0, it starts to produce \texttt{true} again.
-Applications relying on the behaviour of this operator will unexpectedly
-break, because there was an implicit (not reflected in the version number)
-breaking change.
+\subsection{Application}
 
-% TODO: PHP reference goes here.
-% TODO: Maybe this is a bad example?
+Semver only provides these benefits when it is applied consistently.
+If applied haphazardly, then two versions cannot be compared
+reliably and decisions made by simply examining version numbers are
+risky. A good example of that is the programming language PHP.
+Although minor releases are usually meant for feature additions, it
+can happen that they contain breaking changes along with the new
+features. One the many examples are the changes introduced in PHP 5.3
+compared to PHP 5.2\cite{PHPChangelog} where the signature of an array
+of functions changed - constituting a breaking change. The PHP
+changelogs routinely document what backwards-incompatible changes are
+in a release, but using the versioning scheme incosistently negates
+most benefits.
+
+In practice, semantic versioning is applied poorly. A
+study\cite{SemverMaven} of more than 22,000 libraries in the Maven
+repository found that there was virtually no difference in the
+frequency of breaking changes in major and minor version increments.
+It also found that this has a significant impact on client
+applications, mostly by the introduction of compilation errors.
+
+One possible solution to this problem, which we propose in this
+project, is to attempt to automate the assignment of version numbers.
 
 \section{Tools for automatically assigning semantic version numbers}
 
