@@ -55,15 +55,19 @@ projects change with new releases. Popular ones include:
 \item Using the revision control number - typically only used
 internally and can change multiple times per day. This can be a single
 number increasing incrementally, such as the revision in Subversion,
-or some hash.
+or a hash like in Git.
 \item Code names - most frequent in consumer-facing software, such as
 \textit{macOS Sierra}. Code names are usually picked for marketing
 purposes, rather than telling users something meaningful about the
-software itself.
-\item Semantic versioning (Semver)\cite{SemanticVersioning}. This is
-the most useful from a developer's point of view. A majority of
-software projects either outright follow Semver, or they closely
-approximate it without realising it.
+software itself. Software that is released under a code name usually
+also has an additional, sometimes non-public version number following
+another scheme.
+\item Semantic versioning (Semver)\cite{SemanticVersioning}. It was
+formalised by GitHub founder Tom Preston-Werner, who encourages all
+projects hosted there to follow it. A majority of software projects,
+especially libraries, either outright follow Semver or they closely
+approximate it. It is the most useful from a developer's point of
+view.
 \end{itemize}
 
 Semver reveals information about how the software package has changed
