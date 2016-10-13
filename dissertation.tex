@@ -237,16 +237,39 @@ assemblies by looking at the assembly itself. It does this
 by examining any changes made to public types in the assembly, such as
 removing them or changing their signature.
 
-% TODO: Expand on this.
+This way of proposing a version number truly reflects changes to
+the code and imposes no additonal requirements on contributors to
+the repository. However, Endjin.Assembly.ChangeDetection is not really
+a tool, but an experiment, and is tied to the .NET ecosystem.
 
 \section{Determining next semantic version through code analysis}
 
+Much like Endjin.Assembly.ChangeDetection, the tool we propose tries
+to look at how the code itself has changed to estimate what the next
+version should be. This requires no manual intervention from the user,
+no special naming schemes, and is as reliable as it can get.
+
+% TODO: Determining vs Estimation?
+
+\subsection{Breaking changes}
+
+% TODO: What's a breaking change?
+
+\subsection{Feature additions}
+
+% TODO: What's a feature release?
+
+In comparison to breaking changes, determining what constitutes a
+feature addition seems to be trivial. Continuing with the assumption
+that all publicly available types and functions are suitable for
+external use, it is sufficient to claim that the addition of one or
+several public types or functions is a feature release.
+
+\subsection{The \textit{autobump} tool}
+
 % TODO: Rewrite this.
 
-The goal of this project was to build a tool that can intelligently propose
-the next semantic version of a software package by examining the codebase.
-
-The tool \textit{autobump} can compare two commits in a version controlled
+\textit{autobump} can compare two commits in a version controlled
 project and if the version number of the earlier commit is known, it can determine
 what the version number of the later commit should be. It adheres to the formal
 rules specified by Semver\cite{SemanticVersioning} and detects breaking changes,
