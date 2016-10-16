@@ -62,12 +62,12 @@ purposes, rather than telling users something meaningful about the
 software itself. Software that is released under a code name usually
 also has an additional, sometimes non-public version number following
 another scheme.
-\item Semantic versioning (Semver)\cite{SemanticVersioning}. It was
-formalised by GitHub founder Tom Preston-Werner, who encourages all
-projects hosted there to follow it. A majority of software projects,
-especially libraries, either outright follow Semver or they closely
-approximate it. It is the most useful from a developer's point of
-view.
+\item Semantic versioning (Semver)\cite{SemanticVersioning}. A widely
+used scheme for decades, it was formalised by GitHub founder Tom
+Preston-Werner who encourages all projects hosted there to follow it.
+A majority of software projects, especially libraries, either outright
+follow Semver or they closely approximate it. It is the most useful
+from a developer's point of view.
 \end{itemize}
 
 Semver reveals information about how the software package has changed
@@ -104,10 +104,15 @@ This scheme also helps with automatic dependency management systems,
 like ones found in package managers. A developer can specify that
 their application relies on version \textit{2.4} of a particular
 library. Semver guarantees that versions of the form \textit{(2.x | x
- > 4)} will contain all features found in \textit{2.4} and be backwards-compatible.
-If later on \textit{2.4.1} or \textit{2.5} come along, the
-library can be automatically upgraded without breaking the
+> 4)} will contain all features found in \textit{2.4} and be
+backwards-compatible. If later on \textit{2.4.1} or \textit{2.5} come
+along, the library can be automatically upgraded without breaking the
 application, with the added benefit of fixing bugs.
+
+In summary, the most important benefit provided by Semver is the
+alleviation of dependency hell through unambiguous identification of
+breaking changes. The major version number is increased if and only if
+backwards compatibility is deprecated.
 
 \subsection{Application}
 
@@ -130,6 +135,20 @@ repository found that there was virtually no difference in the
 frequency of breaking changes in major and minor version increments.
 It also found that this has a significant impact on client
 applications, mostly by the introduction of compilation errors.
+
+The study does not go into determining what the reasons are for these
+inconsistencies, but some possibilities are:
+\begin{itemize}
+\item Some libraries never claimed to follow Semver, instead opting
+for a similar, yet not identical, scheme.
+\item Semver is very strict about what's considered a breaking change.
+This is great for robots, but not so much for humans. Small changes to
+the API may not be considered ``major'' by the developers even if they
+are technically breaking.
+\item Misinterpretation of Semver about what constitutes a breaking
+change. Some developers may be inclined to believe that an API change
+that affects none of their users (to their knowledge) is not breaking.
+\end{itemize}
 
 One possible solution to this problem, which we propose in this
 project, is to attempt to automate the assignment of version numbers.
