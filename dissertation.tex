@@ -223,7 +223,6 @@ Consider an example usage of GitVersion on a history of commits.
 
 \begin{table}[H]
 \centering
-\label{my-label}
 \begin{tabular}{|l|l|l|}
 \textbf{Commit} & \textbf{Version} & \textbf{Explanation}                              \\
 0      & 1.0.0                 & First commit that has a version.                      \\
@@ -273,11 +272,40 @@ no special naming schemes, and is as reliable as it can get.
 
 \subsection{Breaking changes}
 
-% TODO: What's a breaking change?
+For the definition of breaking change to be useful, it ought to be
+strict - and that is the way Semver approaches it. It defines
+\textbf{any} change to the API which makes it incompatible with the
+last version as breaking. It does not take into account number of
+affected users or difficulty of transitioning to the new version,
+because those things cannot be possibly known reliably.
+
+In the spirit of Semver, for this project we adopted a technical and
+deterministic list of changes to entities that are considered
+to be breaking. We make the assumption that all public-facing entities
+(i.e. those accessible externally in a normal for the language way)
+are part of the API.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+\hline
+\textbf{Change}                                                                              & \textbf{Rationalisation}                                                 \\
+\hline
+Removing an entity.                                                                           & User applications may be using it.                                       \\
+\hline
+Changing the type of an entity to an incompatible type.                                       & User applications may be expecting a different type.                      \\
+\hline
+Adding a parameter with no default value to a function signature.                             & Calls to that function will immediately fail due to a missing parameter. \\
+\hline
+Removing a parameter from a function signature, regardless of whether it had a default value. & Calls to that function \textit{may} fail due to a missing parameter.     \\
+\hline
+Removing the default value of a parameter.                                                    & Calls to that function may be relying on the now missing default value.  \\
+\hline
+\end{tabular}
+\caption{List of changes that are considered breaking}
+\end{table}
 
 \subsection{Feature additions}
-
-% TODO: What's a feature release?
 
 In comparison to breaking changes, determining what constitutes a
 feature addition seems to be trivial. Continuing with the assumption
