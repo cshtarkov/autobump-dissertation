@@ -289,11 +289,11 @@ are part of the API.
 \centering
 \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
 \hline
-\textbf{Change}                                                                              & \textbf{Rationalisation}                                                 \\
+\textbf{Change}                                                                               & \textbf{Rationalisation}                                                 \\
 \hline
 Removing an entity.                                                                           & User applications may be using it.                                       \\
 \hline
-Changing the type of an entity to an incompatible type.                                       & User applications may be expecting a different type.                      \\
+Changing the type of an entity to an incompatible type.                                       & User applications may be expecting a different type.                     \\
 \hline
 Adding a parameter with no default value to a function signature.                             & Calls to that function will immediately fail due to a missing parameter. \\
 \hline
