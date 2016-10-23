@@ -52,11 +52,11 @@ There are different policies that dictate how versions of software
 projects change with new releases. Popular ones include:
 
 \begin{itemize}
-\item Using the revision control number - typically only used
+\item Using the revision control number -- typically only used
 internally and can change multiple times per day. This can be a single
 number increasing incrementally, such as the revision in Subversion,
 or a hash like in Git.
-\item Code names - most frequent in consumer-facing software, such as
+\item Code names -- most frequent in consumer-facing software, such as
 \textit{macOS Sierra}. Code names are usually picked for marketing
 purposes, rather than telling users something meaningful about the
 software itself. Software that is released under a code name usually
@@ -124,7 +124,7 @@ Although minor releases are usually meant for feature additions, it
 can happen that they contain breaking changes along with the new
 features. One the many examples are the changes introduced in PHP 5.3
 compared to PHP 5.2\cite{PHPChangelog} where the signature of an array
-of functions changed - constituting a breaking change. The PHP
+of functions changed -- constituting a breaking change. The PHP
 changelogs routinely document what backwards-incompatible changes are
 in a release, but using the versioning scheme incosistently negates
 most benefits.
@@ -176,13 +176,13 @@ of the following format:
 \end{center}
 
 This approach suffers from the same drawback as incrementing the
-version number manually does - it has to be done consistently.
+version number manually does -- it has to be done consistently.
 
 Another way is by employing an additional tool called
 \textit{cracks}\cite{Cracks}. According to the official description
 ``this module can automatically detect breaking changes by running the
 test suite of your last-release against the current codebase. This
-shouldn't fail''. This is generally a good approach - by definition
+shouldn't fail''. This is generally a good approach -- by definition
 the test suite of the previous version should pass if the new one is
 not meant to be a major release. However, it raises some issues.
 
@@ -273,7 +273,7 @@ no special naming schemes, and is as reliable as it can get.
 \subsection{Breaking changes}
 
 For the definition of breaking change to be useful, it ought to be
-strict - and that is the way Semver approaches it. It defines
+strict -- and that is the way Semver approaches it. It defines
 \textbf{any} change to the API which makes it incompatible with the
 last version as breaking. It does not take into account number of
 affected users or difficulty of transitioning to the new version,
@@ -315,7 +315,7 @@ several public entities or default values is a feature release.
 
 \subsection{The \textit{autobump} tool}
 
-The goal of this project was to build \textit{autobump} - a tool which
+The goal of this project was to build \textit{autobump} -- a tool which
 given two revisions in a version controlled project reliably
 determines what the version of the later revision should
 be\footnote{In some contexts, ``version'' and ``revision'' may be
