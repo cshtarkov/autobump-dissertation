@@ -315,23 +315,92 @@ several public entities or default values is a feature release.
 
 \subsection{The \textit{autobump} tool}
 
-% TODO: Rewrite this.
+The goal of this project was to build \textit{autobump} - a tool which
+given two revisions in a version controlled project reliably
+determines what the version of the later revision should
+be\footnote{In some contexts, ``version'' and ``revision'' may be
+identical. In this dissertation, we refer to the semantic version of a
+release as ``version'', and the commit identifier in a VCS as ``revision''}.
 
-\textit{autobump} can compare two commits in a version controlled
-project and if the version number of the earlier commit is known, it can determine
-what the version number of the later commit should be. It adheres to the formal
-rules specified by Semver\cite{SemanticVersioning} and detects breaking changes,
-added features and bugfixes.
+Because identifying the version delta requires first identifying a
+list of changes to the public API, a secondary function of autobump is
+the generation of a changelog in preparation for a release.
 
-%% TODO: A paragraph on language support.
+The tool can be used standalone as a sanity check, or for its
+changelog generation capabilities, or it can be integrated in a
+deployment pipeline so that correct version numbers are automatically
+assigned to releases with no human intervention.
 
-The tool can be used standalone as a sanity check for the developer, or integrated
-as part of a continuous deployment mechanism so that correct version numbers are
-automatically assigned to releases. Using it instead of assigning versions manually
-also leaves less room for human errors, such as presumably the one that caused PHP
-to have different behaviour in two consecutive patch releases.
+Autobump, while its core is written in Python, is modular in
+nature\ref{Architecture} and supports different
+languages\ref{LanguageHandlers} and version control
+systems\ref{VCSHandlers}.
 
-%% TODO: Also generate changelogs?
+\chapter{Implementation}
+
+\section{List of features}
+
+\label{Architecture}
+\section{Architecture}
+
+\label{VCSHandlers}
+\subsection{Handlers for version control systems}
+
+\label{LanguageHandlers}
+\subsection{Handlers for programming languages}
+
+\subsubsection{Python}
+
+% TODO: Introspection vs AST
+% TODO: Dynamic typing, Structural types
+
+\subsubsection{Java}
+
+\subsection{Comparison logic}
+
+\section{Application user interface}
+
+\subsection{Integration with other development tools}
+
+\chapter{Testing}
+
+\section{Unit testing}
+
+\section{Acceptance testing}
+
+\chapter{Evaluation}
+
+% TODO: Evaluation was continuous in nature
+
+\section{Evaluation against real-world projects}
+
+% TODO: Evaluate with students in lab as well?
+
+\chapter{Conclusion}
+
+\begin{appendices}
+
+\chapter{Instructions for building and running \textit{autobump}}
+
+Autobump requires at least Python 3.5. Other than that, it has no
+dependencies. A typical Python setup involving a virtual environment
+is not necessary.
+
+\section{Building}
+
+As it is written in Python, autobump does not have a build step. The
+\texttt{Makefile} found in the repository has the following targets:
+
+\begin{itemize}
+\item \texttt{make test} runs the test suite.
+\item \texttt{make lint} runs the linter \texttt{flake8} (or the one
+specified as \texttt{LINTER}) against all source code.
+\item \texttt{make all} or \texttt{make} runs all of the above.
+\end{itemize}
+
+\section{Usage}
+
+\end{appendices}
 
 %% Bibliography
 \bibliographystyle{ieeetr}
