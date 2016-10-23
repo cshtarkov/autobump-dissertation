@@ -1,32 +1,31 @@
 digraph architecture {
-    splines=ortho;
-    node [shape=box];
+    newrank=true;
+    compound=true;
+    node [shape=box3d];
 
     core [label="Core Comparison Logic"];
-    common [label="Common Representation"];
-    languages [label="Language Handlers"]
-    python [label="Python", shape=ellipse];
-    java [label="Java", shape=ellipse];
-    vcs [label="VCS Handlers"]
-    git [label="Git", shape=ellipse];
-    svn [label="SVN", shape=ellipse];
+    common [label="Common API Representation"];
     program [label="Program (command-line interface)"];
 
-    subgraph undirected {
-        edge [dir=none]
-        program -> core
-        program -> vcs
-        core -> common
-        common -> languages
+    subgraph cluster_languages {
+        label="Language Handlers"
+        java [label="Java",shape=ellipse];
+        python_h [label="Python",shape=ellipse];
     }
-    python -> languages
-    java -> languages
-    git -> vcs
-    svn -> vcs
 
-    {rank=same; core vcs}
-    {rank=same; git svn python java}
+    subgraph cluster_vcs {
+        label="VCS Handlers"
+        git_h [label="Git",shape=ellipse];
+        svn [label="SVN",shape=ellipse];
+    }
+
+    program -> core [label=" invokes"]
+    program -> git_h [label=" invokes",lhead=cluster_vcs]
+    core -> common [label=" uses"]
+    core -> python_h [style=invis,minlen=2]
+    python_h -> common [label=" converts to",ltail=cluster_languages,constraint=false]
+
     {rank=min; program}
-    {rank=max; git svn python java}
+    {rank=same; git_h svn java python_h}
 
 }
