@@ -1,0 +1,32 @@
+digraph architecture {
+    splines=ortho;
+    node [shape=box];
+
+    core [label="Core Comparison Logic"];
+    common [label="Common Representation"];
+    languages [label="Language Handlers"]
+    python [label="Python", shape=ellipse];
+    java [label="Java", shape=ellipse];
+    vcs [label="VCS Handlers"]
+    git [label="Git", shape=ellipse];
+    svn [label="SVN", shape=ellipse];
+    program [label="Program (command-line interface)"];
+
+    subgraph undirected {
+        edge [dir=none]
+        program -> core
+        program -> vcs
+        core -> common
+        common -> languages
+    }
+    python -> languages
+    java -> languages
+    git -> vcs
+    svn -> vcs
+
+    {rank=same; core vcs}
+    {rank=same; git svn python java}
+    {rank=min; program}
+    {rank=max; git svn python java}
+
+}
