@@ -343,11 +343,18 @@ systems\ref{VCSHandlers}.
 \label{Architecture}
 \section{Architecture}
 
-\begin{minipage}{0.5\textwidth}
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
 separate file, with dependencies (via \texttt{import}) reduces to a minimum.
 
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{images/dot/architecture}
+\caption{\textit{autobump} architecture}
+\end{figure}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
 In normal operation, the top-level program generally performs the
 following steps:
 
@@ -361,14 +368,6 @@ converting the APIs of both into a common representation via the
 appropriate language handler.
 \item Calculate the new version number by bumping the old one.
 \end{enumerate}
-
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\linewidth]{images/dot/architecture}
-\caption{\textit{autobump} architecture}
-\end{figure}
 \end{minipage}
 
 \label{VCSHandlers}

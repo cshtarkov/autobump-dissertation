@@ -1,7 +1,9 @@
 digraph architecture {
     newrank=true;
     compound=true;
-    node [shape=box3d];
+    graph [fontsize=20];
+    node [shape=box3d,fontsize=20];
+    edge [fontsize=20];
 
     core [label="Core Comparison Logic"];
     common [label="Common API Representation"];
