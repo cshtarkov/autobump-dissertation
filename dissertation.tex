@@ -345,7 +345,7 @@ systems\ref{VCSHandlers}.
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
-separate file, with dependencies (via \texttt{import}) reduces to a minimum.
+separate file, with dependencies (via \texttt{import}) reduced to a minimum.
 
 \begin{minipage}{0.5\textwidth}
 \begin{figure}[H]
@@ -364,14 +364,34 @@ appropriate handler.
 \item Identify which two revisions should be compared -- either from
 command-line arguments or through an educated guess.
 \item Run the comparison logic on the two revisions. This involves
-converting the APIs of both into a common representation via the
-appropriate language handler.
+converting the APIs of both into a common\footnote{Common between
+different source languages, not the two representations.} representation via
+the appropriate language handler.
 \item Calculate the new version number by bumping the old one.
 \end{enumerate}
 \end{minipage}
 
-\label{VCSHandlers}
-\subsection{Handlers for version control systems}
+\subsection{Common representation for APIs}
+
+By relying on language-specific handlers to extract the public API of
+a codebase and convert it into a common representation, the same
+comparison logic can be reused. Beside reducing repetitiveness in the
+code, this has the additional effect of allowing handlers for new
+languages to be ``plugged in'' with virtually no changes to the
+program itself.
+
+Choosing an appropriate representation was an important, and
+difficult, part of this project. The problem of representing an API
+regardless of language is solved through some context by
+\textit{interface descriptor languages}, such as WSDL\cite{WSDL},
+SWIG\cite{SWIG} or Apache Thrift\cite{Thrift}.
+
+% TODO: Expand on IDLs.
+
+The representation that autobump uses consists of several entities
+that are common across public APIs exposed by different languages.
+
+% TODO: UML diagram goes here.
 
 \label{LanguageHandlers}
 \subsection{Handlers for programming languages}
