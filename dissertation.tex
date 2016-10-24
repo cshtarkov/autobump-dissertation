@@ -383,10 +383,24 @@ program itself.
 Choosing an appropriate representation was an important, and
 difficult, part of this project. The problem of representing an API
 regardless of language is solved through some context by
-\textit{interface descriptor languages}, such as WSDL\cite{WSDL},
-SWIG\cite{SWIG} or Apache Thrift\cite{Thrift}.
+\textit{interface descriptor languages} (IDLs), such as
+WSDL\cite{WSDL}, SWIG\cite{SWIG} or Apache Thrift\cite{Thrift}. All of
+these are meant for a specific purpose, usually interoperability between
+different technologies. While adapting one of these to use in autobump
+was certainly possible, we opted to use our own model instead for
+several reasons.
 
-% TODO: Expand on IDLs.
+\begin{itemize}
+\item Barely any features are needed except for API representation.
+Using an established IDL may be considered overkill.
+\item Using an established IDL would mean either importing an external
+library as a dependency, or writing our own, and both are undesirable.
+\item Should extensions be needed, it would be trivial to extend our
+own model compared to a third-party one.
+\item Autobump's representation of APIs is internal -- the user should
+never care about it, so the choice of IDL can ignore any user
+experience issues.
+\end{itemize}
 
 The representation that autobump uses consists of several entities
 that are common across public APIs exposed by different languages.
