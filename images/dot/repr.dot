@@ -1,0 +1,92 @@
+digraph representation  {
+    node [shape=box,fontsize=10];
+    edge [fontsize=8];
+
+    entity [
+        group = "gm"
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12"><i>Entity</i></font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ name</td></tr>
+                     <tr><td align="left">+ __eq__(other)</td></tr>
+                     <tr><td align="left">+ __ne__(other)</td></tr>
+                     <tr><td align="left">+ __str__()</td></tr>
+                 </table>>;
+    ];
+
+    type [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12"><i>Type</i></font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ is_compatible(other)</td></tr>
+                     <tr><td align="left">+ __eq__(other)</td></tr>
+                 </table>>;
+    ];
+
+    field [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12">Field</font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ type</td></tr>
+                 </table>>;
+    ];
+
+    parameter [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12">Parameter</font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ type</td></tr>
+                     <tr><td align="left">+ default_value</td></tr>
+                 </table>>;
+    ];
+
+    signature [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12">Signature</font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ parameters</td></tr>
+                 </table>>;
+    ];
+
+    function [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12">Function</font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ type</td></tr>
+                     <tr><td align="left">+ signature</td></tr>
+                 </table>>;
+    ];
+
+    unit [
+        label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+                     <tr><td><font point-size="12">Unit</font></td></tr>
+                     <hr/>
+                     <tr><td align="left" height="15" valign="bottom">+ fields</td></tr>
+                     <tr><td align="left">+ functions</td></tr>
+                     <tr><td align="left">+ units</td></tr>
+                 </table>>;
+    ];
+
+    /* Extending Entity */
+    field -> entity [style="dashed",color="#AAAAAA"]
+    parameter -> entity [style="dashed",color="#AAAAAA"]
+    signature -> entity [style="dashed",color="#AAAAAA"]
+    function -> entity [style="dashed",color="#AAAAAA"]
+    unit -> entity [style="dashed",color="#AAAAAA"]
+
+    /* has-a Type */
+    field -> type [label=" has a"]
+    parameter -> type [label=" has a"]
+    function -> type [label=" has a"]
+
+    /* Additional has-a */
+    signature -> parameter [label=" has many"]
+    function -> signature [label=" has a"]
+    unit -> field [label=" has many"]
+    unit -> function [label=" has many"]
+    unit -> unit [label="has many ",tailport="w"]
+
+    {rank=max; entity type}
+    {rank=min; unit}
+    {rank=same; signature parameter field function}
+}
