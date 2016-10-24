@@ -373,6 +373,25 @@ the appropriate language handler.
 
 \subsection{Common representation for APIs}
 
+Before proceeding with the issue of representing APIs, it is important
+to note that for the purposes of this project we are not interested in
+any internal APIs software packages might use -- they should not
+influence external applications that depend on the packages in question.
+We are interested only in the public APIs which are meant for external
+use, as changing these indicates an incrementation of the semantic version.
+
+Most general-purpose languages provide ways to restrict visibility of
+entities in the source code (such as classes, functions and so on).
+Technically all externally visible entities, usually indicated with the keyword
+\texttt{public}, are accessible from client applications. In practice,
+however, it may be that not all of these form the intended, official
+and documented public API. Faced with this problem, Autobump takes the
+safer approach and only considers visibility when determining whether
+an entity is part of the public API. The reason for that is that there
+is nothing technically restricting client applications from using
+visible entities that are otherwise undocumented or not formally
+intended for outside use.
+
 By relying on language-specific handlers to extract the public API of
 a codebase and convert it into a common representation, the same
 comparison logic can be reused. Beside reducing repetitiveness in the
