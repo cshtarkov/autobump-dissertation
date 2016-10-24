@@ -261,7 +261,7 @@ the code and imposes no additonal requirements on contributors to
 the repository. However, Endjin.Assembly.ChangeDetection is not really
 a tool, but an experiment, and is tied to the .NET ecosystem.
 
-\section{Determining next semantic version through code analysis}
+\chapter{Determining next semantic version through code analysis}
 
 Much like Endjin.Assembly.ChangeDetection, the tool we propose tries
 to look at how the code itself has changed to estimate what the next
@@ -270,7 +270,7 @@ no special naming schemes, and is as reliable as it can get.
 
 % TODO: Determining vs Estimation?
 
-\subsection{Breaking changes}
+\section{Breaking changes}
 
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
@@ -305,7 +305,7 @@ Removing the default value of a parameter.                                      
 \caption{List of changes that are considered breaking}
 \end{table}
 
-\subsection{Feature additions}
+\section{Feature additions}
 
 In comparison to breaking changes, determining what constitutes a
 feature addition seems to be trivial. Continuing with the assumption
@@ -313,7 +313,7 @@ that all publicly available types and functions are suitable for
 external use, it is sufficient to claim that the addition of one or
 several public entities or default values is a feature release.
 
-\subsection{The \textit{autobump} tool}
+\section{The \textit{autobump} tool}
 
 The goal of this project was to build \textit{autobump} -- a tool which
 given two revisions in a version controlled project reliably
@@ -321,6 +321,12 @@ determines what the version of the later revision should
 be\footnote{In some contexts, ``version'' and ``revision'' may be
 identical. In this dissertation, we refer to the semantic version of a
 release as ``version'', and the commit identifier in a VCS as ``revision''}.
+
+Although technically Autobump can be used with any project, it is
+mainly aimed at libraries, frameworks and otherwise projects whose
+main usefulness comes from the ability to be integrated in client
+applications. It is with those types of projects that semantic
+versioning is most practical.
 
 Because identifying the version delta requires first identifying a
 list of changes to the public API, a secondary function of autobump is
@@ -332,13 +338,11 @@ deployment pipeline so that correct version numbers are automatically
 assigned to releases with no human intervention.
 
 Autobump, while its core is written in Python, is modular in
-nature\ref{Architecture} and supports different
-languages\ref{LanguageHandlers} and version control
-systems\ref{VCSHandlers}.
+nature (\ref{Architecture}) and supports different
+languages (\ref{LanguageHandlers}) and version control
+systems (\ref{VCSHandlers}).
 
 \chapter{Implementation}
-
-\section{List of features}
 
 \label{Architecture}
 \section{Architecture}
@@ -466,6 +470,9 @@ Every Function has a \textbf{Signature} which indicates a list of
 \subsubsection{Type systems}
 
 % TODO: Dynamic typing, Structural types
+
+\label{VCSHandlers}
+\subsection{Handlers for version control systems}
 
 \subsection{Comparison logic}
 
