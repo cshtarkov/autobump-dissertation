@@ -1,13 +1,13 @@
 digraph architecture {
     newrank=true;
     compound=true;
-    graph [fontsize=20];
-    node [shape=box3d,fontsize=20];
-    edge [fontsize=20];
+    graph [fontsize=30];
+    node [shape=box3d,fontsize=30];
+    edge [fontsize=30];
 
-    core [label="Core Comparison Logic"];
-    common [label="Common API Representation"];
-    program [label="Program (command-line interface)"];
+    core [label="Core Comparison Logic",group=gm];
+    common [label="Common API Representation\n(list of units)",group=gm];
+    program [label="Program (command-line interface)",group=gm];
 
     subgraph cluster_languages {
         label="Language Handlers"
