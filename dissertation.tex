@@ -424,21 +424,48 @@ experience issues.
 The representation that autobump uses consists of several entities
 that are common across public APIs exposed by different languages.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{images/dot/repr}
 \caption{API representation used by \textit{autobump} internally}
 \end{figure}
 
+\textbf{Entity} is an abstract class representing an entity of
+interest found in source code. All deriving classes are guaranteed to
+implement equality comparison to other entities (via
+\texttt{\detokenize{__eq__}} and \texttt{\detokenize{__ne__}}).
+
+\textbf{Type} is an abstract class that is the basis of the type
+systems used by the language handlers. This is discussed in further
+detail in \ref{TypeSystems}.
+
+\textbf{Unit}s are a recursive data structure that indicate a
+general grouping of entities. They can represent a range of grouping
+techniques found in different languages -- translation units, modules,
+classes, interfaces, mixins, traits etc. In fact, Autobump uses a
+single top-level Unit to represent an entire codebase.
+
+\textbf{Field}s and \textbf{Function}s are found in Units. Fields
+denote any setting of a variable or a constant. Functions represent
+callable pieces of code -- functions, methods, routines, or whatever
+the source language calls them.
+
+Every Function has a \textbf{Signature} which indicates a list of
+\textbf{Parameter}s. Parameters have a type and a default value.
+
+% TODO: Expand on fields and parameters.
+
 \label{LanguageHandlers}
 \subsection{Handlers for programming languages}
 
-\subsubsection{Python}
+\subsubsection{Transforming source code into the common representation}
 
 % TODO: Introspection vs AST
-% TODO: Dynamic typing, Structural types
 
-\subsubsection{Java}
+\label{TypeSystems}
+\subsubsection{Type systems}
+
+% TODO: Dynamic typing, Structural types
 
 \subsection{Comparison logic}
 
