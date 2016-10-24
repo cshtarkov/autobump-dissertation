@@ -1,0 +1,47 @@
+digraph representation_example {
+
+    u_codebase [shape=house, label="Codebase\n[unit]"];
+
+    /* module1.py */
+
+    p_a [shape=square, label="foo\n[parameter]"];
+    p_b [shape=square, label="bar\n[parameter]"];
+    s_func [shape=box, label="[signature of do_thing_with_foo_and_bar]"];
+    p_a -> s_func;
+    p_b -> s_func;
+    f_func [shape=ellipse, label="do_thing_with_foo_and_bar\n[function]"];
+    s_func -> f_func;
+    s_func_empty [shape=box, label="[signature of do_thing]"];
+    f_func_empty [shape=ellipse, label="do_thing\n[function]"];
+    s_func_empty -> f_func_empty;
+    {rank=same; s_func s_func_empty};
+
+    u_class [shape=house, label="ThingDoer\n[unit]"];
+    f_func_empty -> u_class;
+
+    u_module1 [shape=house, label="moduleA\n[unit]"];
+    f_func -> u_module1;
+    u_class -> u_module1;
+
+    u_module1 -> u_codebase;
+
+    /* module2.py */
+
+    p_thingimajig [shape=square, label="thingimajig\n[parameter]"];
+    s_disc [shape=box, label="[signature of discombobulate]"];
+    p_thingimajig -> s_disc;
+    f_disc [shape=ellipse, label="discombobulate\n[function]"];
+    s_disc -> f_disc;
+
+    u_discexc [shape=house, label="DiscombobulationException\n[unit]"]
+
+    u_disc [shape=house, label="Discombobulator\n[unit]"];
+    f_disc -> u_disc;
+    u_discexc -> u_disc;
+
+    u_module2 [shape=house, label="moduleB\n[unit]"]
+    u_disc -> u_module2
+
+    u_module2 -> u_codebase;
+
+}

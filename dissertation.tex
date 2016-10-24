@@ -4,6 +4,8 @@
 \usepackage{url}
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
+\usepackage{listings}
+\lstset{language=Python}
 \def\UrlBreaks{\do\/\do-}
 \usepackage[T1]{fontenc}
 \usepackage{float}
@@ -332,10 +334,13 @@ Because identifying the version delta requires first identifying a
 list of changes to the public API, a secondary function of autobump is
 the generation of a changelog in preparation for a release.
 
-The tool can be used standalone as a sanity check, or for its
-changelog generation capabilities, or it can be integrated in a
-deployment pipeline so that correct version numbers are automatically
-assigned to releases with no human intervention.
+Autobump can be part of a manual or automated workflow of bumping the
+version number with every release, generating a changelog, or both. It
+is a command-line application with behaviour driven by passing
+options, so it can be easily integrated in an automated deployment
+system. Another possibility is using it standalone as a sanity check.
+Developers can run it to find out if they have unintentionally broken
+backwards compatibility with a recent commit.
 
 Autobump, while its core is written in Python, is modular in
 nature (\ref{Architecture}) and supports different
@@ -425,14 +430,9 @@ never care about it, so the choice of IDL can ignore any user
 experience issues.
 \end{itemize}
 
-The representation that autobump uses consists of several entities
-that are common across public APIs exposed by different languages.
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{images/dot/repr}
-\caption{API representation used by \textit{autobump} internally}
-\end{figure}
+The representation that autobump uses (fig. \ref{RepresentationUML})
+consists of several entities that are common across public APIs
+exposed by different languages.
 
 \textbf{Entity} is an abstract class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
@@ -457,7 +457,49 @@ the source language calls them.
 Every Function has a \textbf{Signature} which indicates a list of
 \textbf{Parameter}s. Parameters have a type and a default value.
 
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/dot/repr}
+\caption{Class diagram -- Autobump's public API representation}
+\label{RepresentationUML}
+\end{figure}
+
 % TODO: Expand on fields and parameters.
+
+\newpage
+\null\vspace{\fill}
+As an example of what the common API representation looks like in
+practice, fig. \ref{RepresentationExample} shows the end result of
+transforming a simple Python codebase consisting of two modules.
+
+\noindent\textbf{\textit{moduleA.py}}:\\
+\begin{lstlisting}
+def do_thing_with_foo_and_bar(foo, bar):
+    pass
+
+class ThingDoer(object):
+    def do_thing():
+        pass
+\end{lstlisting}
+
+\noindent\textbf{\textit{moduleB.py}}:\\
+\begin{lstlisting}
+class Discombobulator(object):
+    def discombobulate(thingimajig):
+        raise DiscombobulationException()
+
+    class DiscombobulationException(Exception):
+        pass
+\end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/dot/reprexample}
+\caption{Internal representation of a codebase consisting of two modules}
+\label{RepresentationExample}
+\end{figure}
+\vspace{\fill}
+\newpage
 
 \label{LanguageHandlers}
 \subsection{Handlers for programming languages}
