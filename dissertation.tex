@@ -1,6 +1,7 @@
 \pdfoutput=1
 
 \documentclass{l4proj}
+\usepackage{microtype}
 \usepackage{url}
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
@@ -349,8 +350,8 @@ systems (\ref{VCSHandlers}).
 
 \chapter{Implementation}
 
-\label{Architecture}
 \section{Architecture}
+\label{Architecture}
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
@@ -466,31 +467,40 @@ Every Function has a \textbf{Signature} which indicates a list of
 
 % TODO: Expand on fields and parameters.
 
+
+
 \newpage
-\null\vspace{\fill}
 As an example of what the common API representation looks like in
 practice, fig. \ref{RepresentationExample} shows the end result of
-transforming a simple Python codebase consisting of two modules.
+transforming a simple Python codebase consisting of two modules. Note
+how a tree is formed akin to simplified abstract syntax tree -- this is
+instrumental in allowing the comparison logic to be recursively
+defined later (\ref{Logic}).
 
+\begin{minipage}[t]{0.5\textwidth}
 \noindent\textbf{\textit{moduleA.py}}:\\
 \begin{lstlisting}
-def do_thing_with_foo_and_bar(foo, bar):
+def accept_foo_bar(foo, bar):
     pass
 
 class ThingDoer(object):
+    THING_QUOTA = 5
+
     def do_thing():
         pass
 \end{lstlisting}
-
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
 \noindent\textbf{\textit{moduleB.py}}:\\
 \begin{lstlisting}
 class Discombobulator(object):
     def discombobulate(thingimajig):
-        raise DiscombobulationException()
+        raise self.DException()
 
-    class DiscombobulationException(Exception):
+    class DException(Exception):
         pass
 \end{lstlisting}
+\end{minipage}
 
 \begin{figure}[H]
 \centering
@@ -498,25 +508,25 @@ class Discombobulator(object):
 \caption{Internal representation of a codebase consisting of two modules}
 \label{RepresentationExample}
 \end{figure}
-\vspace{\fill}
 \newpage
 
-\label{LanguageHandlers}
 \subsection{Handlers for programming languages}
+\label{LanguageHandlers}
 
 \subsubsection{Transforming source code into the common representation}
 
 % TODO: Introspection vs AST
 
-\label{TypeSystems}
 \subsubsection{Type systems}
+\label{TypeSystems}
 
 % TODO: Dynamic typing, Structural types
 
-\label{VCSHandlers}
 \subsection{Handlers for version control systems}
+\label{VCSHandlers}
 
 \subsection{Comparison logic}
+\label{Logic}
 
 \section{Application user interface}
 

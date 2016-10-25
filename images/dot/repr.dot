@@ -15,6 +15,7 @@ digraph representation  {
     ];
 
     type [
+        group=col0;
         label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
                      <tr><td><font point-size="12"><i>Type</i></font></td></tr>
                      <hr/>
@@ -49,6 +50,7 @@ digraph representation  {
     ];
 
     function [
+        group=col0;
         label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
                      <tr><td><font point-size="12">Function</font></td></tr>
                      <hr/>
@@ -58,6 +60,7 @@ digraph representation  {
     ];
 
     unit [
+        group=col0;
         label = <<table border="0" cellborder="0" cellspacing="0" cellpadding="0">
                      <tr><td><font point-size="12">Unit</font></td></tr>
                      <hr/>

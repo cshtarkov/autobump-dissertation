@@ -6,18 +6,21 @@ digraph representation_example {
 
     p_a [shape=square, label="foo\n[parameter]"];
     p_b [shape=square, label="bar\n[parameter]"];
-    s_func [shape=box, label="[signature of do_thing_with_foo_and_bar]"];
+    s_func [shape=box, label="[signature of accept_foo_bar]"];
     p_a -> s_func;
     p_b -> s_func;
-    f_func [shape=ellipse, label="do_thing_with_foo_and_bar\n[function]"];
+    f_func [shape=ellipse, label="accept_foo_bar\n[function]"];
     s_func -> f_func;
     s_func_empty [shape=box, label="[signature of do_thing]"];
     f_func_empty [shape=ellipse, label="do_thing\n[function]"];
     s_func_empty -> f_func_empty;
     {rank=same; s_func s_func_empty};
 
+    i_thing_quota [shape=square, label="THING_QUOTA\n[field]"];
+
     u_class [shape=house, label="ThingDoer\n[unit]"];
     f_func_empty -> u_class;
+    i_thing_quota -> u_class;
 
     u_module1 [shape=house, label="moduleA\n[unit]"];
     f_func -> u_module1;
@@ -33,7 +36,7 @@ digraph representation_example {
     f_disc [shape=ellipse, label="discombobulate\n[function]"];
     s_disc -> f_disc;
 
-    u_discexc [shape=house, label="DiscombobulationException\n[unit]"]
+    u_discexc [shape=house, label="DException\n[unit]"]
 
     u_disc [shape=house, label="Discombobulator\n[unit]"];
     f_disc -> u_disc;
