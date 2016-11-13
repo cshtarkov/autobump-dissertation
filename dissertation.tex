@@ -277,10 +277,14 @@ no special naming schemes, and is as reliable as it can get.
 
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
-\textbf{any} change to the API which makes it incompatible with the
-last version as breaking. It does not take into account number of
-affected users or difficulty of transitioning to the new version,
-because those things cannot be possibly known reliably.
+\textbf{any} change to the API which makes it incompatible\footnote{By
+``incompatible'', we mean changes that make the new code technically
+incompatible with the old, i.e. it doesn't compile in the case of
+static languages, or throws unexpected runtime errors with dynamic
+languages.} with the last version as breaking. It does not take into
+account number of affected users, difficulty of transitioning to the
+new version, or changes in behaviour, because those things cannot be
+possibly known reliably.
 
 In the spirit of Semver, for this project we adopted a technical and
 deterministic list of changes to entities that are considered
@@ -308,13 +312,53 @@ Removing the default value of a parameter.                                      
 \caption{List of changes that are considered breaking}
 \end{table}
 
+Note that the list is sufficiently abstract to accommodate for
+differences in widely used languages. It makes only three assumptions
+about the structure of the language.
+
+\begin{enumerate}
+\item The language provides some mechanism of grouping functionality
+into entities, be it object-orientation, namespacing, modules and so
+on. Note that groupings are absolutely allowed to be nested --
+consider a Java library which defines a constant inside a class inside
+a class. In this case the constant and both classes are considered to
+be ``entities''.
+\item The language has some notion of parameterized callable pieces of
+code, which for simplicity's sake we refer to only as ``functions'',
+even though in reality they may be object methods, macros etc.
+Additionally, some of those functions are callable from outside
+of the program where they are defined, effectively being an API.
+\label{SecondAssumption}
+\item The language has a type system which has the notion of binary
+compatibility:
+\begin{equation}
+\forall(T,Y) \in S, \mathrm{compatible}(T,Y) \in \{\mathrm{True},\mathrm{False}\}
+\end{equation}
+where $S$ is the set of all admissable types in the language and program.
+\end{enumerate}
+
+There are languages that do not conform at all to these assumptions
+(e.g. minimalistic ones such as Brainfuck\cite{Brainfuck}), but these are also
+languages where a tool like Autobump would be utterly unuseful. There
+are also languages that partially conform. In those cases, as long as
+assumption \ref{SecondAssumption} is valid, we can ignore the rest.
+However, in most widely-used languages, all three hold.
+
 \section{Feature additions}
 
-In comparison to breaking changes, determining what constitutes a
-feature addition seems to be trivial. Continuing with the assumption
-that all publicly available types and functions are suitable for
-external use, it is sufficient to claim that the addition of one or
-several public entities or default values is a feature release.
+Semver defines feature additions as backwards-compatible changes to
+the API. This means that changes which colloquially may be thought of
+new features, such as making the library run faster or handling more
+edge cases are considered patch changes by Semver.
+
+Going by the list of breaking changes and replacing its destructive
+aspect with a constructive one, we get the following list:
+
+\begin{itemize}
+\item Adding a new entity.
+\item Changing the type of an entity into a compatible type.
+\item Adding a parameter with a default value to a function signature.
+\end{itemize}
 
 \section{The \textit{autobump} tool}
 
