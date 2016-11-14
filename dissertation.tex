@@ -334,15 +334,26 @@ compatibility:
 \begin{equation}
 \forall(T,Y) \in S, \mathrm{compatible}(T,Y) \in \{\mathrm{True},\mathrm{False}\}
 \end{equation}
-where $S$ is the set of all admissable types in the language and program.
+where $S$ is the set of all admissable types in the language and
+program. \\
+
+We define compatibility as $T$ being able to replace $Y$
+without violating the rules of the language -- e.g. the Liskov
+substitution principle\cite{Liskov} in a typical object-oriented
+language.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
-(e.g. minimalistic ones such as Brainfuck\cite{Brainfuck}), but these are also
-languages where a tool like Autobump would be utterly unuseful. There
-are also languages that partially conform. In those cases, as long as
-assumption \ref{SecondAssumption} is valid, we can ignore the rest.
-However, in most widely-used languages, all three hold.
+(e.g. minimalistic ones such as Brainfuck\cite{Brainfuck}), but these
+are also languages where a tool like Autobump would be utterly
+unuseful. There are also languages that partially conform. In those
+cases, as long as assumption \ref{SecondAssumption} is valid (i.e.
+there is an API), we can ignore the rest -- of course making obsolete
+some functionality of Autobump\footnote{Namely identifying in which
+parts of the program the changes have occurred and checking type
+compatibility.}. For this project, we examined the radically
+different languages Python, Java and Clojure\ref{LanguageHandlers} and
+the assumptions were found to be reasonable.
 
 \section{Feature additions}
 
@@ -420,7 +431,7 @@ command-line arguments or through an educated guess.
 \item Run the comparison logic on the two revisions. This involves
 converting the APIs of both into a common\footnote{Common between
 different source languages, not the two representations.} representation via
-the appropriate language handler.
+the appropriate language handler. This may necessitate a ``build'' step.
 \item Calculate the new version number by bumping the old one.
 \end{enumerate}
 \end{minipage}
