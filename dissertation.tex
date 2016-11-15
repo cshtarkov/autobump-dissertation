@@ -2,6 +2,7 @@
 
 \documentclass{l4proj}
 \usepackage{microtype}
+\usepackage{enumerate}
 \usepackage{url}
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
@@ -49,29 +50,63 @@ releases.
 \chapter{Introduction}
 \pagenumbering{arabic}
 
+\section{Software versioning}
+Software versioning is the practice of assigning nominal or numerical
+identifiers to subsequent iterations of a software package. Every
+variant of a piece of software is expected to have a different
+(however small the difference) set of functionality, and versioning
+allows for finding out exactly a piece of software is expected to
+behave. In practice, all non-trivial software is versioned in one way
+or another.
+
+Versioning can have different levels of granularity. Revision control
+systems, such as Git or Subversion, allow developers to introduce
+small incremental changes to a codebase. After every change, the new
+state of the codebase is given a unique identifier and made
+recoverable. For example, Subversion assigns a single number to every
+revision starting at 1 and increasing in chronological order. This
+allows for many productivity-boosting features, such as reverting code
+to a previous state, proving that a particular changeset is
+responsible for the introduction of a bug, or identifying differences
+between divergent branches of the same initial piece of code. Note
+that revision control can be applied to any type of electronic
+information and not only code.
+
+On a macro scale, releases of software packages are also versioned.
+Because releases happen much less often than small changes, versions
+also change much less often and follow different policies. Popular
+ones include:
+\begin{enumerate}
+\item Date of release. A good example is the GNU/Linux distribution
+Ubuntu which follows the versioning format \textit{Year.Month} -- e.g.
+Ubuntu 14.04 was released in April of 2014.
+\item Arbitrary codenames, such as \textit{macOS Sierra} or
+\textit{Windows Longhorn}. This scheme is typically used only with
+user-facing software and in conjunction with a more traditional
+sequence-based scheme.
+\item Sequence-based schemes, where each version identifier is a tuple
+consisting of numbers or letters -- e.g. \textit{1.3.2} or
+\textit{10.6-rc1}. These are by far the most popular. It is usually
+implied that the further to the left an element of the tuple is, the
+more significant it is. What ``significant'' means depends on the kind
+of software that is being versioned. Comparing versions \textit{5.0}
+and \textit{6.0} of a Web browser may imply that the latter has new
+features, whereas comparing the same versions of a library may imply
+that client code using the former is incompatible with the latter. In
+general, incrementing versions in this format follows these rules:
+\begin{enumerate}[(i)]
+\item Incrementing any non-final element ``resets'' all elements to
+the right, i.e. \textit{3.5.4} $\rightarrow$ \textit{3.6.0}.
+\item Incrementing a version which has a label attached at the end
+means to either change the label or drop it, i.e. \textit{3.5.4-beta}
+$\rightarrow$ \textit{3.5.4} or \textit{3.5.4-rc1} $\rightarrow
+$ \textit{3.5.4-rc2}.
+\end{enumerate} In the next section, we look at an attempt to
+formalize a sequence-based scheme so that the significance of the
+individual elements is well-defined and conveys meaning.
+\end{enumerate}
+
 \section{Semantic versioning}
-
-There are different policies that dictate how versions of software
-projects change with new releases. Popular ones include:
-
-\begin{itemize}
-\item Using the revision control number -- typically only used
-internally and can change multiple times per day. This can be a single
-number increasing incrementally, such as the revision in Subversion,
-or a hash like in Git.
-\item Code names -- most frequent in consumer-facing software, such as
-\textit{macOS Sierra}. Code names are usually picked for marketing
-purposes, rather than telling users something meaningful about the
-software itself. Software that is released under a code name usually
-also has an additional, sometimes non-public version number following
-another scheme.
-\item Semantic versioning (Semver)\cite{SemanticVersioning}. A widely
-used scheme for decades, it was formalised by GitHub founder Tom
-Preston-Werner who encourages all projects hosted there to follow it.
-A majority of software projects, especially libraries, either outright
-follow Semver or they closely approximate it. It is the most useful
-from a developer's point of view.
-\end{itemize}
 
 Semver reveals information about how the software package has changed
 from a previous iteration by dividing the version into three
