@@ -55,7 +55,7 @@ Software versioning is the practice of assigning nominal or numerical
 identifiers to subsequent iterations of a software package. Every
 variant of a piece of software is expected to have a different
 (however small the difference) set of functionality, and versioning
-allows for finding out exactly a piece of software is expected to
+allows for finding out how exactly a piece of software is expected to
 behave. In practice, all non-trivial software is versioned in one way
 or another.
 
@@ -68,32 +68,23 @@ revision starting at 1 and increasing in chronological order. This
 allows for many productivity-boosting features, such as reverting code
 to a previous state, proving that a particular changeset is
 responsible for the introduction of a bug, or identifying differences
-between divergent branches of the same initial piece of code. Note
-that revision control can be applied to any type of electronic
-information and not only code.
+between divergent branches of the same initial piece of code.
 
 On a macro scale, releases of software packages are also versioned.
 Because releases happen much less often than small changes, versions
-also change much less often and follow different policies. Popular
-ones include:
-\begin{enumerate}
-\item Date of release. A good example is the GNU/Linux distribution
-Ubuntu which follows the versioning format \textit{Year.Month} -- e.g.
-Ubuntu 14.04 was released in April of 2014.
-\item Arbitrary codenames, such as \textit{macOS Sierra} or
-\textit{Windows Longhorn}. This scheme is typically used only with
-user-facing software and in conjunction with a more traditional
-sequence-based scheme.
-\item Sequence-based schemes, where each version identifier is a tuple
-consisting of numbers or letters -- e.g. \textit{1.3.2} or
-\textit{10.6-rc1}. These are by far the most popular. It is usually
-implied that the further to the left an element of the tuple is, the
-more significant it is. What ``significant'' means depends on the kind
-of software that is being versioned. Comparing versions \textit{5.0}
-and \textit{6.0} of a Web browser may imply that the latter has new
-features, whereas comparing the same versions of a library may imply
-that client code using the former is incompatible with the latter. In
-general, incrementing versions in this format follows these rules:
+also change much less often and follow different policies.
+The de facto standard are sequence-based schemes where each
+version identifier is a tuple consisting of numbers or letters
+separated by dots -- e.g. \textit{1.3.2} or \textit{10.6-rc1}. The
+vast majority of computer software follows a scheme of this type. It
+is usually implied that the further to the left an element of the
+tuple is, the more significant it is. What ``significant'' means is
+not well-defined and depends on the kind of software that is being
+versioned. Comparing versions \textit{5.0} and \textit{6.0} of a Web
+browser may imply that the latter has new features, whereas comparing
+the same versions of a library may imply that client code using the
+former is incompatible with the latter. In general, incrementing
+versions in this format follows these rules:
 \begin{enumerate}[(i)]
 \item Incrementing any non-final element ``resets'' all elements to
 the right, i.e. \textit{3.5.4} $\rightarrow$ \textit{3.6.0}.
@@ -101,27 +92,55 @@ the right, i.e. \textit{3.5.4} $\rightarrow$ \textit{3.6.0}.
 means to either change the label or drop it, i.e. \textit{3.5.4-beta}
 $\rightarrow$ \textit{3.5.4} or \textit{3.5.4-rc1} $\rightarrow
 $ \textit{3.5.4-rc2}.
-\end{enumerate} In the next section, we look at an attempt to
-formalize a sequence-based scheme so that the significance of the
-individual elements is well-defined and conveys meaning.
 \end{enumerate}
+
+Note that software can be versioned by more than one scheme -- it is a
+typical scenario that revision numbers are used by developers
+internally and a sequence-based scheme is used for public releases.
+Large consumer-facing software with long release cycles, like
+operating systems, may use a codename or date-based scheme for
+versioning public releases -- e.g. \textit{Ubuntu 14.04 (Trusty Tahr)}
+which was released in April of 2014 happens to use both. Those
+typically serve a marketing purpose rather than provide any technical
+benefit.
 
 \section{Semantic versioning}
 
-Semver reveals information about how the software package has changed
-from a previous iteration by dividing the version into three
-independent numbers:
+In software development, it is a widespread practice to leverage
+pre-existing code in the form of libraries or
+frameworks\footnote{Those are the most common use cases for one piece
+of software interfacing with another. The same argument also applies
+to philosophically similar use cases, like invoking command-line tools
+such as \textit{sed} or \textit{awk} from a script.} to avoid
+duplication of effort. Given that client applications and the
+libraries they depend on have separate development cycles, a problem
+arises in determining whether a client application is compatible with
+a different version of the same library. A common solution is to take
+a sequence-based scheme and attach meaning to the positions in order
+to measure degree of compatibility.
+
+Semantic versioning\cite{SemanticVersioning} is a strict formalization of such a
+scheme, where the format and significance of each position are
+well-defined:
+
 \begin{center}
-\textbf{MAJOR.MINOR.PATCH}
+$\mathrm{Major.Minor.Patch}(-\mathrm{Prerelease})^?(+\mathrm{Build})^?$
 \end{center}
 
 \begin{itemize}
-\item \textbf{MAJOR} increments when incompatible changes to the API
-have been made.
-\item \textbf{MINOR} increments when new features has been added in a
+\item \textit{Major} increments when incompatible changes to the
+public API have been and it is possible for interfacing software to no
+longer work.
+\item \textit{Minor} increments when new features have been added in a
 backwards-compatible manner.
-\item \textbf{PATCH} increments when bugs were fixed in a
+\item \textit{Patch} increments when bugs have been fixed in a
 backwards-compatible manner.
+\item \textit{Prerelease} is an optional label indicating that the
+version does not yet meet the compatibility requirements imposed by
+the first three numbers.
+\item \textit{Build} is another optional label indicating the
+corresponding internal version numbers, e.g. the one used by the
+revision control system.
 \end{itemize}
 
 \subsection{Benefits}
