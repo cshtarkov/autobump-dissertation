@@ -685,9 +685,15 @@ specified as \texttt{LINTER}) against all source code.
 
 \end{document}
 
+% The below list of file-local variables enables
+% auto filling of text and completely nukes all indentation
+% except for code blocks.
+
 % Local Variables:
 % eval: (auto-fill-mode 1)
 % sentence-end-double-space: nil
+% LaTeX-indent-environment-list: (("verbatim" current-indentation) ("lstlisting" current-indentation))
+% TeX-brace-indent-level: 0
 % LaTeX-indent-level: 0
 % LaTeX-item-indent: 0
 % tex-indent-basic: 0
