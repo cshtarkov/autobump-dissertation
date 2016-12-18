@@ -550,12 +550,12 @@ exposed by different languages. From now on, we will refer to this
 model as \textbf{CAPIR} (standing for ``common API representation'') for the
 sake of brevity.
 
-\textbf{Entity} is an abstract class representing an entity of
+\textbf{Entity} is a base class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
 implement equality comparison to other entities (via
 \texttt{\detokenize{__eq__}} and \texttt{\detokenize{__ne__}}).
 
-\textbf{Type} is an abstract class that is the basis of the type
+\textbf{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
 detail in \ref{TypeSystems}.
 
