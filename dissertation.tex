@@ -544,9 +544,11 @@ never care about it, so the choice of IDL can ignore any user
 experience issues.
 \end{itemize}
 
-The representation that autobump uses (fig. \ref{RepresentationUML})
+The representation that Autobump uses (fig. \ref{RepresentationUML})
 consists of several entities that are common across public APIs
-exposed by different languages.
+exposed by different languages. From now on, we will refer to this
+model as \textbf{CAPIR} (standing for ``common API representation'') for the
+sake of brevity.
 
 \textbf{Entity} is an abstract class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
@@ -563,30 +565,31 @@ techniques found in different languages -- translation units, modules,
 classes, interfaces, mixins, traits etc. In fact, Autobump uses a
 single top-level Unit to represent an entire codebase.
 
-\textbf{Field}s and \textbf{Function}s are found in Units. Fields
-denote any setting of a variable or a constant. Functions represent
-callable pieces of code -- functions, methods, routines, or whatever
-the source language calls them.
+\textbf{Field}s and \textbf{Function}s are found in Units. Fields have
+a type and denote the setting of a variable or a constant. Functions
+represent callable pieces of code -- functions, methods, routines, or
+whatever the source language calls them.
 
-Every Function has a \textbf{Signature} which indicates a list of
-\textbf{Parameter}s. Parameters have a type and a default value.
+Every Function has one or more \textbf{Signature}s which in turn are
+lists of \textbf{Parameter}s. Parameters have a type and can have a
+default value.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{images/dot/repr}
-\caption{Class diagram -- Autobump's public API representation}
+\caption{Class diagram -- Autobump's public API representation (CAPIR)}
 \label{RepresentationUML}
 \end{figure}
 
 % TODO: Expand on fields and parameters.
 
 \clearpage
-As an example of what the common API representation looks like in
-practice, fig. \ref{RepresentationExample} shows the end result of
-transforming a simple Python codebase consisting of two modules. Note
-how a tree is formed akin to simplified abstract syntax tree -- this is
-instrumental in allowing the comparison logic to be recursively
-defined later (\ref{Logic}).
+As an example of what CAPIR looks like in practice, fig.
+\ref{RepresentationExample} shows the end result of transforming a
+simple Python codebase consisting of two modules. Note how a tree is
+formed akin to simplified abstract syntax tree -- this is instrumental
+in allowing the comparison logic to be recursively defined later
+(\ref{Logic}).
 
 \begin{minipage}[t]{0.5\textwidth}
 \noindent\textbf{\textit{moduleA.py}}:\\
@@ -606,9 +609,9 @@ class ThingDoer(object):
 \begin{lstlisting}
 class Discombobulator(object):
     def discombobulate(thingimajig):
-        raise self.DException()
+        raise self.Discombobulated()
 
-    class DException(Exception):
+    class Discombobulated(Exception):
         pass
 \end{lstlisting}
 \end{minipage}
@@ -616,7 +619,7 @@ class Discombobulator(object):
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/dot/reprexample}
-\caption{Internal representation of a codebase consisting of two modules}
+\caption{CAPIR of a codebase consisting of two modules}
 \label{RepresentationExample}
 \end{figure}
 \clearpage
@@ -624,14 +627,104 @@ class Discombobulator(object):
 \subsection{Handlers for programming languages}
 \label{LanguageHandlers}
 
-\subsubsection{Transforming source code into the common representation}
+The conversion of source code into CAPIR is delegated to separate
+modules that expose a single function to the rest of the program:
 
-% TODO: Introspection vs AST
+\begin{lstlisting}
+def codebase_to_units(location):
+    ...
+\end{lstlisting}
+
+This function takes in a location on disk where some version of a
+repository is checked out, and returns a list of units that represent
+every top-level entity found in the codebase -- e.g. for Python, that
+would be individual \texttt{.py} files.
+
+Generally, all current implementations of that function follow a
+similar pattern in how they work:
+
+\begin{enumerate}
+\item Recursively walk the file system tree at \texttt{location} and
+filter file names of interest with some regular expression -- e.g.
+only \texttt{.py} files are considered, but not if they begin with \texttt{test-}.
+\item For every file of interest, convert it to a CAPIR unit in some
+way appropriate for the language.
+\item Return the list of units.
+\end{enumerate}
+
+This workflow is not enforced and it is completely up to the handler
+to decide how to implement the function and the CAPIR conversion.
+Sometimes it is viable to have more than one handler per language --
+see \ref{JavaHandlers}.
+
+Autobump comes with handlers for three languages -- Python,
+Java and Clojure. The rationale for picking those is that they are
+different from one another by characteristics that matter when trying
+to convert source code into the internal API representation. Having a
+handler for a dynamically typed, interpreted language like Python
+would make it easier to write one for a similar language, like Ruby,
+in the future.
+
+\subsubsection{Transforming source code into CAPIR}
+
+Each language handler, as part of its implementation, essentially has
+to have a function that maps a source file to a CAPIR unit. In
+general, there are two convenient ways to achieve this: through
+introspection, and through inspecting the abstract syntax tree.
+Introspection would usually yield better results, but it requires
+first compiling the library. In dynamic languages, there is virtually no
+difference between using introspection and the AST.
+
+% TODO: Dynamic?
 
 \subsubsection{Type systems}
 \label{TypeSystems}
 
-% TODO: Dynamic typing, Structural types
+
+
+\subsubsection{Python}
+
+The Python handler uses the AST. It takes advantage of
+Python's ``batteries included'' approach which bundles all sorts of
+useful libraries along with the core Python distribution, and that
+includes a Python parser. Converting to CAPIR is a simple matter of
+opening each source file as text, parsing it and then walking the
+resulting tree.
+
+% TODO: Nominal vs structural
+% TODO: Example?
+
+Early iterations of the Python handler used introspection. It used to
+import source files dynamically, which causes them to be compiled and
+made available to the whole program. Then, the individual items in the
+module were visited to generate their CAPIR counterparts. This led to
+several problems. It's not guaranteed that Autobump runs in the same
+environment as the library, so missing dependencies would halt the
+whole process. But probably the biggest problem is that this approach
+essentially evaluates the code it comes across -- after all, in order
+to perform introspection on a function for example, a \texttt{def} has
+to be evaluated first. If there is top-level code that has side
+effects it will get executed along with the function definitions.
+
+We don't lose out on any important information for CAPIR using just
+the AST in Python, so that is why we prefer it to introspection in
+this case.
+
+% TODO: Rewrite!!!!!!!
+
+\subsubsection{Java}
+\label{JavaHandlers}
+
+
+
+\subsubsection{Clojure}
+
+The Clojure handler takes advantage of the language's
+homoiconicity. That is, programs in the language are represented using
+the language's own data structures. Being a Lisp variant, Clojure
+programs consist mostly of lists and vectors.
+
+% TODO: Clojure primer?
 
 \subsection{Handlers for version control systems}
 \label{VCSHandlers}
@@ -639,7 +732,7 @@ class Discombobulator(object):
 \subsection{Comparison logic}
 \label{Logic}
 
-\section{Application user interface}
+\section{User interface}
 
 \subsection{Integration with other development tools}
 
