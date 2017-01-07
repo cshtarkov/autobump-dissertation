@@ -332,6 +332,7 @@ no special naming schemes, and is as reliable as it can get.
 % TODO: Determining vs Estimation?
 
 \section{Breaking changes}
+\label{BreakingChanges}
 
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
@@ -465,6 +466,8 @@ systems (\ref{VCSHandlers}).
 
 \section{Architecture}
 \label{Architecture}
+
+% TODO: Configuration
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
@@ -676,11 +679,27 @@ first compiling the library. In dynamic languages, there is virtually no
 difference between using introspection and the AST.
 
 % TODO: Dynamic?
+% TODO: Not true, what about method generation?
 
 \subsubsection{Type systems}
 \label{TypeSystems}
 
+In \ref{BreakingChanges} we found that changing the type of a public
+entity to a non-compatible one should be considered a breaking change.
+However, what it means for two types to be compatible varies. Python,
+Java and Clojure were chosen as candidate target languages for this
+tool partly because of their different type systems.
 
+In CAPIR, the only thing required of a \textbf{Type} is to be able to
+identify whether it is compatible or not with another type. We are not
+interested in whether or not they are the same type, or what those
+types actually are\footnote{The point is that what the types actually
+are is irrelevant to determining the next semantic version. It may be
+of interest only to Autobump's secondary function, that is generating
+changelogs}.
+
+In the following sections on the individual language handlers, we
+discuss how the three languages determine compatibility of types.
 
 \subsubsection{Python}
 
@@ -689,7 +708,7 @@ Python's ``batteries included'' approach which bundles all sorts of
 useful libraries along with the core Python distribution, and that
 includes a Python parser. Converting to CAPIR is a simple matter of
 opening each source file as text, parsing it and then walking the
-resulting tree.
+resulting tree to produce the appropriate CAPIR structures for each node.
 
 % TODO: Nominal vs structural
 % TODO: Example?
@@ -712,10 +731,93 @@ this case.
 
 % TODO: Rewrite!!!!!!!
 
+Python, by design and philosophy, encourages the use of duck typing.
+When an operation is performed on an object, only the compatiblity of
+that object with the operation is considered, not the actual type of
+the object. This is a form of runtime structural typing (as opposed to
+nominal typing) -- the structure of the object is what's important,
+not what it is called.
+
+Consider the following trivial example:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}
+def operate(obj):
+    obj.operation()
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+The contract that Python enforces is that \texttt{obj} has an
+implementation of the method \texttt{operation}. It makes no
+difference what the type of \texttt{obj} is -- the program will not
+fail as long as the parameter passed into \texttt{operate} implements
+\texttt{operation}.
+
+If the only thing that matters are the accessed properties and methods
+of an object to determine whether the program fails or not, this makes
+the task of figuring out how the types of parameters have changed more
+difficult. It would be unnecessary and even misleading to attempt to
+look up usage of a function inside the project itself, for example in
+tests. We may find that all parameters passed into the function are
+instances of a particular class, but client code absolutely could pass
+in objects of a different type that happen to have the same properties
+and methods as needed by the function.
+
+% TODO: What about types of entities?
+
+A better choice is to consider two sets $S_a$ and $S_b$ -- the sets of
+all properties and methods requested from the object in the two
+versions we want to compare, $S_a$ being the earlier version chronologically.
+If $S_a \supseteq S_b$, then we can safely claim that there was no
+breaking change as far as the type of the object is concerned. After
+all, if client code was passing an object successfully into the
+earlier version of the function, then it should continue to do so
+because either the set hasn't changed, or some of the expected
+properties and methods are no longer expected.
+
+However, if $S_a \subset S_b$, then there are additional properties
+and methods that the later version expects. It's not necessary that
+client code breaks in this case, but it is definitely a possibility.
+Likewise in all other less likely scenarios, like $S_a$ and $S_b$
+being neither super nor subsets of one another.
+
+Consider the following example:
+
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{Variant A}}:\\
+\begin{lstlisting}
+def func(obj):
+    obj.method1()
+    obj.method2()
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{Variant B}}:\\
+\begin{lstlisting}
+def func(obj):
+    obj.method1()
+\end{lstlisting}
+\end{minipage}
+
+In this case, because \texttt{method2} is no longer expected in
+Variant B, $S_a \supset S_b$ and we safely claim that there is no
+breaking change.
+
+Depending on whether the configuration option \texttt{Python/Use
+Structural Typing} is set, Autobump can examine the use of a parameter
+inside a function and determine those two sets. Afterwards, it takes
+the pessimistic view that unless $S_a \supseteq S_b$ there was
+definitely a breaking change and bumps the version number accordingly.
+
+Depending on the nature of the project, this behaviour can be a
+hinderance and yield lots of false positivies. That is why it is
+configurable. If the option is disabled, then the Python handlers
+never considers the types of entities and assumes them to be compatible.
+
 \subsubsection{Java}
 \label{JavaHandlers}
-
-
 
 \subsubsection{Clojure}
 
