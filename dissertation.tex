@@ -50,6 +50,11 @@ releases.
 \chapter{Introduction}
 \pagenumbering{arabic}
 
+In this chapter, we discuss the background of software versioning and
+more specifically, semantic versioning of software. Then, we move to
+discuss existing tools that help automate the assignment of semantic
+version numbers.
+
 \section{Software versioning}
 Software versioning is the practice of assigning nominal or numerical
 identifiers to subsequent iterations of a software package. Every
@@ -324,6 +329,9 @@ a tool, but an experiment, and is tied to the .NET ecosystem.
 
 \chapter{Determining next semantic version through code analysis}
 
+In this chapter, we discuss the approach that the tool developed for
+this project, Autobump, uses to determine semantic version numbers.
+
 Much like Endjin.Assembly.ChangeDetection, the tool we propose tries
 to look at how the code itself has changed to estimate what the next
 version should be. This requires no manual intervention from the user,
@@ -464,6 +472,11 @@ systems (\ref{VCSHandlers}).
 
 \chapter{Implementation}
 
+In this chapter, we look at how Autobump works internally in terms of
+its architecture and how it exposes its functionality to the end
+user. Furthermore, we focus on how implementation details differ for
+the different target languages.
+
 \section{Architecture}
 \label{Architecture}
 
@@ -471,7 +484,7 @@ systems (\ref{VCSHandlers}).
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
-separate file, with dependencies (via \texttt{import}) reduced to a minimum.
+separate module, with dependencies (via \texttt{import}) reduced to a minimum.
 
 \begin{minipage}{0.5\textwidth}
 \begin{figure}[H]
@@ -840,6 +853,9 @@ programs consist mostly of lists and vectors.
 
 \chapter{Testing}
 
+In this chapter, we look at how we demonstrate that Autobump indeed
+works and what testing techniques were used throughout development.
+
 \section{Unit testing}
 
 \section{Acceptance testing}
@@ -847,6 +863,11 @@ programs consist mostly of lists and vectors.
 % TODO: Representation of a Git repository in a text form.
 
 \chapter{Evaluation}
+
+In this chapter, we try to use Autobump with real-world libraries
+written in the different target languages. We look at whether Autobump
+automatically produces similar or identical version numbers compared
+to the ones assigned manually by the developers and interpret our findings.
 
 % TODO: Evaluation was continuous in nature
 
