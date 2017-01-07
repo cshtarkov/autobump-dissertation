@@ -1,6 +1,9 @@
 \pdfoutput=1
 
 \documentclass{l4proj}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{microtype}
 \usepackage{enumerate}
 \usepackage{url}
@@ -646,10 +649,15 @@ class Discombobulator(object):
 The conversion of source code into CAPIR is delegated to separate
 modules that expose a single function to the rest of the program:
 
+\begin{center}
+\begin{tabular}{c}
 \begin{lstlisting}
 def codebase_to_units(location):
     ...
 \end{lstlisting}
+\end{tabular}
+\end{center}
+
 
 This function takes in a location on disk where some version of a
 repository is checked out, and returns a list of units that represent
@@ -846,6 +854,62 @@ programs consist mostly of lists and vectors.
 
 \subsection{Comparison logic}
 \label{Logic}
+
+After the language handler has run twice and generated two CAPIR
+trees, the comparison algorithm can be invoked to find the differences
+between the two variants. It itself is fairly straightforward and
+defined recursively:
+
+\begin{algorithm}
+\caption{CAPIR Comparison Algorithm}
+\begin{algorithmic}[1]
+% TODO: Better name instead of 'comparisons'
+% TODO: Member instead of attribute
+\Procedure{Compare}{A, B}
+\State $assert(type(A)$ is $type(B))$
+\State $comparators \gets \text{map of the form }(member \rightarrow function)$
+\For{$member, comparator$ in $comparators$}
+\If{$member$ in $A$}
+$report(comparator(A[member], B[member]))$
+\EndIf
+\EndFor
+\State $all \gets members(A) \cup members(B)$
+\For{$member$ in $all$}
+\If {$member$ not in $A$ and $member$ in $B$}
+$report(\detokenize{ENTITY_INTRODUCED})$
+\EndIf
+\If {$member$ in $A$ and $member$ not in $B$}
+$report(\detokenize{ENTITY_REMOVED})$
+\EndIf
+\EndFor
+\State $common \gets members(A) \cap members(B)$
+\For{$member$ in $common$}
+$compare(A[member], B[member])$
+\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In short, the algorithm compares two entities by examining their list
+of attributes and runs specific comparator functions on known
+bottom-level members -- such as types and signatures. After that is
+done, it checks for members that are missing from either variant and
+recurses into members that are present in the intersection of both entities.
+
+Note that this procedure technically compares entities, not trees. To
+kick off the comparison of two trees it's necessary to wrap both in a
+CAPIR unit, so that the first level of recursion actually looks at the
+top-level units in both codebases.
+
+$report$ is a simple function that takes care of adding a change to
+the changelog and checking whether the latest reported change is more
+notable than the most notable so far. For example, reporting a feature
+addition after several patches would cause a feature addition to be
+the most notable change. Note that nothing can top a breaking change.
+Had Autobump only concerned itself with bumping the version number,
+the algorithm could stop at finding a breaking change. However,
+because we want to generate a changelog as well, we carry on looking
+for changes even though the version number itself is clear at this point.
 
 \section{User interface}
 
