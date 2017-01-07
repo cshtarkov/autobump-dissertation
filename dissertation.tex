@@ -38,7 +38,7 @@ framework would result in incompatibilities.
 Regardless of
 policy, assigning version numbers is typically done manually and
 leaves room for human mistakes or deviations from the established
-scheme. We propose the tool \textit{autobump} that automatically
+scheme. We propose the tool \textit{Autobump} that automatically
 inspects changes to a codebase and proposes the next version number
 according to semantic versioning. This reduces friction when releasing
 packages, and encourages more frequent, even fully automated,
@@ -441,9 +441,9 @@ aspect with a constructive one, we get the following list:
 \item Adding a parameter with a default value to a function signature.
 \end{itemize}
 
-\section{The \textit{autobump} tool}
+\section{The \textit{Autobump} tool}
 
-The goal of this project was to build \textit{autobump} -- a tool which
+The goal of this project was to build \textit{Autobump} -- a tool which
 given two revisions in a version controlled project reliably
 determines what the version of the later revision should
 be\footnote{In some contexts, ``version'' and ``revision'' may be
@@ -457,7 +457,7 @@ applications. It is with those types of projects that semantic
 versioning is most practical.
 
 Because identifying the version delta requires first identifying a
-list of changes to the public API, a secondary function of autobump is
+list of changes to the public API, a secondary function of Autobump is
 the generation of a changelog in preparation for a release.
 
 Autobump can be part of a manual or automated workflow of bumping the
@@ -951,7 +951,7 @@ is not necessary.
 
 \section{Building}
 
-As it is written in Python, autobump does not have a build step. The
+As it is written in Python, Autobump does not have a build step. The
 \texttt{Makefile} found in the repository has the following targets:
 
 \begin{itemize}
