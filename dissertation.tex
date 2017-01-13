@@ -724,6 +724,7 @@ discuss how the three languages determine compatibility of types.
 
 \subsubsection{Python}
 
+% TODO: What is Python?
 The Python handler uses the AST. It takes advantage of
 Python's ``batteries included'' approach which bundles all sorts of
 useful libraries along with the core Python distribution, and that
@@ -733,6 +734,8 @@ resulting tree to produce the appropriate CAPIR structures for each node.
 
 % TODO: Nominal vs structural
 % TODO: Example?
+
+% TODO: type hinting
 
 Early iterations of the Python handler used introspection. It used to
 import source files dynamically, which causes them to be compiled and
@@ -826,7 +829,7 @@ In this case, because \texttt{method2} is no longer expected in
 Variant B, $S_a \supset S_b$ and we safely claim that there is no
 breaking change.
 
-Depending on whether the configuration option \texttt{Python/Use
+Depending on whether the configuration option \texttt{Python/
 Structural Typing} is set, Autobump can examine the use of a parameter
 inside a function and determine those two sets. Afterwards, it takes
 the pessimistic view that unless $S_a \supseteq S_b$ there was
@@ -840,8 +843,43 @@ never considers the types of entities and assumes them to be compatible.
 \subsubsection{Java}
 \label{JavaHandlers}
 
+% TODO: What is Java?
+Java is a compiled, statically-typed language which makes it very
+different from Python. Nevertheless, the two approaches -- AST
+and introspection -- are still reasonable options for transforming a
+Java source tree into CAPIR. Java is the only language supported by
+Autobump that actually has two separate handlers.
+
+\texttt{\detokenize{java_ast}} values speed over corectness. It is a
+quick-and-dirty handler that visits all Java source files in the
+repository and generates their ASTs via the third-party package
+\texttt{javalang}\cite{javalang}. Transforming the AST into CAPIR is
+not quite as straightforward as it is in Python, because Java is
+statically typed.
+
+Consider this trivial example:
+
+\lstset{language=Java}
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{Variant A}}:\\
+\begin{lstlisting}
+public void method(A arg) { ... }
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{Variant B}}:\\
+\begin{lstlisting}
+public void method(B arg) { ... }
+\end{lstlisting}
+\end{minipage}
+
+Whether or not there was a breaking change in this case depends on
+several things:
+% TODO: package, imports, relationship between the two classes
+
 \subsubsection{Clojure}
 
+% TODO: What is Clojure?
 The Clojure handler takes advantage of the language's
 homoiconicity. That is, programs in the language are represented using
 the language's own data structures. Being a Lisp variant, Clojure
