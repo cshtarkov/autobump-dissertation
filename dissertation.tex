@@ -689,6 +689,9 @@ handler for a dynamically typed, interpreted language like Python
 would make it easier to write one for a similar language, like Ruby,
 in the future.
 
+% TODO: Table of handlers, build required, so on
+% TODO: what language are the handlers in?
+
 \subsubsection{Transforming source code into CAPIR}
 
 Each language handler, as part of its implementation, essentially has
@@ -850,12 +853,12 @@ and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
 Autobump that actually has two separate handlers.
 
-\texttt{\detokenize{java_ast}} values speed over corectness. It is a
-quick-and-dirty handler that visits all Java source files in the
-repository and generates their ASTs via the third-party package
-\texttt{javalang}\cite{javalang}. Transforming the AST into CAPIR is
-not quite as straightforward as it is in Python, because Java is
-statically typed.
+\texttt{\detokenize{java_ast}} is written entirely in Python and
+values speed over corectness. It is a quick-and-dirty handler that
+visits all Java source files in the repository and generates their
+ASTs via the third-party package \texttt{javalang}\cite{javalang}.
+Transforming the AST into CAPIR is not quite as straightforward as it
+is in Python, because Java is statically typed.
 
 Consider this trivial example:
 
@@ -873,9 +876,71 @@ public void method(B arg) { ... }
 \end{lstlisting}
 \end{minipage}
 
+Note that the only thing that has changed is type of the parameter.
 Whether or not there was a breaking change in this case depends on
-several things:
-% TODO: package, imports, relationship between the two classes
+two things.
+\begin{enumerate}
+\item What the relative names \texttt{A} and \texttt{B} get resolved
+to. This is controlled by a \texttt{package} statement at the top of
+the file and subsequent \texttt{import} statements. If the code
+compiles fine, and the names are not explicitly imported, then it is
+certain that they are from the same package as the source file. In the
+case of a wildcard import, i.e. something like \texttt{import
+org.apache.util.*}, there's no way to know whether the names are
+coming from the wildcard or the current package. The problem
+exacerbates when there are multiple wildcard imports. It would be
+impossible to fully qualify the type names without asking Java itself
+with introspection.
+\item The relationship between the two types. Java supports class
+inheritance and the conceptually similar implementation of interfaces.
+If \texttt{B} is more concrete than \texttt{A}, i.e. it is further
+down the inheritance tree, then there was definitely a breaking change
+-- client code still passing in objects of type \texttt{A} cannot
+implicitly cast to \texttt{B}. If \texttt{B} is more abstract, then
+the parameter itself was generalised and client code will still work
+fine passing in more concrete variants. While the AST of the relevant
+classes can be inspected to see where they derive from or which
+interfaces they implement, if the types are found in third-party code
+or the AST is absent for whatever reason, it is again impossible to
+decide whether there was a breaking change without using introspection.
+\end{enumerate}
+
+\texttt{\detokenize{java_ast}}, as it is constructing the ASTs of all source files,
+does its best to fully qualify type names based on the surrounding
+statements and keeps track of the inheritance tree for the project. It
+has obvious shortcomings in that it simply misses cases that can be
+determined only by introspection. The optional configuration option
+\texttt{Java/Error On External Types} forces the handler to give up
+when the AST of a source file is needed, but not present in the project.
+
+The alternative is \texttt{\detokenize{java_native}}. It consists of two utilities
+written in Java, along with some Python middleware that interacts with
+the rest of Autobump. It relies solely on introspection of the
+\texttt{.class} files generated after a full compilation of the
+project. One tool, the \texttt{Inspector}, loads a list of class files
+and then prints to standard out an XML representation of all classes,
+including fields, methods, inner classes and so on. This is invoked
+once, immediately after compilation. The Python middleware then
+converts this XML representation into a list of CAPIR units, which is
+trivial.
+
+Type comparison is handled through another tool --
+\texttt{TypeCompatiblityChecker}. Given two types, it simply prints
+whether or not the first one is compatible with the second one. This
+again works by loading the relevant class files and simply asking Java
+itself. CAPIR types set by the Python middleware will automatically
+invoke this utility when \texttt{\detokenize{is_compatible}} is called
+later on in the comparison.
+
+The native handler produces much more accurate results, but is also
+much slower -- it necessitates compiling the project, twice. There's
+value in using the AST handler for self-contained libraries where it
+would give identical results to the native one. Alternatively, if all
+we are interested in is the new version number and not the changelog,
+running the AST handler once can be a shortcut. If it reports a major
+bump, then there's no reason to run the native one. After all, the AST
+handler can detect a subset of changes compared to the native one. If
+not, then \texttt{\detokenize{java_native}} can be run to make sure.
 
 \subsubsection{Clojure}
 
