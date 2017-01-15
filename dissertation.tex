@@ -9,6 +9,7 @@
 \usepackage{url}
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
+\usepackage{fancyvrb}
 \usepackage{listings}
 \lstset{language=Python}
 \def\UrlBreaks{\do\/\do-}
@@ -330,6 +331,7 @@ a tool, but an experiment, and is tied to the .NET ecosystem.
 
 \subsection{SpiseMesu.SemanticVersioning}
 
+% TODO: This should be called requirements
 \chapter{Determining next semantic version through code analysis}
 
 In this chapter, we discuss the approach that the tool developed for
@@ -856,7 +858,7 @@ Autobump that actually has two separate handlers.
 \texttt{\detokenize{java_ast}} is written entirely in Python and
 values speed over corectness. It is a quick-and-dirty handler that
 visits all Java source files in the repository and generates their
-ASTs via the third-party package \texttt{javalang}\cite{javalang}.
+ASTs via the third-party package \texttt{javalang}\cite{Javalang}.
 Transforming the AST into CAPIR is not quite as straightforward as it
 is in Python, because Java is statically typed.
 
@@ -1022,12 +1024,137 @@ for changes even though the version number itself is clear at this point.
 
 In this chapter, we look at how we demonstrate that Autobump indeed
 works and what testing techniques were used throughout development.
+Testing is central to Autobump's development and was done from very
+early on.
 
 \section{Unit testing}
 
+Non-trivial modules from the implementation, namely the comparison
+logic and the language handlers, are tested in isolation by using
+Python's built-in \texttt{unittest} framework. This has been very
+useful for identifying edge cases where the modules don't quite do the
+correct thing. Also, adding new features to the language handlers has
+proven to be very error-prone, so having the unit tests in place
+serves well for identifying regressions.
+
+All tests treat the module they're testing as a black box. This is
+very easy to do, because virtually all modules have a single
+entrypoint that abstracts all implementation detail. Different inputs
+are given to that function and then the results are compared against
+the expected ones.
+
+\subsection{Comparison logic}
+
+% TODO: What about VCS handlers?
+\subsection{Language handlers}
+
+The entrypoint of every language handler is the function
+\texttt{\detokenize{codebase_to_units}} that has a single input parameter, the
+location of that codebase on disk. Typically that directory would be
+produced by Autobump in advance of calling the handler by cloning and
+checking out some revision of a repository.
+% TODO: What if it's not Git?
+
+To test this function, we need to mock the presense of a directory
+containing some fixture instead of an actual repository. This is best
+done with Python's built-in \texttt{tempfile} module which can create
+temporary files and directories, not necessarily physically on the
+disk. The fixtures are found in the tests themselves and are written
+to temporary files as part of the set up process. By holding onto the
+handle obtained by calling functions from \texttt{tempfile} , we can
+ensure that everything is cleaned up during the tear down phase of
+testing.
+
+A fixture consists of a list of tuples, each tuple representing the
+path to a file and its content. A minimal Clojure fixture looks like
+this:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}
+sources = [
+    ("lib/core.clj",
+    """
+    (ns lib.core)
+    (def constant 1)
+    """)
+]
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+Having the fixture actually present in the filesystem is necessary
+because the handlers rely on external utilities, which need to load
+and parse those files. The notable exception is the Python handler,
+which is the only one written entirely in Python. For that reason we
+can take a shortcut when writing tests for it. Instead of calling the
+entrypoint \texttt{\detokenize{codebase_to_units}} which scans a location for
+relevant files and only then converts them to CAPIR units, we can
+directly call \texttt{\detokenize{_source_to_unit}} which is an
+implementation-specific function found only in the Python handler.
+It takes in Python source code as a string and returns a unit. Even
+though this is technically white box testing, we still treat this
+function as if it were the entrypoint to the module. This has two
+advantages: it greatly speeds up the tests because there's no need
+to create temporary files and directories, and it simplifies the
+fixtures -- they can be the source code of a single file with no metadata.
+
 \section{Acceptance testing}
 
-% TODO: Representation of a Git repository in a text form.
+Even if the unit tests all pass and reasonably cover edge cases for
+the individial modules, Autobump itself can still misbehave and
+produce wrong results when used in practice. Early on in the project,
+Autobump was tested against some real-life and some specially
+constructed repositories manually. This was horribly inefficient and
+error-prone. For that reason it was crucial to develop acceptance, or
+end-to-end, tests that can quickly show that Autobump works correctly
+when applied to a full-blown repository.
+
+We can consider the entirety of Autobump as a single entity, with the
+input being a repository\footnote{There are of course additional
+inputs, like what handler to use or which revision to compare.
+However, those are trivial to mock.} and the output the proposed
+version number. Having a repository as an input is non-trivial.
+
+Three approaches were considered:
+\begin{enumerate}
+\item Maintain a Git \textit{submodule}, a kind of nested repository,
+inside Autobump's own repository. The submodule would contain the
+history of a mock project that changes its API over time. Specific
+commits would be tagged with version numbers, representing the version
+number that Autobump is expected to produce when comparing that
+revision to the previously tagged one. This approach was quickly
+ruled, because it makes editing the progression of the project
+unnecessarily difficult.
+% TODO: Why?
+\item Reconstruct a Git repository containing the history of a project
+by using an acceptance test framework like \textit{Robot
+Framework}\cite{Robot}. Frameworks like these generally let you
+specify pre and postconditions either in freeform or
+\textit{given-when-then} form, so an example test may look something
+like this:
+
+\begin{center}
+\begin{BVerbatim}
+Given a public method in a class
+When the method is removed
+Then version bump should be major
+\end{BVerbatim}
+\end{center}
+
+This would have produced very clear and easy to read tests, at the
+expense of having to spend much development time translating
+instructions like these into an actual repository that can be fed into Autobump.
+\item Reconstruct a Git repository from a series of patches kept in
+text form as part of test itself. Every patch would have metadata that
+indicates the expected version of the project at that commit. This is
+the option that Autobump uses, as it achieves a convenient
+middleground between the other two: it allows for the history of the
+project to be edited relatively easily, and it has much smaller
+boilerplate needs. The only accompanying code is one that creates a
+Git repository in a temporary directory from that series of patches.
+% TODO: accompanying code
+\end{enumerate}
 
 \chapter{Evaluation}
 
@@ -1065,6 +1192,11 @@ specified as \texttt{LINTER}) against all source code.
 \end{itemize}
 
 \section{Usage}
+
+\chapter{Project structure}
+% TODO: fill in
+
+\chapter{Representative source code listings}
 
 \end{appendices}
 
