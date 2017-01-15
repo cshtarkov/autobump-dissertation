@@ -491,14 +491,11 @@ When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
 separate module, with dependencies (via \texttt{import}) reduced to a minimum.
 
-\begin{minipage}{0.5\textwidth}
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\linewidth]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
 In normal operation, the top-level program generally performs the
 following steps:
 
@@ -507,13 +504,18 @@ following steps:
 appropriate handler.
 \item Identify which two revisions should be compared -- either from
 command-line arguments or through an educated guess.
-\item Run the comparison logic on the two revisions. This involves
-converting the APIs of both into a common\footnote{Common between
-different source languages, not the two representations.} representation via
-the appropriate language handler. This may necessitate a ``build'' step.
-\item Calculate the new version number by bumping the old one.
+\item Invoke a language handler a total of two times for both
+revisions to construct common\footnote{Common between different
+source languages, not the two representations.} representations of the
+codebase out of the public APIs. If the language handler needs
+introspection, this may require building the two revisions of the project.
+\item Run the core comparison logic on both representations to find
+out how the public API has changed in the later one compared to the
+earlier one. This step can generate a changelog and will identify what
+the version bump should be.
+\item Output the new version number by applying the bump to the old
+one. At this point, a changelog may be output as well if requested.
 \end{enumerate}
-\end{minipage}
 
 \subsection{Common representation for APIs}
 
