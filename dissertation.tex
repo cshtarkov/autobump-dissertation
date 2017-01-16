@@ -55,11 +55,13 @@ releases.
 \pagenumbering{arabic}
 
 In this chapter, we discuss the background of software versioning and
-more specifically, semantic versioning of software. Then, we move to
-discuss existing tools that help automate the assignment of semantic
-version numbers.
+more specifically, semantic versioning of software. We also briefly
+statement our overall aim for this project and outline the rest of the
+document.
 
-\section{Software versioning}
+\section{Background}
+
+\subsection{Software versioning}
 Software versioning is the practice of assigning nominal or numerical
 identifiers to subsequent iterations of a software package. Every
 variant of a piece of software is expected to have a different
@@ -81,26 +83,27 @@ between divergent branches of the same initial piece of code.
 
 On a macro scale, releases of software packages are also versioned.
 Because releases happen much less often than small changes, versions
-also change much less often and follow different policies.
-The de facto standard are sequence-based schemes where each
-version identifier is a tuple consisting of numbers or letters
-separated by dots -- e.g. \textit{1.3.2} or \textit{10.6-rc1}. The
-vast majority of computer software follows a scheme of this type. It
-is usually implied that the further to the left an element of the
-tuple is, the more significant it is. What ``significant'' means is
-not well-defined and depends on the kind of software that is being
-versioned. Comparing versions \textit{5.0} and \textit{6.0} of a Web
-browser may imply that the latter has new features, whereas comparing
+also change much less often and follow different policies. The de
+facto standard are sequence-based schemes where each version
+identifier is a tuple consisting of numbers or letters separated by
+dots -- e.g. \textit{1.3.2} or \textit{10.6-rc1}. The vast majority of
+computer software follows a scheme of this type. It is usually implied
+that the further to the left an element of the tuple is, the more
+significant it is. What ``significant'' means is not well-defined and
+depends on the kind of software that is being versioned. Comparing
+versions \textit{5.0} and \textit{6.0} of a Web browser may imply that
+the latter is more advanced and has new features, whereas comparing
 the same versions of a library may imply that client code using the
 former is incompatible with the latter. In general, incrementing
 versions in this format follows these rules:
 \begin{enumerate}[(i)]
 \item Incrementing any non-final element ``resets'' all elements to
-the right, i.e. \textit{3.5.4} $\rightarrow$ \textit{3.6.0}.
+the right, i.e. bumping the middle element of \textit{3.5.4} results
+in \textit{3.6.0}.
 \item Incrementing a version which has a label attached at the end
-means to either change the label or drop it, i.e. \textit{3.5.4-beta}
-$\rightarrow$ \textit{3.5.4} or \textit{3.5.4-rc1} $\rightarrow
-$ \textit{3.5.4-rc2}.
+necessitates either changing the label or droping it, i.e.
+\textit{3.5.4-beta} $\rightarrow$ \textit{3.5.4} or \textit{3.5.4-rc1}
+$\rightarrow $ \textit{3.5.4-rc2}.
 \end{enumerate}
 
 Note that software can be versioned by more than one scheme -- it is a
@@ -113,7 +116,7 @@ which was released in April of 2014 happens to use both. Those
 typically serve a marketing purpose rather than provide any technical
 benefit.
 
-\section{Semantic versioning}
+\subsection{Semantic versioning}
 
 In software development, it is a widespread practice to leverage
 pre-existing code in the form of libraries or
@@ -128,9 +131,9 @@ a different version of the same library. A common solution is to take
 a sequence-based scheme and attach meaning to the positions in order
 to measure degree of compatibility.
 
-Semantic versioning\cite{SemanticVersioning} is a strict formalization of such a
-scheme, where the format and significance of each position are
-well-defined:
+Semantic versioning\cite{SemanticVersioning} (Semver) is a strict
+formalization of such a scheme, where the format and significance of
+each position are well-defined:
 
 \begin{center}
 $\mathrm{Major.Minor.Patch}(-\mathrm{Prerelease})^?(+\mathrm{Build})^?$
@@ -138,8 +141,8 @@ $\mathrm{Major.Minor.Patch}(-\mathrm{Prerelease})^?(+\mathrm{Build})^?$
 
 \begin{itemize}
 \item \textit{Major} increments when incompatible changes to the
-public API have been and it is possible for interfacing software to no
-longer work.
+public API have been made and it is possible for interfacing software
+to no longer work.
 \item \textit{Minor} increments when new features have been added in a
 backwards-compatible manner.
 \item \textit{Patch} increments when bugs have been fixed in a
@@ -152,7 +155,7 @@ corresponding internal version numbers, e.g. the one used by the
 revision control system.
 \end{itemize}
 
-\subsection{Benefits}
+\subsubsection{Benefits}
 
 Semver is especially useful for software meant for use by other
 software, such as libraries and frameworks. When a new version of a
@@ -170,7 +173,7 @@ This scheme also helps with automatic dependency management systems,
 like ones found in package managers. A developer can specify that
 their application relies on version \textit{2.4} of a particular
 library. Semver guarantees that versions of the form \textit{(2.x | x
-> 4)} will contain all features found in \textit{2.4} and be
+\geq 4)} will contain all features found in \textit{2.4} and be
 backwards-compatible. If later on \textit{2.4.1} or \textit{2.5} come
 along, the library can be automatically upgraded without breaking the
 application, with the added benefit of fixing bugs.
@@ -180,19 +183,19 @@ alleviation of dependency hell through unambiguous identification of
 breaking changes. The major version number is increased if and only if
 backwards compatibility is deprecated.
 
-\subsection{Application}
+\subsubsection{Application}
 
 Semver only provides these benefits when it is applied consistently.
 If applied haphazardly, then two versions cannot be compared
 reliably and decisions made by simply examining version numbers are
 risky. A good example of that is the programming language PHP.
 Although minor releases are usually meant for feature additions, it
-can happen that they contain breaking changes along with the new
-features. One the many examples are the changes introduced in PHP 5.3
+can happen that they contain breaking changes along with that.
+One the many examples are the changes introduced in PHP 5.3
 compared to PHP 5.2\cite{PHPChangelog} where the signature of an array
 of functions changed -- constituting a breaking change. The PHP
 changelogs routinely document what backwards-incompatible changes are
-in a release, but using the versioning scheme incosistently negates
+in a release, but using an inconsistent versioning scheme negates
 most benefits.
 
 In practice, semantic versioning is applied poorly. A
@@ -200,7 +203,7 @@ study\cite{SemverMaven} of more than 22,000 libraries in the Maven
 repository found that there was virtually no difference in the
 frequency of breaking changes in major and minor version increments.
 It also found that this has a significant impact on client
-applications, mostly by the introduction of compilation errors.
+applications, mostly by causing compilation errors.
 
 The study does not go into determining what the reasons are for these
 inconsistencies, but some possibilities are:
@@ -210,21 +213,45 @@ for a similar, yet not identical, scheme.
 \item Semver is very strict about what's considered a breaking change.
 This is great for robots, but not so much for humans. Small changes to
 the API may not be considered ``major'' by the developers even if they
-are technically breaking.
+are technically breaking. Developers who introduce breaking changes
+frequently into their code may be reluctant to bump the major version
+number, as it would skyrocket. This in itself is not necessarily a
+problem, but it's important to realise that this will happen not
+because of the versioning scheme, but because of that development
+methodology.
 \item Misinterpretation of Semver about what constitutes a breaking
 change. Some developers may be inclined to believe that an API change
 that affects none of their users (to their knowledge) is not breaking.
 \end{itemize}
 
-One possible solution to this problem, which we propose in this
-project, is to attempt to automate the assignment of version numbers.
+\section{Aim}
 
-\section{Tools for automatically assigning semantic version numbers}
+We have identified the reluctance or inconsisteny of applying a strict
+versioning scheme like Semver as a problem in software engineering
+that costs development time and disallows automated systems like
+package managers from making decisions about software upgrades.
+
+In this project we evaluate the automated assignment of version
+numbers as a possible solution. Our goal is to develop a tool that
+given a previous iteration of a project and its version, can
+automatically propose the version of the current iteration.
+
+\section{Outline}
+
+The rest of this dissertation is comprised of the following chapters:
+
+% TODO: chapters go here
+
+\chapter{Previous work}
 
 Automatically assigning version numbers is not a new idea and projects
-exist that already do that to some extent.
+exist that already do that to some extent. In this chapter we discuss
+existing tools that claim to do that. We also examine the various
+ways they approach it, why they are not as successful as we would
+expect and draw ideas for how we may go about implementing our own tool.
+% TODO: do we discuss why they aren't successful?
 
-\subsection{semantic-release}
+\section{semantic-release}
 
 \textit{semantic-release}\cite{SemanticRelease} is a Javascript tool
 for ``fully automated package publishing''. It can do a range of
@@ -267,7 +294,7 @@ unit tests, or they cover a very small portion of the public API, yet
 the authors still want to use semantic versioning.
 \end{itemize}
 
-\subsection{GitVersion}
+\section{GitVersion}
 
 \textit{GitVersion}\cite{GitVersion} ``looks at your Git history and
 works out the semantic version of the commit being built''.  By
@@ -313,7 +340,7 @@ particular naming scheme. The latter one is somewhat alleviated in
 this case, as the workflow GitVersion expects is highly
 configurable\cite{GitVersionConfiguration}.
 
-\subsection{Endjin.Assembly.ChangeDetection}
+\section{Endjin.Assembly.ChangeDetection}
 
 \textit{Endjin.Assembly.ChangeDetection}\cite{Endjin} is a
 proof-of-concept project that takes a very different and less
@@ -327,24 +354,29 @@ the code and imposes no additonal requirements on contributors to
 the repository. However, Endjin.Assembly.ChangeDetection is not really
 a tool, but an experiment, and is tied to the .NET ecosystem.
 
-\subsection{elm-package}
+\section{elm-package}
 
-\subsection{SpiseMesu.SemanticVersioning}
+\section{SpiseMesu.SemanticVersioning}
 
 % TODO: This should be called requirements
-\chapter{Determining next semantic version through code analysis}
 
-In this chapter, we discuss the approach that the tool developed for
-this project, Autobump, uses to determine semantic version numbers.
+\chapter{Requirements}
 
-Much like Endjin.Assembly.ChangeDetection, the tool we propose tries
-to look at how the code itself has changed to estimate what the next
-version should be. This requires no manual intervention from the user,
-no special naming schemes, and is as reliable as it can get.
+In this chapter we formalise the approach that the tool for this
+project, Autobump, should use to propose version numbers, and
+formulate the set of features that should be expected. We also briefly
+discuss some non-functional requirements.
+
+\section{Determining next semantic version through code analysis}
+
+Much like Endjin.Assembly.ChangeDetection, Autobump to look at how the
+code itself has changed to estimate what the next version should be.
+This requires no manual intervention from the user, no special naming
+schemes, and is as reliable as this kind of software can be.
 
 % TODO: Determining vs Estimation?
 
-\section{Breaking changes}
+\subsection{Breaking changes}
 \label{BreakingChanges}
 
 For the definition of breaking change to be useful, it ought to be
@@ -427,7 +459,7 @@ compatibility.}. For this project, we examined the radically
 different languages Python, Java and Clojure\ref{LanguageHandlers} and
 the assumptions were found to be reasonable.
 
-\section{Feature additions}
+\subsection{Feature additions}
 
 Semver defines feature additions as backwards-compatible changes to
 the API. This means that changes which colloquially may be thought of
@@ -443,24 +475,26 @@ aspect with a constructive one, we get the following list:
 \item Adding a parameter with a default value to a function signature.
 \end{itemize}
 
-\section{The \textit{Autobump} tool}
+\section{Feature set and usage}
 
-The goal of this project was to build \textit{Autobump} -- a tool which
-given two revisions in a version controlled project reliably
-determines what the version of the later revision should
-be\footnote{In some contexts, ``version'' and ``revision'' may be
-identical. In this dissertation, we refer to the semantic version of a
-release as ``version'', and the commit identifier in a VCS as ``revision''}.
+% TODO: check tense usage
 
-Although technically Autobump can be used with any project, it is
-mainly aimed at libraries, frameworks and otherwise projects whose
-main usefulness comes from the ability to be integrated in client
-applications. It is with those types of projects that semantic
-versioning is most practical.
+Autobump ought to be a a tool which given two revisions in a version
+controlled project reliably determines what the version of the later
+revision should be\footnote{In some contexts, ``version'' and
+``revision'' may be identical. In this dissertation, we refer to the
+semantic version of a release as ``version'', and the commit
+identifier in a VCS as ``revision''}.
+
+Although technically Autobump could be used with any project, we are
+going to be focused at libraries, frameworks and otherwise projects
+whose main usefulness comes from the ability to be integrated in
+client applications by exposing an API. It is with those types of
+projects that semantic versioning is most practical.
 
 Because identifying the version delta requires first identifying a
-list of changes to the public API, a secondary function of Autobump is
-the generation of a changelog in preparation for a release.
+list of changes to the public API, a secondary function of Autobump
+can be the generation of a changelog in preparation for a release.
 
 Autobump can be part of a manual or automated workflow of bumping the
 version number with every release, generating a changelog, or both. It
@@ -470,10 +504,14 @@ system. Another possibility is using it standalone as a sanity check.
 Developers can run it to find out if they have unintentionally broken
 backwards compatibility with a recent commit.
 
-Autobump, while its core is written in Python, is modular in
-nature (\ref{Architecture}) and supports different
-languages (\ref{LanguageHandlers}) and version control
-systems (\ref{VCSHandlers}).
+If we rely on code analysis to find differences between iterations,
+then it may seem necessary that Autobump itself is written in the same
+language that we are trying to analyze. This is not necessarily so; we
+propose an approach which none of the preexisting tools take --
+program the tool itself and the comparison logic in a convenient
+middleware language (for this project we use Python) and have handlers
+for different languages as seperate modules.
+% TODO: spellcheck
 
 \chapter{Implementation}
 
@@ -496,28 +534,36 @@ separate module, with dependencies (via \texttt{import}) reduced to a minimum.
 \includegraphics[width=\linewidth]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
-In normal operation, the top-level program generally performs the
+In normal operation, the top-level program performs the
 following steps:
 
 \begin{enumerate}
 \item Identify which VCS the repository is using and select the
 appropriate handler.
+% TODO: drop vcs handlers?
 \item Identify which two revisions should be compared -- either from
-command-line arguments or through an educated guess.
+command-line arguments or through an educated guess. An educated guess
+consists of comparing the last tagged release of the project with the
+latest commit. The version number of the previous release is
+determined from the name of tag.
 \item Invoke a language handler a total of two times for both
 revisions to construct common\footnote{Common between different
 source languages, not the two representations.} representations of the
 codebase out of the public APIs. If the language handler needs
 introspection, this may require building the two revisions of the project.
+The nature of this common representation is discussed in \ref{CAPIR}
+and the exact mechanism that language handlers use for the conversion
+in \ref{LanguageHandlers}.
 \item Run the core comparison logic on both representations to find
 out how the public API has changed in the later one compared to the
 earlier one. This step can generate a changelog and will identify what
-the version bump should be.
+the version bump should be. This is discussed in \ref{Logic}.
 \item Output the new version number by applying the bump to the old
 one. At this point, a changelog may be output as well if requested.
 \end{enumerate}
 
 \subsection{Common representation for APIs}
+\label{CAPIR}
 
 Before proceeding with the issue of representing APIs, it is important
 to note that for the purposes of this project we are not interested in
