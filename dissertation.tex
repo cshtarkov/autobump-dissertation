@@ -880,7 +880,11 @@ def func(obj):
 
 In this case, because \texttt{method2} is no longer expected in
 Variant B, $S_a \supset S_b$ and we safely claim that there is no
-breaking change.
+breaking change. If it were the other way around, i.e. Variant A came
+after Variant B, then that is not guaranteed. Client code previously
+passing in objects that implement \texttt{method1} was not obliged to
+have them implement \texttt{method2} as well, so it may break once the
+new revision of the library starts needing it.
 
 Depending on whether the configuration option \texttt{Python/
 Structural Typing} is set, Autobump can examine the use of a parameter
