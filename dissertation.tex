@@ -607,7 +607,7 @@ the different target languages.
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
-separate module, with dependencies (via \texttt{import}) reduced to a minimum.
+separate module, with dependencies (via \pythoninline{import}) reduced to a minimum.
 
 \begin{figure}
 \centering
@@ -652,10 +652,11 @@ influence external applications that depend on the packages in question.
 We are interested only in the public APIs which are meant for external
 use, as changing these indicates an incrementation of the semantic version.
 
+% TODO: public only in java
 Most general-purpose languages provide ways to restrict visibility of
 entities in the source code (such as classes, functions and so on).
 Technically all externally visible entities, usually indicated with the keyword
-\texttt{public}, are accessible from client applications. In practice,
+\javainline{public}, are accessible from client applications. In practice,
 however, it may be that not all of these form the intended, official
 and documented public API. Faced with this problem, Autobump takes the
 safer approach and only considers visibility when determining whether
@@ -702,7 +703,8 @@ sake of brevity.
 \textbf{Entity} is a base class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
 implement equality comparison to other entities (via
-\texttt{\detokenize{__eq__}} and \texttt{\detokenize{__ne__}}).
+\pythoninline{__eq__} and \pythoninline{__ne__}).
+% TODO: what are eq and ne?
 
 \textbf{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
@@ -741,8 +743,8 @@ in allowing the comparison logic to be recursively defined later
 (\ref{Logic}).
 
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{moduleA.py}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{moduleA.py}}\\
+\begin{python}
 def accept_foo_bar(foo, bar):
     pass
 
@@ -751,18 +753,18 @@ class ThingDoer(object):
 
     def do_thing():
         pass
-\end{lstlisting}
+\end{python}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{moduleB.py}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{moduleB.py}}\\
+\begin{python}
 class Discombobulator(object):
     def discombobulate(thingimajig):
         raise self.Discombobulated()
 
     class Discombobulated(Exception):
         pass
-\end{lstlisting}
+\end{python}
 \end{minipage}
 
 \begin{figure}[H]
@@ -781,13 +783,12 @@ modules that expose a single function to the rest of the program:
 
 \begin{center}
 \begin{tabular}{c}
-\begin{lstlisting}
+\begin{python}
 def codebase_to_units(location):
     ...
-\end{lstlisting}
+\end{python}
 \end{tabular}
 \end{center}
-
 
 This function takes in a location on disk where some version of a
 repository is checked out, and returns a list of units that represent
@@ -798,7 +799,7 @@ Generally, all current implementations of that function follow a
 similar pattern in how they work:
 
 \begin{enumerate}
-\item Recursively walk the file system tree at \texttt{location} and
+\item Recursively walk the file system tree at \pythoninline{location} and
 filter file names of interest with some regular expression -- e.g.
 only \texttt{.py} files are considered, but not if they begin with \texttt{test-}.
 \item For every file of interest, convert it to a CAPIR unit in some
@@ -878,7 +879,7 @@ several problems. It's not guaranteed that Autobump runs in the same
 environment as the library, so missing dependencies would halt the
 whole process. But probably the biggest problem is that this approach
 essentially evaluates the code it comes across -- after all, in order
-to perform introspection on a function for example, a \texttt{def} has
+to perform introspection on a function for example, a \pythoninline{def} has
 to be evaluated first. If there is top-level code that has side
 effects it will get executed along with the function definitions.
 
@@ -899,18 +900,18 @@ Consider the following trivial example:
 
 \begin{center}
 \begin{tabular}{c}
-\begin{lstlisting}
+\begin{python}
 def operate(obj):
     obj.operation()
-\end{lstlisting}
+\end{python}
 \end{tabular}
 \end{center}
 
-The contract that Python enforces is that \texttt{obj} has an
-implementation of the method \texttt{operation}. It makes no
-difference what the type of \texttt{obj} is -- the program will not
-fail as long as the parameter passed into \texttt{operate} implements
-\texttt{operation}.
+The contract that Python enforces is that \pythoninline{obj} has an
+implementation of the method \pythoninline{operation}. It makes no
+difference what the type of \pythoninline{obj} is -- the program will not
+fail as long as the parameter passed into \pythoninline{operate} implements
+\pythoninline{operation}.
 
 If the only thing that matters are the accessed properties and methods
 of an object to determine whether the program fails or not, this makes
@@ -943,27 +944,27 @@ being neither super nor subsets of one another.
 Consider the following example:
 
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant A}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{Variant A}}\\
+\begin{python}
 def func(obj):
     obj.method1()
     obj.method2()
-\end{lstlisting}
+\end{python}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant B}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{Variant B}}\\
+\begin{python}
 def func(obj):
     obj.method1()
-\end{lstlisting}
+\end{python}
 \end{minipage}
 
-In this case, because \texttt{method2} is no longer expected in
+In this case, because \pythoninline{method2} is no longer expected in
 Variant B, $S_a \supset S_b$ and we safely claim that there is no
 breaking change. If it were the other way around, i.e. Variant A came
 after Variant B, then that is not guaranteed. Client code previously
-passing in objects that implement \texttt{method1} was not obliged to
-have them implement \texttt{method2} as well, so it may break once the
+passing in objects that implement \pythoninline{method1} was not obliged to
+have them implement \pythoninline{method2} as well, so it may break once the
 new revision of the library starts needing it.
 
 Depending on whether the configuration option \texttt{Python/
@@ -998,28 +999,28 @@ Consider this trivial example:
 
 \lstset{language=Java}
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant A}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{Variant A}}\\
+\begin{java}
 public void method(A arg) { ... }
-\end{lstlisting}
+\end{java}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant B}}:\\
-\begin{lstlisting}
+\noindent\textbf{\textit{Variant B}}\\
+\begin{java}
 public void method(B arg) { ... }
-\end{lstlisting}
+\end{java}
 \end{minipage}
 
 Note that the only thing that has changed is type of the parameter.
 Whether or not there was a breaking change in this case depends on
 two things.
 \begin{enumerate}
-\item What the relative names \texttt{A} and \texttt{B} get resolved
-to. This is controlled by a \texttt{package} statement at the top of
-the file and subsequent \texttt{import} statements. If the code
+\item What the relative names \javainline{A} and \javainline{B} get resolved
+to. This is controlled by a \javainline{package} statement at the top of
+the file and subsequent \javainline{import} statements. If the code
 compiles fine, and the names are not explicitly imported, then it is
 certain that they are from the same package as the source file. In the
-case of a wildcard import, i.e. something like \texttt{import
+case of a wildcard import, i.e. something like \javainline{import
 org.apache.util.*}, there's no way to know whether the names are
 coming from the wildcard or the current package. The problem
 exacerbates when there are multiple wildcard imports. It would be
@@ -1063,7 +1064,7 @@ Type comparison is handled through another tool --
 whether or not the first one is compatible with the second one. This
 again works by loading the relevant class files and simply asking Java
 itself. CAPIR types set by the Python middleware will automatically
-invoke this utility when \texttt{\detokenize{is_compatible}} is called
+invoke this utility when \pythoninline{is_compatible} is called
 later on in the comparison.
 
 The native handler produces much more accurate results, but is also
@@ -1164,7 +1165,7 @@ early on.
 
 Non-trivial modules from the implementation, namely the comparison
 logic and the language handlers, are tested in isolation by using
-Python's built-in \texttt{unittest} framework. This has been very
+Python's built-in \pythoninline{unittest} framework. This has been very
 useful for identifying edge cases where the modules don't quite do the
 correct thing. Also, adding new features to the language handlers has
 proven to be very error-prone, so having the unit tests in place
@@ -1182,7 +1183,7 @@ the expected ones.
 \subsection{Language handlers}
 
 The entrypoint of every language handler is the function
-\texttt{\detokenize{codebase_to_units}} that has a single input parameter, the
+\pythoninline{codebase_to_units} that has a single input parameter, the
 location of that codebase on disk. Typically that directory would be
 produced by Autobump in advance of calling the handler by cloning and
 checking out some revision of a repository.
@@ -1190,7 +1191,7 @@ checking out some revision of a repository.
 
 To test this function, we need to mock the presense of a directory
 containing some fixture instead of an actual repository. This is best
-done with Python's built-in \texttt{tempfile} module which can create
+done with Python's built-in \pythoninline{tempfile} module which can create
 temporary files and directories, not necessarily physically on the
 disk. The fixtures are found in the tests themselves and are written
 to temporary files as part of the set up process. By holding onto the
@@ -1204,7 +1205,7 @@ this:
 
 \begin{center}
 \begin{tabular}{c}
-\begin{lstlisting}
+\begin{python}
 sources = [
     ("lib/core.clj",
     """
@@ -1212,7 +1213,7 @@ sources = [
     (def constant 1)
     """)
 ]
-\end{lstlisting}
+\end{python}
 \end{tabular}
 \end{center}
 
@@ -1221,9 +1222,9 @@ because the handlers rely on external utilities, which need to load
 and parse those files. The notable exception is the Python handler,
 which is the only one written entirely in Python. For that reason we
 can take a shortcut when writing tests for it. Instead of calling the
-entrypoint \texttt{\detokenize{codebase_to_units}} which scans a location for
+entrypoint \pythoninline{codebase_to_units} which scans a location for
 relevant files and only then converts them to CAPIR units, we can
-directly call \texttt{\detokenize{_source_to_unit}} which is an
+directly call \pythoninline{_source_to_unit} which is an
 implementation-specific function found only in the Python handler.
 It takes in Python source code as a string and returns a unit. Even
 though this is technically white box testing, we still treat this
@@ -1267,6 +1268,7 @@ specify pre and postconditions either in freeform or
 \textit{given-when-then} form, so an example test may look something
 like this:
 
+% TODO: should this be verbatim?
 \begin{center}
 \begin{BVerbatim}
 Given a public method in a class
