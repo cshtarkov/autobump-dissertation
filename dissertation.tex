@@ -16,6 +16,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{float}
 
+% TODO: inconsistent british/american spelling
+
 \begin{document}
 \title{Automatically proposing next semantic version of a project by \\
 inspecting changes to the codebase}
@@ -236,13 +238,43 @@ numbers as a possible solution. Our goal is to develop a tool that
 given a previous iteration of a project and its version, can
 automatically propose the version of the current iteration.
 
+\clearpage
+% TODO: remove this if adding text above
 \section{Outline}
 
 The rest of this dissertation is comprised of the following chapters:
 
 % TODO: chapters go here
+\noindent Chapter \ref{PreviousWork} - \textbf{Previous work} \\
+Goes into existing projects that to some extent solve the problem
+of automatically assigning version numbers and the approaches that
+they use.
+
+\noindent Chapter \ref{Requirements} - \textbf{Requirements} \\
+Lays out the approach that Autobump is going to use for
+determining version numbers and the set of features that would make
+the tool useful.
+
+\noindent Chapter \ref{Implementation} - \textbf{Implementation} \\
+Discusses how Autobump works in great detail, both internally and
+in terms of being exposed to the end user.
+% TODO: rewrite?
+
+\noindent Chapter \ref{Testing} - \textbf{Testing} \\
+Goes into the techniques used to show that Autobump indeed works
+as advertised.
+
+\noindent Chapter \ref{Evaluation} - \textbf{Evaluation} \\
+Evaluates Autobump against real-world libraries written in
+supported languages. Discrepancies between the version that the tool
+proposes and one set manually by the developers are examined closely,
+to evaluate both the tool itself and the culture of that project or language.
+
+\noindent Chapter \ref{Conclusion} - \textbf{Conclusion} \\
+Summarizes what was accomplished by this project.
 
 \chapter{Previous work}
+\label{PreviousWork}
 
 Automatically assigning version numbers is not a new idea and projects
 exist that already do that to some extent. In this chapter we discuss
@@ -361,6 +393,7 @@ a tool, but an experiment, and is tied to the .NET ecosystem.
 % TODO: This should be called requirements
 
 \chapter{Requirements}
+\label{Requirements}
 
 In this chapter we formalise the approach that the tool for this
 project, Autobump, should use to propose version numbers, and
@@ -514,6 +547,7 @@ for different languages as seperate modules.
 % TODO: spellcheck
 
 \chapter{Implementation}
+\label{Implementation}
 
 In this chapter, we look at how Autobump works internally in terms of
 its architecture and how it exposes its functionality to the end
@@ -1073,6 +1107,7 @@ for changes even though the version number itself is clear at this point.
 \subsection{Integration with other development tools}
 
 \chapter{Testing}
+\label{Testing}
 
 In this chapter, we look at how we demonstrate that Autobump indeed
 works and what testing techniques were used throughout development.
@@ -1209,6 +1244,7 @@ Git repository in a temporary directory from that series of patches.
 \end{enumerate}
 
 \chapter{Evaluation}
+\label{Evaluation}
 
 In this chapter, we try to use Autobump with real-world libraries
 written in the different target languages. We look at whether Autobump
@@ -1222,6 +1258,7 @@ to the ones assigned manually by the developers and interpret our findings.
 % TODO: Evaluate with students in lab as well?
 
 \chapter{Conclusion}
+\label{Conclusion}
 
 \begin{appendices}
 
