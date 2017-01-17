@@ -10,11 +10,57 @@
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
 \usepackage{fancyvrb}
-\usepackage{listings}
-\lstset{language=Python}
 \def\UrlBreaks{\do\/\do-}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{float}
+
+% Source listings
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}  % for normal
+\definecolor{keyword}{HTML}{8C0D40}
+\definecolor{name}{HTML}{000F55}
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},
+keywordstyle=\ttb\color{keyword},
+emph={__init__,ThingDoer,accept_foo_bar,THING_QUOTA,do_thing,Discombobulator,discombobulate,
+Discombobulated,func},
+emphstyle=\ttb\color{name},
+stringstyle=\color{PineGreen},
+rulecolor=\color{gray},
+showstringspaces=false
+}}
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+\newcommand\javastyle{\lstset{
+language=Java,
+basicstyle=\ttm,
+otherkeywords={},
+keywordstyle=\ttb\color{keyword},
+emph={method},
+emphstyle=\ttb\color{name},
+stringstyle=\color{PineGreen},
+rulecolor=\color{gray},
+showstringspaces=false
+}}
+\lstnewenvironment{java}[1][]
+{
+\javastyle
+\lstset{#1}
+}
+{}
+\newcommand\javainline[1]{{\javastyle\lstinline!#1!}}
+
+% Body
 
 % TODO: inconsistent british/american spelling
 
