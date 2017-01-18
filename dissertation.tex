@@ -15,6 +15,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{float}
 
+\newcommand\textttd[1]{\texttt{\detokenize{#1}}}
 % Source listings
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
@@ -989,7 +990,7 @@ and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
 Autobump that actually has two separate handlers.
 
-\texttt{\detokenize{java_ast}} is written entirely in Python and
+\textttd{java_ast} is written entirely in Python and
 values speed over corectness. It is a quick-and-dirty handler that
 visits all Java source files in the repository and generates their
 ASTs via the third-party package \texttt{javalang}\cite{Javalang}.
@@ -1041,7 +1042,7 @@ or the AST is absent for whatever reason, it is again impossible to
 decide whether there was a breaking change without using introspection.
 \end{enumerate}
 
-\texttt{\detokenize{java_ast}}, as it is constructing the ASTs of all source files,
+\textttd{java_ast}, as it is constructing the ASTs of all source files,
 does its best to fully qualify type names based on the surrounding
 statements and keeps track of the inheritance tree for the project. It
 has obvious shortcomings in that it simply misses cases that can be
@@ -1049,7 +1050,7 @@ determined only by introspection. The optional configuration option
 \texttt{Java/Error On External Types} forces the handler to give up
 when the AST of a source file is needed, but not present in the project.
 
-The alternative is \texttt{\detokenize{java_native}}. It consists of two utilities
+The alternative is \textttd{java_native}. It consists of two utilities
 written in Java, along with some Python middleware that interacts with
 the rest of Autobump. It relies solely on introspection of the
 \texttt{.class} files generated after a full compilation of the
@@ -1076,7 +1077,7 @@ we are interested in is the new version number and not the changelog,
 running the AST handler once can be a shortcut. If it reports a major
 bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
-not, then \texttt{\detokenize{java_native}} can be run to make sure.
+not, then \textttd{java_native} can be run to make sure.
 
 \subsubsection{Clojure}
 
