@@ -16,14 +16,23 @@
 \usepackage{float}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
-
-\newcommand\textttd[1]{\texttt{\detokenize{#1}}}
 \hypersetup{
     colorlinks,
     linkcolor={red!50!black},
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
+
+\newcommand\textttd[1]{\texttt{\detokenize{#1}}}
+\newenvironment{halfmini}[1]
+{
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{#1}}\\
+}
+{
+\end{minipage}
+}
+
 % Source listings
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10} % for bold
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}  % for normal
@@ -767,8 +776,7 @@ formed akin to simplified abstract syntax tree -- this is instrumental
 in allowing the comparison logic to be recursively defined later
 (\ref{Logic}).
 
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{moduleA.py}}\\
+\begin{halfmini}{moduleA.py}
 \begin{python}
 def accept_foo_bar(foo, bar):
     pass
@@ -779,9 +787,8 @@ class ThingDoer(object):
     def do_thing():
         pass
 \end{python}
-\end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{moduleB.py}}\\
+\end{halfmini}
+\begin{halfmini}{moduleB.py}
 \begin{python}
 class Discombobulator(object):
     def discombobulate(thingimajig):
@@ -790,7 +797,7 @@ class Discombobulator(object):
     class Discombobulated(Exception):
         pass
 \end{python}
-\end{minipage}
+\end{halfmini}
 
 \begin{figure}[H]
 \centering
@@ -976,21 +983,19 @@ being neither super nor subsets of one another.
 
 Consider the following example:
 
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant A}}\\
+\begin{halfmini}{Variant A}
 \begin{python}
 def func(obj):
     obj.method1()
     obj.method2()
 \end{python}
-\end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant B}}\\
+\end{halfmini}
+\begin{halfmini}{Variant B}
 \begin{python}
 def func(obj):
     obj.method1()
 \end{python}
-\end{minipage}
+\end{halfmini}
 
 In this case, because \pythoninline{method2} is no longer expected in
 Variant B, $S_a \supset S_b$ and we safely claim that there is no
@@ -1031,19 +1036,16 @@ is in Python, because Java is statically typed.
 
 Consider this trivial example:
 
-\lstset{language=Java}
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant A}}\\
+\begin{halfmini}{Variant A}
 \begin{java}
 public void method(A arg) { ... }
 \end{java}
-\end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Variant B}}\\
+\end{halfmini}
+\begin{halfmini}{Variant B}
 \begin{java}
 public void method(B arg) { ... }
 \end{java}
-\end{minipage}
+\end{halfmini}
 
 Note that the only thing that has changed is type of the parameter.
 Whether or not there was a breaking change in this case depends on
@@ -1203,8 +1205,7 @@ reader in Python -- see \ref{LispReader}.
 \clearpage
 To illustrate the process, consider the following example:
 
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{Clojure Source}}\\
+\begin{halfmini}{Clojure Source}
 \begin{clojure}[otherkeywords={def,defn,defn-,ns}]
 (ns lib.core)
 
@@ -1216,9 +1217,8 @@ To illustrate the process, consider the following example:
   ([x ^Integer y] (* (func x) y)))
 (defn get-nil [])
 \end{clojure}
-\end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
-\noindent\textbf{\textit{CAPIR (S-expressions)}}\\
+\end{halfmini}
+\begin{halfmini}{CAPIR (S-expressions)}
 \begin{clojure}[otherkeywords={file,field,function,signature}]
 ((file lib.core
   ((field cst nil))
@@ -1228,7 +1228,7 @@ To illustrate the process, consider the following example:
    (function get-nil
       ((signature ()))))))
 \end{clojure}
-\end{minipage}
+\end{halfmini}
 \begin{figure}[H]
 \centering
 \includegraphics[height=0.5\textheight]{images/dot/sexpcapir}
