@@ -1080,6 +1080,28 @@ not, then \texttt{\detokenize{java_native}} can be run to make sure.
 
 \subsubsection{Clojure}
 
+Clojure is general-purpose variant of the Lisp programming language,
+with an emphasis on functional programming. It has several properties
+that make it noticeably different from the previous two languages we
+considered:
+
+\begin{itemize}
+\item While not purely functional, it heavily emphasises programming
+in a functional style and discourages stateful programming both through the
+language itself and the culture surrounding the language.
+\item It is homoiconic, that is programs are written in terms of the
+language's own data structures (``code is data''). In essence the
+programmer is always creating and editing the AST directly.
+\item It is a dynamically typed language running on the statically
+typed Java Virtual Machine.
+\item It has support for gradual typing --
+some variables and expressions may be given types that can be checked
+at compile time, while others remain dynamically typed.
+\end{itemize}
+
+See appendix \ref{ClojurePrimer} for a primer on Clojure that
+elaborates on these features and gives concrete examples.
+
 % TODO: What is Clojure?
 The Clojure handler takes advantage of the language's
 homoiconicity. That is, programs in the language are represented using
@@ -1335,6 +1357,9 @@ specified as \texttt{LINTER}) against all source code.
 % TODO: fill in
 
 \chapter{Representative source code listings}
+
+\chapter{Primer on Clojure}
+\label{ClojurePrimer}
 
 \end{appendices}
 
