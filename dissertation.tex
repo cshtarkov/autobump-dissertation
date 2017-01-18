@@ -14,11 +14,17 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{float}
-
-\newcommand\textttd[1]{\texttt{\detokenize{#1}}}
-% Source listings
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
+
+\newcommand\textttd[1]{\texttt{\detokenize{#1}}}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+% Source listings
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10} % for bold
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}  % for normal
 \definecolor{keyword}{HTML}{8C0D40}
@@ -1450,6 +1456,9 @@ to the ones assigned manually by the developers and interpret our findings.
 
 \chapter{Conclusion}
 \label{Conclusion}
+
+% TODO: handler for binaries using debugging information, supports
+% multiple languages
 
 \begin{appendices}
 
