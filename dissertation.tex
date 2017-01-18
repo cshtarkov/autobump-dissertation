@@ -700,29 +700,29 @@ exposed by different languages. From now on, we will refer to this
 model as \textbf{CAPIR} (standing for ``common API representation'') for the
 sake of brevity.
 
-\textbf{Entity} is a base class representing an entity of
+\pythoninline{Entity} is a base class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
 implement equality comparison to other entities (via
 \pythoninline{__eq__} and \pythoninline{__ne__}).
 % TODO: what are eq and ne?
 
-\textbf{Type} is a base class that is the basis of the type
+\pythoninline{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
 detail in \ref{TypeSystems}.
 
-\textbf{Unit}s are a recursive data structure that indicate a
+\pythoninline{Unit}s are a recursive data structure that indicate a
 general grouping of entities. They can represent a range of grouping
 techniques found in different languages -- translation units, modules,
 classes, interfaces, mixins, traits etc. In fact, Autobump uses a
 single top-level Unit to represent an entire codebase.
 
-\textbf{Field}s and \textbf{Function}s are found in Units. Fields have
+\pythoninline{Field}s and \pythoninline{Function}s are found in units. Fields have
 a type and denote the setting of a variable or a constant. Functions
 represent callable pieces of code -- functions, methods, routines, or
 whatever the source language calls them.
 
-Every Function has one or more \textbf{Signature}s which in turn are
-lists of \textbf{Parameter}s. Parameters have a type and can have a
+Every function has one or more \pythoninline{Signature}s which in turn are
+lists of \pythoninline{Parameter}s. Parameters have a type and can have a
 default value.
 
 \begin{figure}
@@ -845,7 +845,7 @@ However, what it means for two types to be compatible varies. Python,
 Java and Clojure were chosen as candidate target languages for this
 tool partly because of their different type systems.
 
-In CAPIR, the only thing required of a \textbf{Type} is to be able to
+In CAPIR, the only thing required of a \pythoninline{Type} is to be able to
 identify whether it is compatible or not with another type. We are not
 interested in whether or not they are the same type, or what those
 types actually are\footnote{The point is that what the types actually
@@ -967,9 +967,10 @@ passing in objects that implement \pythoninline{method1} was not obliged to
 have them implement \pythoninline{method2} as well, so it may break once the
 new revision of the library starts needing it.
 
-Depending on whether the configuration option \texttt{Python/
-Structural Typing} is set, Autobump can examine the use of a parameter
-inside a function and determine those two sets. Afterwards, it takes
+Depending on whether the configuration option
+\texttt{Python/Structural Typing} is set, Autobump can examine the use
+of a parameter inside a function and determine those two sets.
+Afterwards, it takes
 the pessimistic view that unless $S_a \supseteq S_b$ there was
 definitely a breaking change and bumps the version number accordingly.
 
