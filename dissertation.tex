@@ -661,7 +661,7 @@ the version bump should be. This is discussed in \ref{Logic}.
 one. At this point, a changelog may be output as well if requested.
 \end{enumerate}
 
-\subsection{Common representation for APIs}
+\section{Common representation for APIs}
 \label{CAPIR}
 
 Before proceeding with the issue of representing APIs, it is important
@@ -794,8 +794,12 @@ class Discombobulator(object):
 \end{figure}
 \clearpage
 
-\subsection{Handlers for programming languages}
+\section{Handlers for programming languages}
 \label{LanguageHandlers}
+
+In this section we discuss the overall idea behind how we go about
+implementing support for multiple programming languages in the same
+tool, and then move on to the specifics for each supported language.
 
 The conversion of source code into CAPIR is delegated to separate
 modules that expose a single function to the rest of the program:
@@ -842,7 +846,7 @@ in the future.
 % TODO: Table of handlers, build required, so on
 % TODO: what language are the handlers in?
 
-\subsubsection{Transforming source code into CAPIR}
+\subsection{Transforming source code into CAPIR}
 
 Each language handler, as part of its implementation, essentially has
 to have a function that maps a source file to a CAPIR unit. In
@@ -855,7 +859,7 @@ difference between using introspection and the AST.
 % TODO: Dynamic?
 % TODO: Not true, what about method generation?
 
-\subsubsection{Type systems}
+\subsection{Type systems}
 \label{TypeSystems}
 
 In \ref{BreakingChanges} we found that changing the type of a public
@@ -875,9 +879,13 @@ changelogs}.
 In the following sections on the individual language handlers, we
 discuss how the three languages determine compatibility of types.
 
-\subsubsection{Python}
+\subsection{Python}
 
-% TODO: What is Python?
+Python is a widely used dynamically typed, interpreted language. Given
+that Autobump itself is written in Python, it is the natural first
+choice for a target language.
+% TODO: autobump is in python -> we choose python, or the other way around?
+
 The Python handler uses the AST. It takes advantage of
 Python's ``batteries included'' approach which bundles all sorts of
 useful libraries along with the core Python distribution, and that
@@ -998,7 +1006,7 @@ hinderance and yield lots of false positivies. That is why it is
 configurable. If the option is disabled, then the Python handlers
 never considers the types of entities and assumes them to be compatible.
 
-\subsubsection{Java}
+\subsection{Java}
 \label{JavaHandlers}
 
 % TODO: What is Java?
@@ -1097,7 +1105,7 @@ bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
 not, then \textttd{java_native} can be run to make sure.
 
-\subsubsection{Clojure}
+\subsection{Clojure}
 
 Clojure is general-purpose variant of the Lisp programming language,
 with an emphasis on functional programming. It has several properties
@@ -1149,10 +1157,10 @@ of forms:
 \end{tabular}
 \end{center}
 
-\subsection{Handlers for version control systems}
+\section{Handlers for version control systems}
 \label{VCSHandlers}
 
-\subsection{Comparison logic}
+\section{Comparison logic}
 \label{Logic}
 
 After the language handler has run twice and generated two CAPIR
