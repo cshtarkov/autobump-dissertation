@@ -1,0 +1,34 @@
+digraph sexpcapir {
+
+    u_codebase [shape=house, label="Codebase\n[unit]"];
+
+    /* module1.py */
+
+    p_x_1 [shape=square, label="x\n[parameter]"];
+    p_x_2 [shape=square, label="x\n[parameter]"];
+    p_y   [shape=square, label="y\n[parameter]"];
+    s_func_1 [shape=box, label="[signature of func]"];
+    s_func_2 [shape=box, label="[signature of func]"];
+    s_getnil [shape=box, label="[signature of get-nil]"];
+    p_x_1 -> s_func_1;
+    p_x_2 -> s_func_2;
+    p_y -> s_func_2;
+
+    f_func [shape=ellipse, label="func\n[function]"];
+    f_getnil [shape=ellipse, label="get-nil\n[function]"]
+    s_func_1 -> f_func;
+    s_func_2 -> f_func;
+    s_getnil -> f_getnil;
+
+    {rank=same; s_func_1 s_func_2 s_getnil};
+
+    i_constant [shape=square, label="cst\n[field]"];
+
+    u_libcore [shape=house, label="lib.core\n[unit]"];
+    i_constant -> u_libcore;
+    f_func -> u_libcore;
+    f_getnil -> u_libcore;
+
+    u_libcore -> u_codebase;
+
+}

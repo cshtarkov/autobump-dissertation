@@ -65,7 +65,7 @@ language=Lisp,
 basicstyle=\ttm,
 otherkeywords={defn,defn-},
 keywordstyle=\ttb\color{keyword},
-emph={},
+emph={lib.core,constant,func,get-nil},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -1083,8 +1083,9 @@ the rest of Autobump. It relies solely on introspection of the
 project. One tool, the \texttt{Inspector}, loads a list of class files
 and then prints to standard out an XML representation of all classes,
 including fields, methods, inner classes and so on. This is invoked
-once, immediately after compilation. The Python middleware then
-converts this XML representation into a list of CAPIR units, which is
+once, immediately after compilation. Note that the XML representation
+is semantically absolutely indentical to CAPIR. The Python middleware then
+translates this XML representation into a list of CAPIR units, which is
 trivial.
 
 Type comparison is handled through another tool --
@@ -1132,9 +1133,13 @@ elaborates on these features and gives concrete examples.
 
 The Clojure handler follows a model identical to \textttd{java_native}
 -- the handler itself being written in Clojure and linking to Autobump
-using some Python middleware. It takes advantage of the language's
-homoiconicity, which makes it easy to inspect programs using the
-language itself.
+using some Python middleware. The bulk of the work done in Clojure is
+just mapping a program to its public API. As was with Java and XML,
+the most convenient structures to generate with Clojure are
+S-expressions, so we use those as an intermediary before the
+middleware can translate that into Autobump's internal CAPIR. The
+handler takes advantage of the language's homoiconicity, which makes
+it easy to inspect programs using the language itself.
 
 At the core of every Lisp sits the \textit{reader}. This is the
 function that converts Lisp objects from their textual form into
@@ -1144,7 +1149,7 @@ representation of a form and returns it as a proper Lisp object.
 Combining this with the \clojureinline{slurp} function that returns
 the contents of a file as a string, we can build a function that
 given a file name, returns the Clojure program stored inside as a list
-of forms:
+of forms (other lists):
 
 \begin{center}
 \begin{tabular}{c}
@@ -1156,6 +1161,74 @@ of forms:
 \end{clojure}
 \end{tabular}
 \end{center}
+
+From there, we can filter out forms of interest and describe the part
+of the API they expose using an S-expression. We can nest the
+S-expressions together, forming a tree identical in structure to
+CAPIR.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}
+(defn describe-file
+  "Describe the public API of a file as an S-expression."
+  [file-name]
+  (let* [forms         (read-source file-name)
+         fields-defs   (filter public-field-def? forms)
+         ...
+         function-defs (filter public-fn-def? forms)]
+    (list 'file
+          (get-ns forms)
+          (map describe-field fields-defs)
+          ...
+          (map describe-function function-defs))))
+\end{clojure}
+\end{tabular}
+\end{center}
+
+The functions prefixed with \clojureinline{describe-} return an
+S-expression representing a CAPIR entity. The Python middleware's only
+task from there is to translate those S-expressions into Autobump's
+internal representation, which is done by implementing a minimal Lisp
+reader in Python -- see \ref{LispReader}.
+% TODO: no ref LispReader
+
+% TODO: maybe don't clear here
+\clearpage
+To illustrate the process, consider the following example:
+
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{Clojure Source}}\\
+\begin{clojure}[otherkeywords={def,defn,defn-,ns}]
+(ns lib.core)
+
+(def cst 5)
+(def ^{:private true} private-field)
+(defn- private-func [])
+(defn func
+  ([x] (+ cst x))
+  ([x ^Integer y] (* (func x) y)))
+(defn get-nil [])
+\end{clojure}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\noindent\textbf{\textit{CAPIR (S-expressions)}}\\
+\begin{clojure}[otherkeywords={file,field,function,signature}]
+((file lib.core
+  ((field cst nil))
+  ((function func
+     ((signature ((x nil)))
+      (signature ((x nil) (y Integer)))))
+   (function get-nil
+      ((signature ()))))))
+\end{clojure}
+\end{minipage}
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.5\textheight]{images/dot/sexpcapir}
+\caption{CAPIR of Clojure source code produced from intermediary S-expressions}
+\label{RepresentationExample}
+\end{figure}
 
 \section{Handlers for version control systems}
 \label{VCSHandlers}
