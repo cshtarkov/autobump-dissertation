@@ -60,6 +60,24 @@ showstringspaces=false
 }
 {}
 \newcommand\javainline[1]{{\javastyle\lstinline!#1!}}
+\newcommand\clojurestyle{\lstset{
+language=Lisp,
+basicstyle=\ttm,
+otherkeywords={defn,defn-},
+keywordstyle=\ttb\color{keyword},
+emph={},
+emphstyle=\ttb\color{name},
+stringstyle=\color{PineGreen},
+rulecolor=\color{gray},
+showstringspaces=false
+}}
+\lstnewenvironment{clojure}[1][]
+{
+\clojurestyle
+\lstset{#1}
+}
+{}
+\newcommand\clojureinline[1]{{\clojurestyle\lstinline!#1!}}
 
 % Body
 
@@ -1092,7 +1110,8 @@ in a functional style and discourages stateful programming both through the
 language itself and the culture surrounding the language.
 \item It is homoiconic, that is programs are written in terms of the
 language's own data structures (``code is data''). In essence the
-programmer is always creating and editing the AST directly.
+programmer is always creating and editing the AST directly. This
+allows for powerful metaprogramming features.
 \item It is a dynamically typed language running on the statically
 typed Java Virtual Machine.
 \item It has support for gradual typing --
@@ -1103,13 +1122,32 @@ at compile time, while others remain dynamically typed.
 See appendix \ref{ClojurePrimer} for a primer on Clojure that
 elaborates on these features and gives concrete examples.
 
-% TODO: What is Clojure?
-The Clojure handler takes advantage of the language's
-homoiconicity. That is, programs in the language are represented using
-the language's own data structures. Being a Lisp variant, Clojure
-programs consist mostly of lists and vectors.
+The Clojure handler follows a model identical to \textttd{java_native}
+-- the handler itself being written in Clojure and linking to Autobump
+using some Python middleware. It takes advantage of the language's
+homoiconicity, which makes it easy to inspect programs using the
+language itself.
 
-% TODO: Clojure primer?
+At the core of every Lisp sits the \textit{reader}. This is the
+function that converts Lisp objects from their textual form into
+their internal representation. Clojure provides us with the
+\clojureinline{read-string} function that reads in the string
+representation of a form and returns it as a proper Lisp object.
+Combining this with the \clojureinline{slurp} function that returns
+the contents of a file as a string, we can build a function that
+given a file name, returns the Clojure program stored inside as a list
+of forms:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}
+(defn read-source
+  "Read in a Clojure source file and return a list of forms."
+  [file-name]
+  (read-string (str "(" (slurp file-name) ")")))
+\end{clojure}
+\end{tabular}
+\end{center}
 
 \subsection{Handlers for version control systems}
 \label{VCSHandlers}
