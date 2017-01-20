@@ -93,6 +93,7 @@ showstringspaces=false
 }
 {}
 \newcommand\clojureinline[1]{{\clojurestyle\lstinline!#1!}}
+\newcommand\clojureinlinedef{{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!}}
 
 % Body
 
@@ -1115,6 +1116,7 @@ handler can detect a subset of changes compared to the native one. If
 not, then \textttd{java_native} can be run to make sure.
 
 \subsection{Clojure}
+\label{Clojure}
 
 Clojure is general-purpose variant of the Lisp programming language,
 with an emphasis on functional programming. It has several properties
@@ -1489,6 +1491,152 @@ specified as \texttt{LINTER}) against all source code.
 
 \chapter{Primer on Clojure}
 \label{ClojurePrimer}
+
+This appendix gives a simplified view of the language and briefly
+covers aspects of it that relate to Autobump. The goal is to give a
+reader unfamiliar with Clojure enough knowledge to make sense of
+subsection \ref{Clojure}.
+
+Clojure is a functional, dynamically typed language from the Lisp
+family of languages that runs on top of the Java Virtual Machine. It
+has a small set of immutable data structures that are reused
+throughout the standard and external libraries instead of defining
+ad-hoc ones (``It is better to have 100 functions operate on one data
+structure than to have 10 functions operate on 10 data
+structures.''\cite{ClojureRationale}).
+
+The most frequently used data structures are lists, vectors, maps and
+sets:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}
+(1 2 3 4)    ;; list
+[1 2 3 4]    ;; vector
+{:a 1 :b 2}  ;; map
+#{1 2 3 4}   ;; set
+\end{clojure}
+\end{tabular}
+\end{center}
+
+Programs written in Clojure are themselves expressed in those data
+structures, mostly lists and vectors. Function calling is done by
+constructing a list where the first element is the function and
+the rest are arguments (i.e. prefix notation):
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}
+(+ 1 2)      ;; => 3
+\end{clojure}
+\end{tabular}
+\end{center}
+
+This is referred to as a \textit{form}. Functions are defined by
+invoking the macro \clojureinline{defn}, where the first argument is
+the name of function, the second is a vector comprising the arguments
+and the rest are the body of the function. Macros are forms that
+expand to other forms.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[emph=add]
+(defn add [a b]
+  (+ a b))
+\end{clojure}
+\end{tabular}
+\end{center}
+
+Functions can have multiple signatures by wrapping argument-body pairs
+in lists:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[emph=add]
+(defn add
+  ([a b]
+   (+ a b))
+  ([a b c]
+   (+ a b c)))
+\end{clojure}
+\end{tabular}
+\end{center}
+
+Special forms are built-in baseline forms. The special form
+\clojureinlinedef\enspace is used to define symbols that
+match to values:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[emph=pi,otherkeywords=def]
+(def pi 3.14)
+\end{clojure}
+\end{tabular}
+\end{center}
+
+In fact, the \clojureinline{defn} macro expands as such:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[emph=add]
+(macroexpand '(defn add [a b] (+ a b)))
+
+;; => (def add (fn ([a b] (+ a b))))
+\end{clojure}
+\end{tabular}
+\end{center}
+
+Evaluating a list can be avoided by prefixing it with
+\clojureinline{'} as done in the above example. This is shorthand for
+the special form \clojureinline{quote}. \clojureinline{'(a b c)} and
+\clojureinline{(quote (a b c))} are equivalent. Quoting a list returns
+it literally.
+
+Defined symbols in Clojure can have metadata attached to them. This
+feature is most frequently used for docstrings, type hinting or hiding
+implementation details. Metadata is handled by the Lisp reader
+(parser) which converts the textual representation of objects into the
+internal one.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[otherkeywords=def]
+(defn add [^Integer a ^Integer b] ;; Both parameters are hinted to be integers.
+  (+ a b))
+
+(def ^{:private true} pi 3.14)    ;; Field is now private.
+\end{clojure}
+\end{tabular}
+\end{center}
+
+To make functions private, there is a built-in macro
+\clojureinline{defn-}. It expands to exactly the same form as
+\clojureinline{defn} but sets the \clojureinline{:private} tag to be
+\clojureinline{true} just like defining a private field.
+
+Clojure code is divided into namespaces, similarly to Java packages.
+Namespace declarations are put at the top of the file.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[otherkeywords=ns]
+(ns lib.core)
+\end{clojure}
+\end{tabular}
+\end{center}
+
+The same special form can be used to make other namespaces available
+in the current one, similarly to Java's \javainline{import} statement.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[otherkeywords=ns]
+(ns lib.core
+  (:require [clojure.test :as test]
+            [lib.other :refer [function1 function2]]))
+\end{clojure}
+\end{tabular}
+\end{center}
 
 \end{appendices}
 
