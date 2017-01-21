@@ -34,8 +34,12 @@ urlcolor={blue!80!black}
 }
 
 % Source listings
-\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10} % for bold
-\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}  % for normal
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10}
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}
+\DeclareFixedFont{\ttbs}{T1}{txtt}{bx}{n}{8}
+\DeclareFixedFont{\ttms}{T1}{txtt}{m}{n}{8}
+\DeclareFixedFont{\ttbt}{T1}{txtt}{bx}{n}{6}
+\DeclareFixedFont{\ttmt}{T1}{txtt}{m}{n}{6}
 \definecolor{keyword}{HTML}{8C0D40}
 \definecolor{name}{HTML}{000F55}
 \newcommand\pythonstyle{\lstset{
@@ -906,7 +910,7 @@ interested in whether or not they are the same type, or what those
 types actually are\footnote{The point is that what the types actually
 are is irrelevant to determining the next semantic version. It may be
 of interest only to Autobump's secondary function, that is generating
-changelogs}.
+changelogs.}.
 
 In the following sections on the individual language handlers, we
 discuss how the three languages determine compatibility of types.
@@ -1175,8 +1179,10 @@ is semantically absolutely indentical to CAPIR. The Python middleware then
 translates this XML representation into a list of CAPIR units, which is
 trivial.
 
+\begin{figure}[H]
+\caption{hello world}
 \begin{halfmini}{Java Source}
-\begin{java}
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
 package com.autobump.somepackage;
 
 public class SomeClass {
@@ -1190,7 +1196,8 @@ public class SomeClass {
 \end{java}
 \end{halfmini}
 \begin{halfmini}{CAPIR (XML)}
-\begin{xml}
+% TODO: remove extra $
+\begin{xml}[basicstyle=\ttmt,keywordstyle=\ttbt\color{keyword},emphstyle=\ttbt\color{name}]
 <introspection>
   <class name="com.autobump.somepackage.SomeClass">
     <field name="field" type="int"/>
@@ -1200,18 +1207,18 @@ public class SomeClass {
         <parameter name="arg1" type="java.lang.Integer"/>
       </signature>
     </method>
-    <!-- omitted properties derived from java.lang.Object -->
-    <class name="com.autobump.somepackage.SomeClass＄InnerClass">
-      <!-- omitted properties derived from java.lang.Object -->
+    ...
+    <class name="com.autobump.somepackage.SomeClass$InnerClass$">
+      ...
     </class>
   </class>
 </introspection>
 \end{xml}
 \end{halfmini}
-
+\end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.5\textheight]{images/dot/xmlcapir}
+\includegraphics[height=0.4\textheight]{images/dot/xmlcapir}
 \caption{CAPIR of Java source code produced from intermediary XML}
 \label{CAPIRXMLExample}
 \end{figure}
