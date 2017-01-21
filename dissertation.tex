@@ -78,7 +78,7 @@ showstringspaces=false
 \newcommand\clojurestyle{\lstset{
 language=Lisp,
 basicstyle=\ttm,
-otherkeywords={defn,defn-},
+otherkeywords={defn,defn-,macroexpand,macroexpand-all},
 keywordstyle=\ttb\color{keyword},
 emph={lib.core,constant,func,get-nil},
 emphstyle=\ttb\color{name},
@@ -94,6 +94,24 @@ showstringspaces=false
 {}
 \newcommand\clojureinline[1]{{\clojurestyle\lstinline!#1!}}
 \newcommand\clojureinlinedef{{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!}}
+\newcommand\xmlstyle{\lstset{
+language=XML,
+basicstyle=\ttm,
+otherkeywords={},
+keywordstyle=\ttb\color{keyword},
+emph={},
+emphstyle=\ttb\color{name},
+stringstyle=\color{PineGreen},
+rulecolor=\color{gray},
+showstringspaces=false
+}}
+\lstnewenvironment{xml}[1][]
+{
+\xmlstyle
+\lstset{#1}
+}
+{}
+\newcommand\xmlinline[1]{{\xmlstyle\lstinline!#1!}}
 
 % Body
 
@@ -895,22 +913,19 @@ discuss how the three languages determine compatibility of types.
 
 \subsection{Python}
 
-Python is a widely used dynamically typed, interpreted language. Given
-that Autobump itself is written in Python, it is the natural first
-choice for a target language.
-% TODO: autobump is in python -> we choose python, or the other way around?
+Python is a general-purpose, dynamically typed, interpreted language.
+That makes it an interesting target and a good first choice,
+especially compounded with the fact that Python is a good middleware
+language and Autobump itself is written in Python.
+% TODO: is it though?
 
-The Python handler uses the AST. It takes advantage of
-Python's ``batteries included'' approach which bundles all sorts of
-useful libraries along with the core Python distribution, and that
-includes a Python parser. Converting to CAPIR is a simple matter of
-opening each source file as text, parsing it and then walking the
-resulting tree to produce the appropriate CAPIR structures for each node.
-
-% TODO: Nominal vs structural
-% TODO: Example?
-
-% TODO: type hinting
+The Python handler uses the AST and is itself written in Python. It
+takes advantage of Python's ``batteries included'' approach which
+bundles all sorts of useful libraries along with the core Python
+distribution, and that includes a Python parser. Converting to CAPIR
+is a simple matter of opening each source file as text, parsing it and
+then walking the resulting tree to produce the appropriate CAPIR
+structures for each node.
 
 Early iterations of the Python handler used introspection. It used to
 import source files dynamically, which causes them to be compiled and
@@ -924,11 +939,14 @@ to perform introspection on a function for example, a \pythoninline{def} has
 to be evaluated first. If there is top-level code that has side
 effects it will get executed along with the function definitions.
 
-We don't lose out on any important information for CAPIR using just
-the AST in Python, so that is why we prefer it to introspection in
-this case.
+Python, as a dynamic language, can modify the structure of objects at
+runtime by using functions such as \pythoninline{setattr}. This makes
+it possible for a library to construct its functionality at runtime
+instead of defining outright. This is fairly unlikely to happen in the
+real-world libraries that Autobump would be useful for, so we just
+discount that possibility.
 
-% TODO: Rewrite!!!!!!!
+\subsubsection{Types}
 
 Python, by design and philosophy, encourages the use of duck typing.
 When an operation is performed on an object, only the compatiblity of
@@ -964,7 +982,8 @@ instances of a particular class, but client code absolutely could pass
 in objects of a different type that happen to have the same properties
 and methods as needed by the function.
 
-% TODO: What about types of entities?
+% TODO: What about types of entities? Need to implement AST scanning
+% as well
 
 A better choice is to consider two sets $S_a$ and $S_b$ -- the sets of
 all properties and methods requested from the object in the two
@@ -1008,15 +1027,70 @@ new revision of the library starts needing it.
 
 Depending on whether the configuration option
 \texttt{Python/Structural Typing} is set, Autobump can examine the use
-of a parameter inside a function and determine those two sets.
-Afterwards, it takes
-the pessimistic view that unless $S_a \supseteq S_b$ there was
-definitely a breaking change and bumps the version number accordingly.
+of a parameter inside a function and determine those two sets. This is
+accomplished by walking the AST of the function definition and
+checking what methods are called on that object in all possible
+branches of execution. Afterwards, it takes the pessimistic view that
+unless $S_a \supseteq S_b$ there was definitely a breaking change and
+bumps the version number accordingly.
 
 Depending on the nature of the project, this behaviour can be a
 hinderance and yield lots of false positivies. That is why it is
 configurable. If the option is disabled, then the Python handlers
 never considers the types of entities and assumes them to be compatible.
+
+\subsubsection{Type hinting}
+
+As of Python 3.5 there is support for type hinting in the language
+itself. It is purely syntactic and only affects the metadata of
+objects when evaluated in the interpreter. No actual type checking is
+done and this is done to static analysis tools, mostly type checkers.
+The Python handler functions as another static analysis tool, but with
+a somewhat different goal -- checking compatibility between different
+versions of the same code, not validating invocations.
+
+In Python 3.5 and 3.6, which are the only versions of Python with
+support for type hinting at the time of writing, there is a small
+oversight. When given code, the only to check the type hints is to
+actually evaluate the code and check the metadata of the relevant
+objects. This is undesirable in the case of Autobump where we want to
+use the AST instead. A third-party fork of Python's built in
+\textttd{ast} module exists, named \textttd{typed_ast}\cite{TypedAST}.
+It gives access to type hinting information as part of AST itself.
+It's expected that this fork will get merged back into mainline Python
+eventually, but for the time being Autobump uses it as an external
+library.
+
+If the option \textttd{Python/Type Hinting} is enabled, whenever there
+is type hinting information for a function or field it's actual usage
+in the AST is ignored regardless of whether \textttd{Python/Use
+Structural Typing} is enabled. Given the obvious incompatibility of
+having one version be parsed with structural typing, and another one
+having a type hint, we always pessimistically assume that the two are
+not going to be compatible. If both versions have type hints, they are
+compared using Python's native facilities.
+% TODO: no they're not
+
+\begin{halfmini}{Variant A}
+\begin{python}
+def func(a: str):
+    a.split()
+\end{python}
+\end{halfmini}
+\begin{halfmini}{Variant B}
+\begin{python}
+def func(a: str):
+    a.split()
+    a.strip()
+\end{python}
+\end{halfmini}
+
+In the above example, if both type hinting and structural typing are
+enabled, Autobump won't find a breaking change because the type hint
+has remained the same. If the type hint were missing in both, it would
+pessimistically claim there is a breaking change due to a new method
+being called on the parameter \pythoninline{a}, unaware that it is
+actually a string.
 
 \subsection{Java}
 \label{JavaHandlers}
@@ -1027,6 +1101,8 @@ different from Python. Nevertheless, the two approaches -- AST
 and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
 Autobump that actually has two separate handlers.
+
+\subsubsection{Using the abstract syntax tree}
 
 \textttd{java_ast} is written entirely in Python and
 values speed over corectness. It is a quick-and-dirty handler that
@@ -1085,6 +1161,8 @@ determined only by introspection. The optional configuration option
 \texttt{Java/Error On External Types} forces the handler to give up
 when the AST of a source file is needed, but not present in the project.
 
+\subsubsection{Using reflection}
+
 The alternative is \textttd{java_native}. It consists of two utilities
 written in Java, along with some Python middleware that interacts with
 the rest of Autobump. It relies solely on introspection of the
@@ -1097,6 +1175,47 @@ is semantically absolutely indentical to CAPIR. The Python middleware then
 translates this XML representation into a list of CAPIR units, which is
 trivial.
 
+\begin{halfmini}{Java Source}
+\begin{java}
+package com.autobump.somepackage;
+
+public class SomeClass {
+    public int field;
+
+    public void method(String a, Integer b) {}
+
+    public class InnerClass {
+    }
+}
+\end{java}
+\end{halfmini}
+\begin{halfmini}{CAPIR (XML)}
+\begin{xml}
+<introspection>
+  <class name="com.autobump.somepackage.SomeClass">
+    <field name="field" type="int"/>
+    <method name="method" returns="void">
+      <signature>
+        <parameter name="arg0" type="java.lang.String"/>
+        <parameter name="arg1" type="java.lang.Integer"/>
+      </signature>
+    </method>
+    <!-- omitted properties derived from java.lang.Object -->
+    <class name="com.autobump.somepackage.SomeClass＄InnerClass">
+      <!-- omitted properties derived from java.lang.Object -->
+    </class>
+  </class>
+</introspection>
+\end{xml}
+\end{halfmini}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.5\textheight]{images/dot/xmlcapir}
+\caption{CAPIR of Java source code produced from intermediary XML}
+\label{CAPIRXMLExample}
+\end{figure}
+
 Type comparison is handled through another tool --
 \texttt{TypeCompatiblityChecker}. Given two types, it simply prints
 whether or not the first one is compatible with the second one. This
@@ -1104,6 +1223,25 @@ again works by loading the relevant class files and simply asking Java
 itself. CAPIR types set by the Python middleware will automatically
 invoke this utility when \pythoninline{is_compatible} is called
 later on in the comparison.
+
+Having to compile the project first and then run these tools
+introduced substantial complexity to the handler. It would be naïve to
+hardcode any commands that compile the project. Instead, we should
+delegate to the build system that comes with the project to properly
+handle things like dependencies and \textttd{CLASSPATH} issues.
+\textttd{java_ast} requires that a build command and a build root are
+passed in to Autobump as command-line arguments.
+% TODO: why arguments and not in config?
+
+The build command is a shell command that runs before using the
+\textttd{Inspector} to introspect all classes, for example
+\textttd{mvn compile} if the project is using Maven as its build
+system. The build root is a path relative to the root directory where
+the classes get placed after compilation. It is important that the
+handler knows that in order to correctly fully qualify class names. In
+Java, the package hierarchy corresponds to directory structure, and
+the wrong build root would result in the \textttd{Inspector} not
+finding the needed classes.
 
 The native handler produces much more accurate results, but is also
 much slower -- it necessitates compiling the project, twice. There's
@@ -1237,6 +1375,44 @@ To illustrate the process, consider the following example:
 \caption{CAPIR of Clojure source code produced from intermediary S-expressions}
 \label{CAPIRSexpExample}
 \end{figure}
+
+\subsubsection{Macro expansion}
+
+Clojure is a language that has a relatively small core, and a lot of
+functionality is built by using macros that expand to special forms.
+For example, the macro for defining a function \clojureinline{defn}
+eventually expands to a \clojureinlinedef with an anonymous function.
+This makes it somewhat tricky to extract functions and fields from
+namespaces without actually evaluating the code. Clojure provides a
+special form \clojureinline{macroexpand} which takes in a form and
+returns the form with one step of macro expansion.
+\clojureinline{macroexpand-all} may be more appropriate, because it
+recursively expands all macros until there are no more.
+
+It may be the case that a library is entirely written with the
+top-level forms being macros that when evaluated populate the
+namespace with functions and fields. This is in essence the same
+problem as with Python, and likely with any dynamic language, and is
+fairly unlikely to happen in real-world libraries.
+
+Knowing all of this, we have two possible solutions to extracting the
+public API of a Clojure namespace -- either running
+\clojureinline{macroexpand} or \clojureinline{macroexpand-all} on all
+top-level forms and then trying to parse them, or parsing them as they are.
+
+Autobump takes the second approach. It makes the tradeoff of not
+further complicating the handler by expanding macros and instead
+parsing the forms as they are, e.g. only looking at
+\clojureinline{defn} forms for function definitions, and not
+considering \clojureinlinedef that have an anonymous function as the
+value. This means that there are definitely cases where the handler
+would not produce the correct API from the source code, but it's very
+unlikely examples like that would be found in non-contrived,
+real-world libraries.
+
+\subsubsection{Type hinting}
+
+
 
 % TODO: clojure type hinting
 % TODO: jvm interop
@@ -1404,7 +1580,7 @@ inputs, like what handler to use or which revision to compare.
 However, those are trivial to mock.} and the output the proposed
 version number. Having a repository as an input is non-trivial.
 
-Three approaches were considered:
+Three approaches were considered.
 \begin{enumerate}
 \item Maintain a Git \textit{submodule}, a kind of nested repository,
 inside Autobump's own repository. The submodule would contain the
@@ -1523,9 +1699,16 @@ sets:
 \end{center}
 
 Programs written in Clojure are themselves expressed in those data
-structures, mostly lists and vectors. Function calling is done by
-constructing a list where the first element is the function and
-the rest are arguments (i.e. prefix notation):
+structures, mostly lists and vectors. The source code of a Clojure
+program is nearly identical to its abstract syntax tree, with the
+parser having to do very little work. Every node in the AST is denoted
+by an \textit{S-expression}, which is classically defined as being either an
+atom, or an ordered pair of two other S-expressions. S-expressions are
+also known as \textit{forms}.
+
+Function calling is done by constructing a list where the first
+element is the function and the rest are arguments (i.e. prefix
+notation):
 
 \begin{center}
 \begin{tabular}{c}
@@ -1535,11 +1718,10 @@ the rest are arguments (i.e. prefix notation):
 \end{tabular}
 \end{center}
 
-This is referred to as a \textit{form}. Functions are defined by
-invoking the macro \clojureinline{defn}, where the first argument is
-the name of function, the second is a vector comprising the arguments
-and the rest are the body of the function. Macros are forms that
-expand to other forms.
+Functions are defined by invoking the macro \clojureinline{defn},
+where the first argument is the name of function, the second is a
+vector comprising the arguments and the rest are the body of the
+function. Macro forms, when evaluated, produce other forms.
 
 \begin{center}
 \begin{tabular}{c}

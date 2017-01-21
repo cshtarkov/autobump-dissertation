@@ -1,0 +1,27 @@
+digraph xmlcapir {
+
+    u_codebase [shape=house, label="Codebase\n[unit]"];
+
+    /* SomeClass */
+
+    p_a [shape=square, label="a\n[parameter]"];
+    p_b [shape=square, label="b\n[parameter]"];
+    s_method [shape=box, label="[signature of method]"];
+    p_a -> s_method;
+    p_b -> s_method;
+    {rank=same; p_a p_b}
+
+    f_method [shape=ellipse, label="method\n[function]"];
+    s_method -> f_method;
+    i_field [shape=square, label="field\n[field]"];
+
+    u_inner [shape=house, label="InnerClass\n[unit]"];
+
+    u_someclass [shape=house, label="SomeClass\n[unit]"];
+    f_method -> u_someclass;
+    u_inner -> u_someclass;
+    i_field -> u_someclass;
+
+    u_someclass -> u_codebase;
+
+}
