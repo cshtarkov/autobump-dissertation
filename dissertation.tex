@@ -664,9 +664,11 @@ the different target languages.
 
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
-separate module, with dependencies (via \pythoninline{import}) reduced to a minimum.
+separate module, with dependencies (via \pythoninline{import}) reduced
+to a minimum.
 
 \begin{figure}
+\label{ArchitectureFig}
 \centering
 \includegraphics[width=\linewidth]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
@@ -697,6 +699,33 @@ earlier one. This step can generate a changelog and will identify what
 the version bump should be. This is discussed in \ref{Logic}.
 \item Output the new version number by applying the bump to the old
 one. At this point, a changelog may be output as well if requested.
+\end{enumerate}
+
+\section{Configuration}
+
+The configuration module lies at the very bottom of Autobump (as seen
+in figure \ref{ArchitectureFig}). It made sense that the behaviour of
+some components is user-configurable. The exact options that are
+available are discussed in later sections, but for a rundown of every
+tweakable see appendix \ref{RundownConfigurables}.
+
+When a configurable value of the form \textttd{Component/Option} is
+requested, the module tries to fetch it from three sources and stops
+at the first that succeeds:
+
+\begin{enumerate}[(i)]
+\item An environment variable named \textttd{AB_OPTION}. Note that the
+component part of the option is missing. This is for brevity, since
+environment variables are meant to be used for quickly overriding
+options.
+\item A configuration file \textttd{autobump.ini} present in the
+working directory, which has a section \textttd{[Component]} with a
+setting of the form \textttd{[option=...]} nested inside. This matches
+the informal standard INI format for configuration files. The reason
+we prefer this format is that Python comes with the module
+\pythoninline{configparser} for reading those types of files out of
+the box.
+\item A default value, hardcoded in the configuration module itself.
 \end{enumerate}
 
 \section{Common representation for APIs}
@@ -1676,6 +1705,9 @@ specified as \texttt{LINTER}) against all source code.
 \end{itemize}
 
 \section{Usage}
+
+\section{Rundown of configurables}
+\label{RundownConfigurables}
 
 \chapter{Project layout}
 % TODO: fill in
