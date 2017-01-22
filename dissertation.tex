@@ -39,8 +39,8 @@ urlcolor={blue!80!black}
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}
 \DeclareFixedFont{\ttbs}{T1}{txtt}{bx}{n}{8}
 \DeclareFixedFont{\ttms}{T1}{txtt}{m}{n}{8}
-\DeclareFixedFont{\ttbt}{T1}{txtt}{bx}{n}{6}
-\DeclareFixedFont{\ttmt}{T1}{txtt}{m}{n}{6}
+\DeclareFixedFont{\ttbt}{T1}{txtt}{bx}{n}{7}
+\DeclareFixedFont{\ttmt}{T1}{txtt}{m}{n}{7}
 \definecolor{keyword}{HTML}{8C0D40}
 \definecolor{name}{HTML}{000F55}
 \newcommand\pythonstyle{\lstset{
@@ -1224,9 +1224,11 @@ functions of the same name. Autobump would yield the same proposal for
 a semantic version at the end, but the changelog would be less intelligible.
 That is why it takes the return value of every method and makes it
 part of the signature. The signature of the method \javainline{void
-void(int a)} is considered to be \javainline{(void, int)} instead of
-just \javainline{(int)}. The return type of the function in CAPIR is
-set to some dummy type that is compatible with everything, so that the
+m(int a)} is considered to be \javainline{(void, int)} instead of
+just \javainline{(int)}. This extra ``argument'' takes the special
+name \pythoninline{$AUTOBUMP_RETURN$} as can be seen in figure
+\ref{CAPIRXMLExample}. The return type of the function in CAPIR is set
+to some dummy type that is compatible with everything, so that the
 comparison algorithm detects only changes in the signatures.
 
 \begin{figure}[H]
@@ -1248,27 +1250,25 @@ public class SomeClass {
 \begin{halfmini}{CAPIR (XML)}
 % TODO: remove extra $
 \begin{xml}[basicstyle=\ttmt,keywordstyle=\ttbt\color{keyword},emphstyle=\ttbt\color{name}]
-<introspection>
-  <class name="com.autobump.somepackage.SomeClass">
-    <field name="field" type="int"/>
-    <method name="method" returns="void">
-      <signature>
-        <parameter name="arg0" type="java.lang.String"/>
-        <parameter name="arg1" type="java.lang.Integer"/>
-      </signature>
-    </method>
-    ...
-    <class name="com.autobump.somepackage.SomeClass$InnerClass$">
-      ...
-    </class>
-  </class>
-</introspection>
+<class name="com.autobump.somepackage.SomeClass">
+ <field name="field" type="int"/>
+ <method name="method" returns="void">
+   <signature>
+     <parameter name="arg0" type="java.lang.String"/>
+     <parameter name="arg1" type="java.lang.Integer"/>
+   </signature>
+ </method>
+ ...
+ <class name="com.autobump.somepackage.SomeClass$InnerClass$">
+   ...
+ </class>
+</class>
 \end{xml}
 \end{halfmini}
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.4\textheight]{images/dot/xmlcapir}
+\includegraphics[height=0.5\textheight]{images/dot/xmlcapir}
 \caption{CAPIR of Java source code produced from intermediary XML}
 \label{CAPIRXMLExample}
 \end{figure}

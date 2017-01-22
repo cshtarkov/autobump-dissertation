@@ -4,12 +4,14 @@ digraph xmlcapir {
 
     /* SomeClass */
 
+    p_void [shape=box, label="$AUTOBUMP_RETURN$\n[parameter]"];
     p_a [shape=square, label="a\n[parameter]"];
     p_b [shape=square, label="b\n[parameter]"];
     s_method [shape=box, label="[signature of method]"];
+    p_void -> s_method;
     p_a -> s_method;
     p_b -> s_method;
-    {rank=same; p_a p_b}
+    {rank=same; p_void p_a p_b}
 
     f_method [shape=ellipse, label="method\n[function]"];
     s_method -> f_method;
