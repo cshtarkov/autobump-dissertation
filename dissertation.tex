@@ -1214,7 +1214,20 @@ including fields, methods, inner classes and so on. This is invoked
 once, immediately after compilation. Note that the XML representation
 is semantically absolutely indentical to CAPIR. The Python middleware then
 translates this XML representation into a list of CAPIR units, which is
-trivial.
+almost trivial.
+
+There is one small modification that the Python middleware does when
+translating the XML. Note how CAPIR allows for a function to have
+multiple signatures. This is the preferred way of representing
+overloaded methods in Java, the alternative being having multiple
+functions of the same name. Autobump would yield the same proposal for
+a semantic version at the end, but the changelog would be less intelligible.
+That is why it takes the return value of every method and makes it
+part of the signature. The signature of the method \javainline{void
+void(int a)} is considered to be \javainline{(void, int)} instead of
+just \javainline{(int)}. The return type of the function in CAPIR is
+set to some dummy type that is compatible with everything, so that the
+comparison algorithm detects only changes in the signatures.
 
 \begin{figure}[H]
 \caption{Java source and the resultant CAPIR in intermediary XML}
