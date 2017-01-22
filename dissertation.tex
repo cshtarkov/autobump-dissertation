@@ -1675,9 +1675,25 @@ the option that Autobump uses, as it achieves a convenient
 middleground between the other two: it allows for the history of the
 project to be edited relatively easily, and it has much smaller
 boilerplate needs. The only accompanying code is one that creates a
-Git repository in a temporary directory from that series of patches.
+Git repository in a temporary directory from that series of patches,
+and then runs Autobump against every pair of consecutive revisions.
 % TODO: accompanying code
 \end{enumerate}
+
+However, it's not quite enough to just have a series of patches to
+construct the acceptance test. At the bare minimum, the test also
+needs to say which handler should be used when running Autobump.
+Tests can also optionally define \pythoninline{before_advice} and
+\pythoninline{after_advice} functions, borrowind the concept of an
+\textit{advice} from aspect-oriented programming, that run
+respectively before and after the test. For example, the
+\textttd{java_maven} test, which goes through the history of a Maven
+project by using the native Java handler, defines those two functions
+so that the \textttd{CLASSPATH} is properly set up before running
+Autobump. In normal operation, the \textttd{CLASSPATH} would be set up
+in Autobump's configuration file or by setting the environment
+variable, but that is not an option when automatically running
+multiple acceptance tests.
 
 \chapter{Evaluation}
 \label{Evaluation}
