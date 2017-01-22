@@ -22,6 +22,7 @@ linkcolor={red!50!black},
 citecolor={blue!50!black},
 urlcolor={blue!80!black}
 }
+\setlength{\belowcaptionskip}{17pt plus 3pt minus 2pt}
 
 \newcommand\textttd[1]{\texttt{\detokenize{#1}}}
 \newenvironment{halfmini}[1]
@@ -660,8 +661,6 @@ the different target languages.
 \section{Architecture}
 \label{Architecture}
 
-% TODO: Configuration
-
 When designing the architecture of the tool, great care was taken to
 separate unrelated concerns. Every part of the program lives in a
 separate module, with dependencies (via \pythoninline{import}) reduced
@@ -1218,7 +1217,7 @@ translates this XML representation into a list of CAPIR units, which is
 trivial.
 
 \begin{figure}[H]
-\caption{hello world}
+\caption{Java source and the resultant CAPIR in intermediary XML}
 \begin{halfmini}{Java Source}
 \begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
 package com.autobump.somepackage;
@@ -1388,6 +1387,8 @@ reader in Python -- see \ref{LispReader}.
 
 To illustrate the process, consider the following example:
 
+\begin{figure}[H]
+\caption{Clojure source and the resultant CAPIR in intermediary S-expressions}
 \begin{halfmini}{Clojure Source}
 \begin{clojure}[otherkeywords={def,defn,defn-,ns}]
 (ns lib.core)
@@ -1412,6 +1413,7 @@ To illustrate the process, consider the following example:
       ((signature ()))))))
 \end{clojure}
 \end{halfmini}
+\end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[height=0.5\textheight]{images/dot/sexpcapir}
