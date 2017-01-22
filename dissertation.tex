@@ -923,6 +923,15 @@ especially compounded with the fact that Python is a good middleware
 language and Autobump itself is written in Python.
 % TODO: is it though?
 
+In 2008 Python 3 was released, which broke backwards compatibility
+with the widely spread Python 2. Adoption has been sluggish, but at
+the time of writing virtually all libraries that matter fully support
+Python 3 along with 2, or are exclusive to Python 3. Seeing as how
+Python 2 is deprecated and will not receive any further development,
+we only concern ourselves with Python 3 in this project. Moreover,
+some interesting features of the language that matter for Autobump
+(like type hinting) are only available in Python 3.
+
 The Python handler uses the AST and is itself written in Python. It
 takes advantage of Python's ``batteries included'' approach which
 bundles all sorts of useful libraries along with the core Python
