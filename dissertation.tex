@@ -727,6 +727,8 @@ the box.
 \item A default value, hardcoded in the configuration module itself.
 \end{enumerate}
 
+% TODO: talk about fetching values, decorators, context managers
+
 \section{Common representation for APIs}
 \label{CAPIR}
 
@@ -1680,20 +1682,19 @@ that series of patches, and then runs Autobump against every pair of
 consecutive revisions.
 \end{enumerate}
 
+% TODO: clarify test vs suite
 However, it's not quite enough to just have a series of patches to
 construct the acceptance test. At the bare minimum, the test also
-needs to say which handler should be used when running Autobump.
-Tests can also optionally define \pythoninline{before_advice} and
-\pythoninline{after_advice} functions, borrowind the concept of an
-\textit{advice} from aspect-oriented programming, that run
-respectively before and after the test. For example, the
-\textttd{java_maven} test, which goes through the history of a Maven
-project by using the native Java handler, defines those two functions
-so that the \textttd{CLASSPATH} is properly set up before running
-Autobump. In normal operation, the \textttd{CLASSPATH} would be set up
-in Autobump's configuration file or by setting the environment
-variable, but that is not an option when automatically running
-multiple acceptance tests.
+needs to say which handler should be used when running Autobump. Tests
+can also optionally define \pythoninline{setUp} and
+\pythoninline{tearDown} functions that run respectively before and
+after the suite. For example, the \textttd{java_maven} test, which
+goes through the history of a Maven project by using the native Java
+handler, defines those two functions so that the \textttd{CLASSPATH}
+is properly set up before running Autobump. In normal operation, the
+\textttd{CLASSPATH} would be set up in Autobump's configuration file
+or by setting the environment variable, but that is not an option when
+automatically running multiple acceptance tests.
 
 \chapter{Evaluation}
 \label{Evaluation}
