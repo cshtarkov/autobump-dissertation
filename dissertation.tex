@@ -98,7 +98,7 @@ showstringspaces=false
 }
 {}
 \newcommand\clojureinline[1]{{\clojurestyle\lstinline!#1!}}
-\newcommand\clojureinlinedef{{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!}}
+\newcommand\clojureinlinedef{{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!\enspace}}
 \newcommand\xmlstyle{\lstset{
 language=XML,
 basicstyle=\ttm,
@@ -1316,13 +1316,11 @@ not, then \textttd{java_native} can be run to make sure.
 
 \subsection{Clojure}
 \label{Clojure}
-% TODO: rewrite this, now hooking into environment
-% mixture of reflection and homoiconicity
 
-Clojure is general-purpose variant of the Lisp programming language,
-with an emphasis on functional programming. It has several properties
-that make it noticeably different from the previous two languages we
-considered:
+Clojure is interpreted, general-purpose variant of the Lisp
+programming language, with an emphasis on functional programming. It
+has several properties that make it noticeably different from the
+previous two languages we considered:
 
 \begin{itemize}
 \item While not purely functional, it heavily emphasises programming
@@ -1335,22 +1333,38 @@ allows for powerful metaprogramming features.
 \item It is a dynamically typed language running on the statically
 typed Java Virtual Machine.
 \item It has support for gradual typing --
-some variables and expressions may be given types that can be checked
-at compile time, while others remain dynamically typed.
+some variables and expressions may be given static types that can be
+checked at compile time, while others remain dynamically typed.
 \end{itemize}
 
 See appendix \ref{ClojurePrimer} for a primer on Clojure that
 elaborates on these features and gives concrete examples.
 
-The Clojure handler follows a model identical to \textttd{java_native}
+The Clojure handler follows a model very similar to \textttd{java_native}
 -- the handler itself being written in Clojure and linking to Autobump
 using some Python middleware. The bulk of the work done in Clojure is
 just mapping a program to its public API. As was with Java and XML,
 the most convenient structures to generate with Clojure are
 S-expressions, so we use those as an intermediary before the
 middleware can translate that into Autobump's internal CAPIR. The
-handler takes advantage of the language's homoiconicity, which makes
-it easy to inspect programs using the language itself.
+handler takes advantage of the language's homoiconicity and powerful
+reflection capabilities, which makes it easy to inspect programs using
+the language itself.
+
+Early versions of the Clojure handler simply took advantage of
+homoiconicity and directly mapped the AST to CAPIR. However, that is
+not sufficient when external libraries are present and we need to type
+checking against them, or when optional static typing is being used.
+Superficially, because Clojure is dynamic and interpreted, it seems as
+if we were present with the same problem as with Python -- having to
+rely on just the AST, because evaluating code and then trying to do
+introspection risks executing side effects. It is not so. The Clojure
+handler can use a mixture of both approaches with no penalties,
+because it is functional and we can disregard the risk of side effects.
+
+% TODO: here we discuss.... ???
+
+\subsubsection{Mapping AST to CAPIR}
 
 At the core of every Lisp sits the \textit{reader}. This is the
 function that converts Lisp objects from their textual form into
@@ -1398,16 +1412,19 @@ CAPIR.
 \end{center}
 
 The functions prefixed with \clojureinline{describe-} return an
-S-expression representing a CAPIR entity. The Python middleware's only
-task from there is to translate those S-expressions into Autobump's
+S-expression representing a CAPIR entity. They may in turn use other
+functions to describe inner entities, e.g.
+\clojureinline{describe-function} would invoke
+\clojureinline{describe-signature}. The Python middleware's only task
+from there is to translate those S-expressions into Autobump's
 internal representation, which is done by implementing a minimal Lisp
-reader in Python -- see \ref{LispReader}.
-% TODO: no ref LispReader
+reader in Python.
 
 To illustrate the process, consider the following example:
 
 \begin{figure}[H]
-\caption{Clojure source and the resultant CAPIR in intermediary S-expressions}
+\caption{Clojure source and the resultant CAPIR by mapping AST
+directly to intermediary S-expressions}
 \begin{halfmini}{Clojure Source}
 \begin{clojure}[otherkeywords={def,defn,defn-,ns}]
 (ns lib.core)
@@ -1440,46 +1457,62 @@ To illustrate the process, consider the following example:
 \label{CAPIRSexpExample}
 \end{figure}
 
+Note how the type of \clojureinline{cst} is \clojureinline{nil} and not
+\clojureinline{java.lang.Double} as Clojure would report if the type
+of the value were introspected. This is a limitation of just using the
+AST and not evaluating forms. However, finding out about type hints
+can be done, because they interpreted by the reader and don't need
+evaluation.
+
 \subsubsection{Macro expansion}
 
-Clojure is a language that has a relatively small core, and a lot of
-functionality is built by using macros that expand to special forms.
-For example, the macro for defining a function \clojureinline{defn}
-eventually expands to a \clojureinlinedef with an anonymous function.
-This makes it somewhat tricky to extract functions and fields from
-namespaces without actually evaluating the code. Clojure provides a
-special form \clojureinline{macroexpand} which takes in a form and
-returns the form with one step of macro expansion.
+Clojure is a macro-heavy language. It has a relatively small core, and
+a lot of functionality is built by using macros that expand to special
+forms. For example, the macro for defining a function
+\clojureinline{defn} eventually expands to a \clojureinlinedef with an
+anonymous function. This makes it tricky to extract functions and
+fields from namespaces without actually evaluating the code. Clojure
+provides a special form \clojureinline{macroexpand} which takes in a
+form and returns the form with one step of macro expansion.
 \clojureinline{macroexpand-all} may be more appropriate, because it
 recursively expands all macros until there are no more.
 
 It may be the case that a library is entirely written with the
 top-level forms being macros that when evaluated populate the
-namespace with functions and fields. This is in essence the same
-problem as with Python, and likely with any dynamic language, and is
-fairly unlikely to happen in real-world libraries.
+namespace with functions and fields. It may also be the case that
+built-in macros are overriden by some library to behave slightly
+differently -- for example, the library for optional static typing
+\clojureinline{core.typed} overrides \clojureinline{defn} so that
+programs can specify type signatures as part of the functional
+definiton instead of an additional annotation.
 
-Knowing all of this, we have two possible solutions to extracting the
-public API of a Clojure namespace -- either running
-\clojureinline{macroexpand} or \clojureinline{macroexpand-all} on all
-top-level forms and then trying to parse them, or parsing them as they are.
+It would be unreasonable to attempt to handle such cases when mapping
+AST to directly, even when using facilities like
+\clojureinline{macroexpand}.
 
-Autobump takes the second approach. It makes the tradeoff of not
-further complicating the handler by expanding macros and instead
-parsing the forms as they are, e.g. only looking at
-\clojureinline{defn} forms for function definitions, and not
-considering \clojureinlinedef that have an anonymous function as the
-value. This means that there are definitely cases where the handler
-would not produce the correct API from the source code, but it's very
-unlikely examples like that would be found in non-contrived,
-real-world libraries.
+\subsubsection{Using both AST and reflection}
 
-\subsubsection{Type hinting}
+We have compounded several reasons why relying on the AST alone is not
+preferrable, especially when evaluating the code doesn't impose any
+penalties except for making the handler slightly slower:
 
+\begin{itemize}
+\item It's impossible to get the types of fields without evaluating
+their values.
+\item It's unreasonably difficult to guard against all sorts of macro
+trickery, and we cannot claim for certain what a form does without
+evaluating it.
+\item On the same note, we cannot properly handle optional static
+typing, because it relies on macro trickery.
+\item We cannot check types against external libraries. If the type
+hint of a parameter was changed, there's no way to verify whether the
+new one is compatible with the old one.
+\end{itemize}
 
-
-% TODO: clojure type hinting
-% TODO: jvm interop
+% TODO: how we can modify describe-files
+% TODO: now hooking into environment
+% ... it is a typical Clojure workflow that a REPL is started and
+% blabla is examined...
 
 \section{Handlers for version control systems}
 \label{VCSHandlers}
@@ -1764,6 +1797,8 @@ ad-hoc ones (``It is better to have 100 functions operate on one data
 structure than to have 10 functions operate on 10 data
 structures.''\cite{ClojureRationale}).
 
+\subsubsection{Data structures}
+
 The most frequently used data structures are lists, vectors, maps and
 sets:
 
@@ -1785,6 +1820,8 @@ parser having to do very little work. Every node in the AST is denoted
 by an \textit{S-expression}, which is classically defined as being either an
 atom, or an ordered pair of two other S-expressions. S-expressions are
 also known as \textit{forms}.
+
+\subsubsection{Functions and macros}
 
 Function calling is done by constructing a list where the first
 element is the function and the rest are arguments (i.e. prefix
@@ -1827,8 +1864,10 @@ in lists:
 \end{tabular}
 \end{center}
 
+\subsubsection{Special forms}
+
 Special forms are built-in baseline forms. The special form
-\clojureinlinedef\enspace is used to define symbols that
+\clojureinlinedef is used to define symbols that
 match to values:
 
 \begin{center}
@@ -1857,6 +1896,8 @@ the special form \clojureinline{quote}. \clojureinline{'(a b c)} and
 \clojureinline{(quote (a b c))} are equivalent. Quoting a list returns
 it literally.
 
+\subsubsection{Symbol metadata and type hinting}
+
 Defined symbols in Clojure can have metadata attached to them. This
 feature is most frequently used for docstrings, type hinting or hiding
 implementation details. Metadata is handled by the Lisp reader
@@ -1878,6 +1919,8 @@ To make functions private, there is a built-in macro
 \clojureinline{defn-}. It expands to exactly the same form as
 \clojureinline{defn} but sets the \clojureinline{:private} tag to be
 \clojureinline{true} just like defining a private field.
+
+\subsubsection{Namespaces}
 
 Clojure code is divided into namespaces, similarly to Java packages.
 Namespace declarations are put at the top of the file.
@@ -1902,6 +1945,8 @@ in the current one, similarly to Java's \javainline{import} statement.
 \end{clojure}
 \end{tabular}
 \end{center}
+
+\subsubsection{Optional static typing}
 
 \end{appendices}
 
