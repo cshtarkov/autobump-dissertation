@@ -508,8 +508,9 @@ discuss some non-functional requirements.
 
 Much like Endjin.Assembly.ChangeDetection, Autobump to look at how the
 code itself has changed to estimate what the next version should be.
-This requires no manual intervention from the user, no special naming
-schemes, and is as reliable as this kind of software can be.
+This requires little to no manual intervention from the user, no
+special naming schemes, and is as reliable as this kind of software
+can be.
 
 % TODO: Determining vs Estimation?
 
@@ -520,20 +521,25 @@ schemes, and is as reliable as this kind of software can be.
 % then... which ones
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
-\textbf{any} change to the API which makes it incompatible\footnote{By
-``incompatible'', we mean changes that make the new code technically
-incompatible with the old, i.e. it doesn't compile in the case of
-static languages, or throws unexpected runtime errors with dynamic
-languages.} with the last version as breaking. It does not take into
+\textbf{any} change to the API which makes it incompatible with the
+last version as breaking. By ``incompatible'', we mean changes that
+make the new code technically incompatible with the old, i.e. it
+doesn't compile in the case of static languages, or throws unexpected
+runtime errors with dynamic languages. It does not take into
 account number of affected users, difficulty of transitioning to the
 new version, or changes in behaviour, because those things cannot be
 possibly known reliably.
 
 In the spirit of Semver, for this project we adopted a technical and
 deterministic list of changes to entities that are considered
-to be breaking. We make the assumption that all public-facing entities
-(i.e. those accessible externally in a normal for the language way)
-are part of the API.
+to be breaking. We make the important assumption that all
+public-facing entities (i.e. those accessible externally in a normal
+for the language way) are part of the API. There may be a misalignment
+between what the library authors consider to be the public API and
+what is technically accessible by client code, which is going to make
+the authors' predictions overly liberal. Autobump makes the safer
+choice of being potentially overly conservative by default, and only
+relaxing when configured explicitly to do so.
 
 \begin{table}[H]
 \centering
@@ -568,9 +574,9 @@ a class. In this case the constant and both classes are considered to
 be ``entities''.
 \item The language has some notion of parameterized callable pieces of
 code, which for simplicity's sake we refer to only as ``functions'',
-even though in reality they may be object methods, macros etc.
-Additionally, some of those functions are callable from outside
-of the program where they are defined, effectively being an API.
+even though in reality they may be object methods, macros, procedures etc.
+Additionally, some of those functions are callable from outside of the
+program where they are defined, comprising the majority of the API.
 \label{SecondAssumption}
 \item The language has a type system which has the notion of binary
 compatibility:
@@ -583,7 +589,9 @@ program. \\
 We define compatibility as $T$ being able to replace $Y$
 without violating the rules of the language -- e.g. the Liskov
 substitution principle\cite{Liskov} in a typical object-oriented
-language.
+language. Note that this notion is also compatible with dynamically
+typed languages where we can not reasonably check types by taking
+$compatible$ to always be true.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
@@ -592,11 +600,11 @@ are also languages where a tool like Autobump would be utterly
 unuseful. There are also languages that partially conform. In those
 cases, as long as assumption \ref{SecondAssumption} is valid (i.e.
 there is an API), we can ignore the rest -- of course making obsolete
-some functionality of Autobump\footnote{Namely identifying in which
-parts of the program the changes have occurred and checking type
-compatibility.}. For this project, we examined the radically
-different languages Python, Java and Clojure\ref{LanguageHandlers} and
-the assumptions were found to be reasonable.
+some functionality of Autobump -- namely identifying in which parts of
+the program the changes have occurred and checking type compatibility.
+For this project, we examined the radically different languages
+Python, Java and Clojure\ref{LanguageHandlers} and the assumptions
+were found to be reasonable.
 
 \subsection{Feature additions}
 
