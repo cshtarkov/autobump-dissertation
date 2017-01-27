@@ -37,6 +37,8 @@
      bumping major version.
    - Features are introduced with no changes to the API (/autobump's problem?/)
 
+   *Summary*: Autobump was much more conservative and proposed many more breaking changes.
+
    | 44 total | 21 different w/ structural | 19 different w/o structural | (50%) *FIRST DIFF*                     |
    |          | 16 major changes           | 10 major changes            |                                        |
    |          | 19 different w/ structural | 15 different w/o structural | (35%) *SECOND DIFF, only intended API* |
@@ -113,8 +115,16 @@
    - entities moved to another module, authors bumped the minor version
      (only breaking change proposal)
    - 3.2.0 -- 3.3.0 was definitely a bugfix, maybe an important one?
-   - 3.3.0 -- 3.4.0 changed setup.py a bit
-   - 3.6.0 -- 3.7.0 still definitely a bugfix
+   - 3.3.3 -- 3.4.0 changed setup.py a bit, considered it a feature
+   - 3.5.3 -- 3.6.0 still definitely a bugfix
+   - 3.6.5 -- 3.7.0 bugfix
+
+   Main problems are:
+   - Moving entities not considered breaking.
+   - Changing behaviour of functions w/o changing their signature
+     considered a feature.
+
+   *Summary*: Autobump is slightly more conservative than package authors.
 
    #+BEGIN_SRC diff
      v3.0.9 --- v3.1.0 should have been v3.0.9 --- 4.0.0
