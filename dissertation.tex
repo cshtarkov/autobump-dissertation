@@ -5,6 +5,7 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage{microtype}
+\usepackage{csquotes}
 \usepackage{enumerate}
 \usepackage{url}
 \usepackage{breakurl}
@@ -261,6 +262,13 @@ corresponding internal version numbers, e.g. the one used by the
 revision control system.
 \end{itemize}
 
+Semver defines the public API to start at version $1.0.0$. Versions
+before that impart no significance on the minor and patch numbers,
+because they are expected to change radically and frequently. If the
+versioning rules had started applying from the first ever release of
+the project, either the developers would be discouraged from
+versioning unstable work or version numbers would balloon.
+
 \subsubsection{Benefits}
 
 Semver is especially useful for software meant for use by other
@@ -276,13 +284,15 @@ the application developer may be needed to make it compatible again
 with the library.
 
 This scheme also helps with automatic dependency management systems,
-like ones found in package managers. A developer can specify that
-their application relies on version \textit{2.4} of a particular
-library. Semver guarantees that versions of the form \textit{(2.x | x
-> 4)} will contain all features found in \textit{2.4} and be
-backwards-compatible. If later on \textit{2.4.1} or \textit{2.5} come
-along, the library can be automatically upgraded without breaking the
-application, with the added benefit of fixing bugs.
+like ones found in package managers. Applying semantic versioning
+increases confidence when specifying version bounds on a requirement.
+A developer can specify that their application relies on version
+\textit{2.4} of a particular library. Semver guarantees that versions
+of the form \textit{(2.x | x > 4)} will contain all features found in
+\textit{2.4} and be backwards-compatible. If later on \textit{2.4.1}
+or \textit{2.5} come along, the library can be automatically upgraded
+without breaking the application, with the added benefit of fixing
+bugs.
 
 In summary, the most important benefit provided by Semver is the
 alleviation of dependency hell through unambiguous identification of
@@ -492,9 +502,35 @@ a tool, but an experiment, and is tied to the .NET ecosystem.
 
 \section{elm-package}
 
-\section{SpiseMesu.SemanticVersioning}
+\textit{elm-package}\cite{ElmPackage} is the official package manager
+of the language Elm -- a purely functional, domain-specific
+language for creating browser-based user interfaces. Elm is heavily
+influenced by Haskell, and elm-package itself is written entirely in
+Haskell.
 
-% TODO: This should be called requirements
+As part of the package publishing process, elm-package automatically
+bumps the version number of the package. It never claims outright that
+it follows semantic versioning, but the rules it specifies are very
+reminiscent of it\cite{ElmPackageVR}:
+
+\begin{itemize}
+\item Versions all have exactly three parts: \textttd{MAJOR.MINOR.PATCH}
+\item All packages start with initial version $1.0.0$
+\item Versions are incremented based on how the API changes:
+\begin{itemize}
+\item \textttd{PATCH} - the API is the same, no risk of breaking code
+\item \textttd{MINOR} - values have been added, existing values are unchanged
+\item \textttd{MAJOR} - existing values have been changed or removed
+\end{itemize}
+\end{itemize}
+
+The most notable change from semantic versioning is that elm-package
+disallows versions smaller than $1.0.0$. Semver claims that $1.0.0$
+defines the public API, so it would make sense for a tool like this to
+disallow versions smaller than that. If the previously published
+version of the package is $0.9.0$ and the new changeset is breaking,
+elm-package would have no way of knowing whether the next one should
+be $0.9.1$, $0.10.0$ or $1.0.0$.
 
 \chapter{Requirements}
 \label{Requirements}
@@ -506,13 +542,15 @@ discuss some non-functional requirements.
 
 \section{Determining next semantic version through code analysis}
 
-Much like Endjin.Assembly.ChangeDetection, Autobump to look at how the
-code itself has changed to estimate what the next version should be.
-This requires little to no manual intervention from the user, no
-special naming schemes, and is as reliable as this kind of software
-can be.
-
-% TODO: Determining vs Estimation?
+Much like Endjin.Assembly.ChangeDetection and elm-package, Autobump
+looks at how the code itself has changed to estimate what the next
+version should be. This requires little to no manual intervention from
+the user, no special naming schemes, and is as reliable as this kind
+of software can be. In contrast to these tools, we aim to make
+Autobump much more general and not tied to one ecosystem or language.
+For this reason, we look at how we can abstractly define breaking
+changes and feature additions, and how we can apply those definitions
+to multiple languages.
 
 \subsection{Breaking changes}
 \label{BreakingChanges}
@@ -528,7 +566,9 @@ doesn't compile in the case of static languages, or throws unexpected
 runtime errors with dynamic languages. It does not take into
 account number of affected users, difficulty of transitioning to the
 new version, or changes in behaviour, because those things cannot be
-possibly known reliably.
+possibly known reliably. It also does not subjectively impart more
+significance on one change than another if both are of the same class,
+as we speculate humans might tend to do.
 
 In the spirit of Semver, for this project we adopted a technical and
 deterministic list of changes to entities that are considered
@@ -655,9 +695,9 @@ If we rely on code analysis to find differences between iterations,
 then it may seem necessary that Autobump itself is written in the same
 language that we are trying to analyze. This is not necessarily so; we
 propose an approach which none of the preexisting tools take --
-program the tool itself and the comparison logic in a convenient
-middleware language (for this project we use Python) and have handlers
-for different languages as seperate modules.
+create a tool general enough to work with multiple languages and
+provide convenient ways of adding support for new ones on top of an
+existing framework.
 % TODO: spellcheck
 
 \chapter{Implementation}
@@ -671,10 +711,12 @@ the different target languages.
 \section{Architecture}
 \label{Architecture}
 
-When designing the architecture of the tool, great care was taken to
-separate unrelated concerns. Every part of the program lives in a
-separate module, with dependencies (via \pythoninline{import}) reduced
-to a minimum.
+Autobump is written mainly in Python and establishes a common
+interface and version comparison framework that form the core of the
+program. Support for different languages and version control systems
+is added on top of that through the use of handlers, which are also
+written in Python when appropriate, or are written in another language
+and use Python as a middleware language to link back to Autobump.
 
 \begin{figure}
 \label{ArchitectureFig}
