@@ -1,11 +1,12 @@
 * Python
 ** First round
 
-   | Project    | Semantically versioned        | Size     | Results    |
-   |------------+-------------------------------+----------+------------|
-   | requests   | Yes, officially               | 4500 LOC | [[requests]]   |
-   | simplejson | Seems like it, not officially | 2000 LOC | [[simplejson]] |
-   | docopt     | Seems like it, not officially | 600 LOC  | [[docopt]]     |
+   | Project    | Semantically versioned                             | Size     | Results    |
+   |------------+----------------------------------------------------+----------+------------|
+   | requests   | Yes, officially                                    | 4500 LOC | [[requests]]   |
+   | simplejson | Seems like it, not officially                      | 2000 LOC | [[simplejson]] |
+   | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]]     |
+   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]]    |
 
 
 * Evaluations
@@ -166,4 +167,20 @@
       0.4.1 --- 0.4.2 should have been 0.4.1 --- 1.0.0
       0.4.2 --- 0.5.0 should have been 0.4.2 --- 1.0.0
       0.5.0 --- 0.6.0 should have been 0.5.0 --- 1.0.0
+   #+END_SRC
+
+** hashids
+
+   From v0.8.0 to v1.2.0
+
+   10 versions, 2 mismatching both w/ and w/o structural typing (20%)
+
+   - one missing version
+   - one renaming of functions (encrypt → encode) not considered breaking
+
+   *Summary*: Autobump caught two author mistakes.
+
+   #+BEGIN_SRC diff
+     v0.8.1 --- v0.8.3 should have been v0.8.1 --- 0.8.2
+     v1.0.1 --- v1.0.2 should have been v1.0.1 --- 2.0.0
    #+END_SRC
