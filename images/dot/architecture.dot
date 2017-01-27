@@ -20,18 +20,18 @@ digraph architecture {
     subgraph cluster_vcs {
         label="VCS Handlers"
         git_h [label="Git",shape=ellipse];
-        svn [label="SVN",shape=ellipse];
+        svn [label="Hg",shape=ellipse];
     }
 
-    program -> core [label=" invokes"]
-    program -> git_h [label=" invokes",lhead=cluster_vcs]
-    core -> common [label=" uses"]
+    program -> core [label=" "]
+    program -> git_h [label=" ",lhead=cluster_vcs]
+    core -> common [label=" "]
     core -> python_h [style=invis,minlen=2]
-    python_h -> common [label=" converts to",ltail=cluster_languages,constraint=false]
+    python_h -> common [label=" ",ltail=cluster_languages,constraint=false]
 
-    program -> config [label=" reads"]
-    python_h -> config [label=" reads",ltail=cluster_languages,constraint=false]
-    git_h -> config [label=" reads",ltail=cluster_vcs]
+    program -> config [label=" "]
+    python_h -> config [label=" ",ltail=cluster_languages,constraint=false]
+    git_h -> config [label=" ",ltail=cluster_vcs]
 
     {rank=min; program}
     {rank=same; git_h svn java clojure python_h}
