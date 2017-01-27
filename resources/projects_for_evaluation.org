@@ -5,7 +5,7 @@
    |------------+-------------------------------+----------+------------|
    | requests   | Yes, officially               | 4500 LOC | [[requests]]   |
    | simplejson | Seems like it, not officially | 2000 LOC | [[simplejson]] |
-   |            |                               |          |            |
+   | docopt     | Seems like it, not officially | 600 LOC  | [[docopt]]     |
 
 
 * Evaluations
@@ -73,4 +73,37 @@
      v3.5.3 --- v3.6.0 should have been v3.5.3 --- 3.5.4
      v3.6.5 --- v3.7.0 should have been v3.6.5 --- 3.6.6
      v3.8.2 --- v3.9.0 should have been v3.8.2 --- 3.8.3
+   #+END_SRC
+
+** docopt
+
+   From 0.1.0 to 0.6.2
+
+   11 versions, 7 different w/ structural, 6 different w/o structural (63%)
+
+   - author bumps minor number at breaking changes
+
+   Autobump is actually wrong here, versions starting with
+   0. allow breaking changes at any point:
+
+      #+BEGIN_QUOTE
+      Major version zero (0.y.z) is for initial development. Anything may
+      change at any time. The public API should not be considered stable.
+
+      Version 1.0.0 defines the public API. The way in which the version
+      number is incremented after this release is dependent on this public
+      API and how it changes.
+      #+END_QUOTE
+
+   #+BEGIN_SRC diff
+     --- structural   2017-01-27 13:53:47.913150564 +0000
+     +++ nonstructural   2017-01-27 13:53:52.153150544 +0000
+     @@ -1,7 +1,6 @@
+      0.1.1 --- 0.2.0 should have been 0.1.1 --- 1.0.0
+      0.2.0 --- 0.3.0 should have been 0.2.0 --- 1.0.0
+      0.3.0 --- 0.4.0 should have been 0.3.0 --- 1.0.0
+     -0.4.0 --- 0.4.1 should have been 0.4.0 --- 1.0.0
+      0.4.1 --- 0.4.2 should have been 0.4.1 --- 1.0.0
+      0.4.2 --- 0.5.0 should have been 0.4.2 --- 1.0.0
+      0.5.0 --- 0.6.0 should have been 0.5.0 --- 1.0.0
    #+END_SRC
