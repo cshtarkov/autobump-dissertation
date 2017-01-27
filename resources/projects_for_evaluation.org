@@ -37,10 +37,10 @@
      bumping major version.
    - Features are introduced with no changes to the API (/autobump's problem?/)
 
-   44 total, 21 different w/ structural, 19 different w/o structural, (50%) *FIRST DIFF*
-             16 major changes,           10 major changes,
-             19 different w/ structural, 15 different w/o structural, (35%) *SECOND DIFF, only intended API*
-             16 major changes,           9 major changes
+   | 44 total | 21 different w/ structural | 19 different w/o structural | (50%) *FIRST DIFF*                     |
+   |          | 16 major changes           | 10 major changes            |                                        |
+   |          | 19 different w/ structural | 15 different w/o structural | (35%) *SECOND DIFF, only intended API* |
+   |          | 16 major changes           | 9 major changes             |                                        |
 
    Excluding only obvious stuff:
    #+BEGIN_SRC diff
