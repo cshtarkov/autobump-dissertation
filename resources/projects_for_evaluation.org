@@ -11,7 +11,7 @@
 * Evaluations
 ** requests
 
-   From v1.0.0 to v2.9.2.
+   From v1.0.0 to v2.13.0.
 
    - One misnamed tag
    - Removing random utility methods and classes (that weren't private)
@@ -24,14 +24,29 @@
    - v2.6.0 starts supporting bytearrays, structural typing didn't catch it
      -- maybe a bug?
    - non-"exported" entities also considered, leads to large number of "breaking changes"
+   - small modifications to signatures not considered features
+   - function alias removed in v2.8.0, not considered breaking
+   - v2.10.0 adds new feature (SOCKS proxy) without changing API
 
-   44 total, 16 different w/ structural, 14 different w/o structural, (35%)
-             13 major changes,           10 major changes
+   Main problems stem from:
+   - Not considering utility methods and classes to be part of API, even though
+     they technically are.
+   - Giving different subjective weight to changes, so e.g. removing a
+     function alias is not considered breaking, or some random iterator.
+     Also, if there's been only one breaking change, not mentioned in changelog and not
+     bumping major version.
+   - Features are introduced with no changes to the API (/autobump's problem?/)
 
+   44 total, 21 different w/ structural, 19 different w/o structural, (50%) *FIRST DIFF*
+             16 major changes,           10 major changes,
+             19 different w/ structural, 15 different w/o structural, (35%) *SECOND DIFF, only intended API*
+             16 major changes,           9 major changes
+
+   Excluding only obvious stuff:
    #+BEGIN_SRC diff
-     --- structural  2017-01-26 21:42:15.308203494 +0000
-     +++ nonstructural   2017-01-26 21:42:09.314869901 +0000
-     @@ -1,16 +1,14 @@
+     --- structural  2017-01-27 23:17:36.158361209 +0000
+     +++ nonstructural   2017-01-27 23:16:59.534449019 +0000
+     @@ -1,21 +1,19 @@
       v1.0.3 --- v1.0.4 should have been v1.0.3 --- 2.0.0
       v1.0.4 --- v1.1.0 should have been v1.0.4 --- 2.0.0
       v1.1.0 --- v1.2.0 should have been v1.1.0 --- 2.0.0
@@ -50,6 +65,41 @@
       v2.5.3 --- v2.6.0 should have been v2.5.3 --- 2.5.4
       v2.7.0 --- v2.8.0 should have been v2.7.0 --- 3.0.0
      -v2.8.1 --- v2.9.0 should have been v2.8.1 --- 3.0.0
+      v2.9.1 --- v2.9.2 should have been v2.9.1 --- 2.10.0
+     -v2.9.2 --- v2.10.0 should have been v2.9.2 --- 3.0.0
+     +v2.9.2 --- v2.10.0 should have been v2.9.2 --- 2.9.3
+      v2.10.0 --- v2.11.0 should have been v2.10.0 --- 3.0.0
+      v2.11.1 --- v2.12.0 should have been v2.11.1 --- 3.0.0
+     -v2.12.1 --- v2.12.2 should have been v2.12.1 --- 3.0.0
+     +v2.12.1 --- v2.12.2 should have been v2.12.1 --- 2.13.0
+   #+END_SRC
+
+   Excluding utility files and other unintended stuff:
+   #+BEGIN_SRC diff
+     --- structural  2017-01-27 23:22:28.241684490 +0000
+     +++ nonstructural   2017-01-27 23:21:59.009750667 +0000
+     @@ -1,19 +1,15 @@
+      v1.0.3 --- v1.0.4 should have been v1.0.3 --- 2.0.0
+      v1.1.0 --- v1.2.0 should have been v1.1.0 --- 2.0.0
+      v1.2.0 --- v1.2.1 should have been v1.2.0 --- 2.0.0
+      v1.2.1 --- v1.2.2 should have been v1.2.1 --- 2.0.0
+      v2.0 --- v2.0.0 should have been v2.0 --- 2.0.1
+      v2.0.0 --- v2.0.1 should have been v2.0.0 --- 2.1.0
+     -v2.0.1 --- v2.1.0 should have been v2.0.1 --- 3.0.0
+      v2.2.1 --- v2.3.0 should have been v2.2.1 --- 3.0.0
+      v2.3.0 --- v2.4.0 should have been v2.3.0 --- 3.0.0
+     -v2.4.1 --- v2.4.2 should have been v2.4.1 --- 3.0.0
+     -v2.4.2 --- v2.4.3 should have been v2.4.2 --- 3.0.0
+     +v2.4.1 --- v2.4.2 should have been v2.4.1 --- 2.5.0
+      v2.5.1 --- v2.5.2 should have been v2.5.1 --- 3.0.0
+      v2.5.3 --- v2.6.0 should have been v2.5.3 --- 2.5.4
+      v2.7.0 --- v2.8.0 should have been v2.7.0 --- 3.0.0
+     -v2.8.1 --- v2.9.0 should have been v2.8.1 --- 3.0.0
+      v2.9.1 --- v2.9.2 should have been v2.9.1 --- 2.10.0
+     -v2.9.2 --- v2.10.0 should have been v2.9.2 --- 3.0.0
+     +v2.9.2 --- v2.10.0 should have been v2.9.2 --- 2.9.3
+      v2.10.0 --- v2.11.0 should have been v2.10.0 --- 3.0.0
+     -v2.12.1 --- v2.12.2 should have been v2.12.1 --- 3.0.0
    #+END_SRC
 
 ** simplejson
