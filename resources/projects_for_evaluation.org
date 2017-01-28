@@ -1,5 +1,4 @@
 * Python
-** First round
 
    | Project    | Semantically versioned                             | Size     | Results    |
    |------------+----------------------------------------------------+----------+------------|
@@ -8,6 +7,11 @@
    | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]]     |
    | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]]    |
 
+* Java
+
+  | Project | Semantically versioned                         | Size      | Results |
+  |---------+------------------------------------------------+-----------+---------|
+  | mockito | "semantic versioning is rigorously maintained" | 11000 LOC | [[mockito]] |
 
 * Evaluations
 ** requests
@@ -193,4 +197,48 @@
    #+BEGIN_SRC diff
      v0.8.1 --- v0.8.3 should have been v0.8.1 --- 0.8.2
      v1.0.1 --- v1.0.2 should have been v1.0.1 --- 2.0.0
+   #+END_SRC
+** mockito
+
+   From v2.2.0 to v2.6.9
+
+   - Very small additions, like one new method, overloaded method, exception or class considered patches
+   - v2.2.21 --- v2.2.22 proposes a major change because of a wildcard import
+   - v2.3.6 --- v2.3.9 versions skipped
+   - v2.3.11 --- v2.4.0 introduced verification listeners, even though that already happened earlier
+   - v2.4.5 --- v2.5.0 adds new features w/o changing API
+   - v2.6.0 "prepares Android library for publication", even though changes to it happened before
+
+   Main problems (/java_ast/):
+
+   - Adding one or two new methods, classes, not considered a feature
+   - Waiting for those to aggregate, then considered a feature release
+     BUT! Autobump claims it's a patch because nothing changed since the last one,
+     i.e. features were already present.
+     (/Overly frequent releases?/)
+   - Backwards compatibility strictly preserved, only Autobump failed
+
+   | 64 versions | /java_ast/                                               | /java_native/ |
+   |             | 16 different (25%)                                       |               |
+   |             | only 1 major (because of wildcard /failure in autobump/) |               |
+   |             | 11 feature additions                                     |               |
+
+   java_ast:
+   #+BEGIN_SRC text
+     v2.2.2 --- v2.2.3 should have been v2.2.2 --- 2.3.0
+     v2.2.10 --- v2.2.11 should have been v2.2.10 --- 2.3.0
+     v2.2.11 --- v2.2.12 should have been v2.2.11 --- 2.3.0
+     v2.2.19 --- v2.2.20 should have been v2.2.19 --- 2.3.0
+     v2.2.21 --- v2.2.22 should have been v2.2.21 --- 3.0.0
+     v2.3.0 --- v2.3.1 should have been v2.3.0 --- 2.4.0
+     v2.3.1 --- v2.3.2 should have been v2.3.1 --- 2.4.0
+     v2.3.2 --- v2.3.3 should have been v2.3.2 --- 2.4.0
+     v2.3.6 --- v2.3.9 should have been v2.3.6 --- 2.3.7
+     v2.3.9 --- v2.3.10 should have been v2.3.9 --- 2.4.0
+     v2.3.11 --- v2.4.0 should have been v2.3.11 --- 2.3.12
+     v2.4.0 --- v2.4.1 should have been v2.4.0 --- 2.5.0
+     v2.4.5 --- v2.5.0 should have been v2.4.5 --- 2.4.6
+     v2.5.0 --- v2.5.1 should have been v2.5.0 --- 2.6.0
+     v2.5.1 --- v2.5.2 should have been v2.5.1 --- 2.6.0
+     v2.5.7 --- v2.6.0 should have been v2.5.7 --- 2.5.8
    #+END_SRC
