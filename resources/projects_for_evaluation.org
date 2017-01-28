@@ -120,12 +120,21 @@
    - 3.5.3 -- 3.6.0 still definitely a bugfix
    - 3.6.5 -- 3.7.0 bugfix
 
+   Package authors may be right:
+
+   #+BEGIN_QUOTE
+   It [minor version] MAY be incremented if substantial new
+   functionality or improvements are introduced within the private
+   code.
+   #+END_QUOTE
+
    Main problems are:
    - Moving entities not considered breaking.
    - Changing behaviour of functions w/o changing their signature
      considered a feature.
 
-   *Summary*: Autobump is slightly more conservative than package authors.
+   *Summary*: Autobump does not know what a 'substantial' new functionality is, i.e.
+   it sometimes can't differentiate patch and feature releases.
 
    #+BEGIN_SRC diff
      v3.0.9 --- v3.1.0 should have been v3.0.9 --- 4.0.0
