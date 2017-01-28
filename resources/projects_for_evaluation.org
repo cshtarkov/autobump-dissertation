@@ -1,17 +1,17 @@
 * Python
 
-   | Project    | Semantically versioned                             | Size     | Results    |
-   |------------+----------------------------------------------------+----------+------------|
-   | requests   | Yes, officially                                    | 4500 LOC | [[requests]]   |
-   | simplejson | Seems like it, not officially                      | 2000 LOC | [[simplejson]] |
-   | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]]     |
-   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]]    |
+   | Project    | Semantically versioned                             | Size     | Results         |
+   |------------+----------------------------------------------------+----------+-----------------|
+   | requests   | Yes, officially                                    | 4500 LOC | [[requests]]  ([[#requests][gh]])  |
+   | simplejson | Seems like it, not officially                      | 2000 LOC | [[simplejson]] ([[#simplejson][gh]]) |
+   | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]] ([[#docopt][gh]])     |
+   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]] ([[#hashids][gh]])    |
 
 * Java
 
-  | Project | Semantically versioned                         | Size      | Results |
-  |---------+------------------------------------------------+-----------+---------|
-  | mockito | "semantic versioning is rigorously maintained" | 11000 LOC | [[mockito]] |
+  | Project | Semantically versioned                         | Size      | Results      |
+  |---------+------------------------------------------------+-----------+--------------|
+  | mockito | "semantic versioning is rigorously maintained" | 11000 LOC | [[mockito]] ([[#mockito][gh]]) |
 
 * Evaluations
 ** requests
