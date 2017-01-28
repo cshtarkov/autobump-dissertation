@@ -134,7 +134,8 @@
      considered a feature.
 
    *Summary*: Autobump does not know what a 'substantial' new functionality is, i.e.
-   it sometimes can't differentiate patch and feature releases.
+   it sometimes can't differentiate patch and feature releases. Actually follows Semver the best,
+   even though it doesn't claim to do so!
 
    #+BEGIN_SRC diff
      v3.0.9 --- v3.1.0 should have been v3.0.9 --- 4.0.0
