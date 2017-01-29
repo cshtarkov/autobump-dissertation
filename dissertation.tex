@@ -44,6 +44,8 @@ urlcolor={blue!80!black}
 \DeclareFixedFont{\ttmt}{T1}{txtt}{m}{n}{7}
 \definecolor{keyword}{HTML}{8C0D40}
 \definecolor{name}{HTML}{000F55}
+\newcommand\genericstyle{\lstset{basicstyle=\ttm}}
+\newcommand\codeinline[1]{{\genericstyle\lstinline!#1!}}
 \newcommand\pythonstyle{\lstset{
 language=Python,
 basicstyle=\ttm,
@@ -68,7 +70,7 @@ language=Java,
 basicstyle=\ttm,
 otherkeywords={},
 keywordstyle=\ttb\color{keyword},
-emph={method,MyClass,OtherClass,somePackage,YetAnotherClass,SomeClass,InnerClass},
+emph={method,MyClass,OtherClass,somePackage,YetAnotherClass,SomeClass,InnerClass,field,String,Integer},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -518,13 +520,13 @@ it follows semantic versioning, but the rules it specifies are very
 reminiscent of it\cite{ElmPackageVR}:
 
 \begin{itemize}
-\item Versions all have exactly three parts: \textttd{MAJOR.MINOR.PATCH}
+\item Versions all have exactly three parts: \codeinline{MAJOR.MINOR.PATCH}
 \item All packages start with initial version $1.0.0$
 \item Versions are incremented based on how the API changes:
 \begin{itemize}
-\item \textttd{PATCH} - the API is the same, no risk of breaking code
-\item \textttd{MINOR} - values have been added, existing values are unchanged
-\item \textttd{MAJOR} - existing values have been changed or removed
+\item \codeinline{PATCH} - the API is the same, no risk of breaking code
+\item \codeinline{MINOR} - values have been added, existing values are unchanged
+\item \codeinline{MAJOR} - existing values have been changed or removed
 \end{itemize}
 \end{itemize}
 
@@ -803,18 +805,18 @@ some components is user-configurable. The exact options that are
 available are discussed in later sections, but for a rundown of every
 tweakable see appendix \ref{RundownConfigurables}.
 
-When a configurable value of the form \textttd{Component/Option} is
+When a configurable value of the form \codeinline{Component/Option} is
 requested, the module tries to fetch it from three sources and stops
 at the first that succeeds:
 
 \begin{enumerate}[(i)]
-\item An environment variable named \textttd{AB_OPTION}. Note that the
+\item An environment variable named \codeinline{AB_OPTION}. Note that the
 component part of the option is missing. This is for brevity, since
 environment variables are meant to be used for quickly overriding
 options.
-\item A configuration file \textttd{autobump.ini} present in the
-working directory, which has a section \textttd{[Component]} with a
-setting of the form \textttd{[option=...]} nested inside. This matches
+\item A configuration file \codeinline{autobump.ini} present in the
+working directory, which has a section \codeinline{[Component]} with a
+setting of the form \codeinline{[option=...]} nested inside. This matches
 the informal standard INI format for configuration files. The reason
 we prefer this format is that Python comes with the module
 \pythoninline{configparser} for reading those types of files out of
@@ -977,7 +979,7 @@ def codebase_to_units(location):
 This function takes in a location on disk where some version of a
 repository is checked out, and returns a list of units that represent
 every top-level entity found in the codebase -- e.g. for Python, that
-would be individual \texttt{.py} files.
+would be individual \codeinline{.py} files.
 
 Generally, all current implementations of that function follow a
 similar pattern in how they work:
@@ -985,7 +987,7 @@ similar pattern in how they work:
 \begin{enumerate}
 \item Recursively walk the file system tree at \pythoninline{location} and
 filter file names of interest with some regular expression -- e.g.
-only \texttt{.py} files are considered, but not if they begin with \texttt{test-}.
+only \codeinline{.py} files are considered, but not if they begin with \codeinline{test-}.
 \item For every file of interest, convert it to a CAPIR unit in some
 way appropriate for the language.
 \item Return the list of units.
@@ -1164,7 +1166,7 @@ have them implement \pythoninline{method2} as well, so it may break once the
 new revision of the library starts needing it.
 
 Depending on whether the configuration option
-\texttt{Python/Structural Typing} is set, Autobump can examine the use
+\codeinline{Python/Structural Typing} is set, Autobump can examine the use
 of a parameter inside a function and determine those two sets. This is
 accomplished by walking the AST of the function definition and
 checking what methods are called on that object in all possible
@@ -1193,15 +1195,15 @@ oversight. When given code, the only to check the type hints is to
 actually evaluate the code and check the metadata of the relevant
 objects. This is undesirable in the case of Autobump where we want to
 use the AST instead. A third-party fork of Python's built in
-\textttd{ast} module exists, named \textttd{typed_ast}\cite{TypedAST}.
+\codeinline{ast} module exists, named \codeinline{typed_ast}\cite{TypedAST}.
 It gives access to type hinting information as part of AST itself.
 It's expected that this fork will get merged back into mainline Python
 eventually, but for the time being Autobump uses it as an external
 library.
 
-If the option \textttd{Python/Type Hinting} is enabled, whenever there
+If the option \codeinline{Python/Type Hinting} is enabled, whenever there
 is type hinting information for a function or field it's actual usage
-in the AST is ignored regardless of whether \textttd{Python/Use
+in the AST is ignored regardless of whether \codeinline{Python/Use
 Structural Typing} is enabled. Given the obvious incompatibility of
 having one version be parsed with structural typing, and another one
 having a type hint, we always pessimistically assume that the two are
@@ -1244,10 +1246,10 @@ Autobump that actually has two separate handlers.
 
 \subsubsection{Using the abstract syntax tree}
 
-\textttd{java_ast} is written entirely in Python and
+\codeinline{java_ast} is written entirely in Python and
 values speed over corectness. It is a quick-and-dirty handler that
 visits all Java source files in the repository and generates their
-ASTs via the third-party package \texttt{javalang}\cite{Javalang}.
+ASTs via the third-party package \codeinline{javalang}\cite{Javalang}.
 Transforming the AST into CAPIR is not quite as straightforward as it
 is in Python, because Java is statically typed.
 
@@ -1281,10 +1283,10 @@ impossible to fully qualify the type names without asking Java itself
 with introspection.
 \item The relationship between the two types. Java supports class
 inheritance and the conceptually similar implementation of interfaces.
-If \texttt{B} is more concrete than \texttt{A}, i.e. it is further
+If \codeinline{B} is more concrete than \codeinline{A}, i.e. it is further
 down the inheritance tree, then there was definitely a breaking change
--- client code still passing in objects of type \texttt{A} cannot
-implicitly cast to \texttt{B}. If \texttt{B} is more abstract, then
+-- client code still passing in objects of type \codeinline{A} cannot
+implicitly cast to \codeinline{B}. If \codeinline{B} is more abstract, then
 the parameter itself was generalised and client code will still work
 fine passing in more concrete variants. While the AST of the relevant
 classes can be inspected to see where they derive from or which
@@ -1293,7 +1295,7 @@ or the AST is absent for whatever reason, it is again impossible to
 decide whether there was a breaking change without using introspection.
 \end{enumerate}
 
-\textttd{java_ast}, as it is constructing the ASTs of all source files,
+\codeinline{java_ast}, as it is constructing the ASTs of all source files,
 does its best to fully qualify type names based on the surrounding
 statements and keeps track of the inheritance tree for the project. It
 does this by doing two passes on all source files -- once to establish
@@ -1341,17 +1343,17 @@ example as befor, it could be that both parameters types are after all
 declared in some external dependency and not in the same package. In
 that case there would be no way of knowing the relationship between
 the two using this handler. The optional configuration option
-\texttt{Java/Error On External Types} forces the handler to give up
+\codeinline{Java/Error On External Types} forces the handler to give up
 when the AST of a source file is needed, but not present in the
 project.
 
 \subsubsection{Using reflection}
 
-The alternative is \textttd{java_native}. It consists of two utilities
+The alternative is \codeinline{java_native}. It consists of two utilities
 written in Java, along with some Python middleware that interacts with
 the rest of Autobump. It relies solely on introspection of the
-\texttt{.class} files generated after a full compilation of the
-project. One tool, the \texttt{Inspector}, loads a list of class files
+\codeinline{.class} files generated after a full compilation of the
+project. One tool, the \codeinline{Inspector}, loads a list of class files
 and then prints to standard out an XML representation of all classes,
 including fields, methods, inner classes and so on. This is invoked
 once, immediately after compilation. Note that the XML representation
@@ -1417,7 +1419,7 @@ public class SomeClass {
 \end{figure}
 
 Type comparison is handled through another tool --
-\texttt{TypeCompatiblityChecker}. Given two types, it simply prints
+\codeinline{TypeCompatiblityChecker}. Given two types, it simply prints
 whether or not the first one is compatible with the second one. This
 again works by loading the relevant class files and simply asking Java
 itself. CAPIR types set by the Python middleware will automatically
@@ -1428,19 +1430,19 @@ Having to compile the project first and then run these tools
 introduced substantial complexity to the handler. It would be naïve to
 hardcode any commands that compile the project. Instead, we should
 delegate to the build system that comes with the project to properly
-handle things like dependencies and \textttd{CLASSPATH} issues.
-\textttd{java_ast} requires that a build command and a build root are
+handle things like dependencies and \codeinline{CLASSPATH} issues.
+\codeinline{java_ast} requires that a build command and a build root are
 passed in to Autobump as command-line arguments.
 % TODO: why arguments and not in config?
 
 The build command is a shell command that runs before using the
-\textttd{Inspector} to introspect all classes, for example
-\textttd{mvn compile} if the project is using Maven as its build
+\codeinline{Inspector} to introspect all classes, for example
+\codeinline{mvn compile} if the project is using Maven as its build
 system. The build root is a path relative to the root directory where
 the classes get placed after compilation. It is important that the
 handler knows that in order to correctly fully qualify class names. In
 Java, the package hierarchy corresponds to directory structure, and
-the wrong build root would result in the \textttd{Inspector} not
+the wrong build root would result in the \codeinline{Inspector} not
 finding the needed classes.
 
 The native handler produces much more accurate results, but is also
@@ -1451,7 +1453,7 @@ we are interested in is the new version number and not the changelog,
 running the AST handler once can be a shortcut. If it reports a major
 bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
-not, then \textttd{java_native} can be run to make sure.
+not, then \codeinline{java_native} can be run to make sure.
 
 \subsection{Clojure}
 \label{Clojure}
@@ -1479,7 +1481,7 @@ checked at compile time, while others remain dynamically typed.
 See appendix \ref{ClojurePrimer} for a primer on Clojure that
 elaborates on these features and gives concrete examples.
 
-The Clojure handler follows a model very similar to \textttd{java_native}
+The Clojure handler follows a model very similar to \codeinline{java_native}
 -- the handler itself being written in Clojure and linking to Autobump
 using some Python middleware. The bulk of the work done in Clojure is
 just mapping a program to its public API. As was with Java and XML,
@@ -1761,7 +1763,7 @@ done with Python's built-in \pythoninline{tempfile} module which can create
 temporary files and directories, not necessarily physically on the
 disk. The fixtures are found in the tests themselves and are written
 to temporary files as part of the set up process. By holding onto the
-handle obtained by calling functions from \texttt{tempfile} , we can
+handle obtained by calling functions from \codeinline{tempfile} , we can
 ensure that everything is cleaned up during the tear down phase of
 testing.
 
@@ -1864,11 +1866,11 @@ construct the acceptance test. At the bare minimum, the test also
 needs to say which handler should be used when running Autobump. Tests
 can also optionally define \pythoninline{setUp} and
 \pythoninline{tearDown} functions that run respectively before and
-after the suite. For example, the \textttd{java_maven} test, which
+after the suite. For example, the \codeinline{java_maven} test, which
 goes through the history of a Maven project by using the native Java
-handler, defines those two functions so that the \textttd{CLASSPATH}
+handler, defines those two functions so that the \codeinline{CLASSPATH}
 is properly set up before running Autobump. In normal operation, the
-\textttd{CLASSPATH} would be set up in Autobump's configuration file
+\codeinline{CLASSPATH} would be set up in Autobump's configuration file
 or by setting the environment variable, but that is not an option when
 automatically running multiple acceptance tests.
 
@@ -1906,13 +1908,13 @@ is not necessary.
 \section{Building}
 
 As it is written in Python, Autobump does not have a build step. The
-\texttt{Makefile} found in the repository has the following targets:
+\codeinline{Makefile} found in the repository has the following targets:
 
 \begin{itemize}
-\item \texttt{make test} runs the test suite.
-\item \texttt{make lint} runs the linter \texttt{flake8} (or the one
-specified as \texttt{LINTER}) against all source code.
-\item \texttt{make all} or \texttt{make} runs all of the above.
+\item \codeinline{make test} runs the test suite.
+\item \codeinline{make lint} runs the linter \codeinline{flake8} (or the one
+specified as \codeinline{LINTER}) against all source code.
+\item \codeinline{make all} or \codeinline{make} runs all of the above.
 \end{itemize}
 
 \section{Usage}
