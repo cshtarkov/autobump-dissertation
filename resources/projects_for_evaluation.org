@@ -1,18 +1,20 @@
 * Python
 
-   | Project    | Semantically versioned                             | Size     | Results         |
-   |------------+----------------------------------------------------+----------+-----------------|
-   | requests   | Yes, officially                                    | 4500 LOC | [[requests]]  ([[#requests][gh]])  |
-   | simplejson | Seems like it, not officially                      | 2000 LOC | [[simplejson]] ([[#simplejson][gh]]) |
-   | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]] ([[#docopt][gh]])     |
-   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]] ([[#hashids][gh]])    |
+   | Project    | Semantically versioned                             | Size     | Results         | % Mismatches              |
+   |------------+----------------------------------------------------+----------+-----------------+---------------------------|
+   | requests   | Yes, officially                                    | 4500 LOC | [[requests]]  ([[#requests][gh]])  | 22 for breaking, 35 total |
+   | simplejson | Seems like it, not officially                      | 2000 LOC | [[simplejson]] ([[#simplejson][gh]]) | 2 for breaking, 15 total  |
+   | docopt     | Seems like it, not officially                      | 600 LOC  | [[docopt]] ([[#docopt][gh]])     |                           |
+   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | [[hashids]] ([[#hashids][gh]])    | 20 for breaking, 30 total |
 
 * Java
 
-  | Project | Semantically versioned                                             | Size       | Results      |
-  |---------+--------------------------------------------------------------------+------------+--------------|
-  | mockito | "semantic versioning is rigorously maintained"                     | 11000 LOC  | [[mockito]] ([[#mockito][gh]]) |
-  | guava   | "We actually do use semantic versioning with Guava." (contributor) | 150000 LOC | [[guava]] ([[#guava][gh]])   |
+  | Project | Semantically versioned                                                   | Size       | Results      | % Mismatches                                                        |
+  |---------+--------------------------------------------------------------------------+------------+--------------+---------------------------------------------------------------------|
+  | mockito | "semantic versioning is rigorously maintained", but only since Mockito 2 | 11000 LOC  | [[mockito]] ([[#mockito][gh]]) | 16 for breaking, 30 total (java_ast)                                |
+  |         |                                                                          |            |              |                                                                     |
+  | guava   | "We actually do use semantic versioning with Guava." (contributor)       | 150000 LOC | [[guava]] ([[#guava][gh]])   | 7 for breaking, 11 total (java_ast)                                 |
+  |         |                                                                          |            |              | 0 for both, but there are versions that don't compile (java_native) |
 
 * Evaluations
 ** requests
@@ -135,6 +137,9 @@
    code.
    #+END_QUOTE
 
+   If we discount those 5 ambiguous changes, there may actually be only 1!
+   That's 2%!
+
    Main problems are:
    - Moving entities not considered breaking.
    - Changing behaviour of functions w/o changing their signature
@@ -154,6 +159,8 @@
    #+END_SRC
 
 ** docopt
+
+   *TODO*: Revisit this once Autobump supports 0.* major releases.
 
    From 0.1.0 to 0.6.2
 
@@ -284,3 +291,7 @@
      v11.0-rc1 --- v11.0.1 should have been v11.0-rc1 --- 12.0.0
      v11.0.1 --- v11.0.2 should have been v11.0.1 --- 12.0.0
    #+END_SRC
+
+# Local Variables:
+# eval: (visual-line-mode -1)
+# End:
