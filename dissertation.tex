@@ -647,29 +647,63 @@ there is an API), we can ignore the rest -- of course making obsolete
 some functionality of Autobump -- namely identifying in which parts of
 the program the changes have occurred and checking type compatibility.
 For this project, we examined the radically different languages
-Python, Java and Clojure\ref{LanguageHandlers} and the assumptions
-were found to be reasonable.
+Python, Java and Clojure\ref{LanguageHandlers} and in section
+\ref{Evaluation} we discuss whether the assumptions were found to be
+reasonable.
 
 \subsection{Feature additions}
 
-% TODO: Unable to identify feature addition if the API hasn't changed.
+Semver specifies that the minor version number should be incremented
+when new or improved functionality is added to the software in a
+backwards-compatible manner. If no breaking changes are identified as
+specified in the previous subsection, we can safely assume that if any
+features were indeed added, they would be backwards-compatible.
 
-% TODO: "It MAY be incremented if substantial new functionality or
-% improvements are introduced within the private code."
+However, while changes to the API can be used to identify breaking
+changes with certainty, it is not so with feature additions. The
+version of Semver at the time of writing, Semver 2.0.0, is ambiguous
+regarding whether the public API can be tied to the addition of
+features. At one point it claims that ``backwards compatible API
+additions/changes increment the minor version'', however later on it
+stipulates that the minor version number ``MAY be incremented if
+substantial new functionality or improvements are introduced within
+the private code''.
 
-Semver defines feature additions as backwards-compatible changes to
-the API. This means that changes which colloquially may be thought of
-new features, such as making the library run faster or handling more
-edge cases are considered patch changes by Semver.
+While it would be possible to inspect changes to the private code,
+perhaps in terms of how the abstract syntax tree was modified, the
+line between a patch change and a feature addition would be quite
+fuzzy.
 
-Going by the list of breaking changes and replacing its destructive
-aspect with a constructive one, we get the following list:
+If we revisit the established list of breaking changes and we replace
+the destructive aspect of each item with a constructive one, we get
+the following list:
 
 \begin{itemize}
 \item Adding a new entity.
 \item Changing the type of an entity into a compatible type.
 \item Adding a parameter with a default value to a function signature.
 \end{itemize}
+
+We can monitor for changes like these and suggest that those are
+indicative of a feature addition. Provided that no breaking changes
+are found, but some of these are, then it would be appropriate to bump
+the minor version number. This is the approach that
+\textit{elm-package} takes \cite{ElmPackageVR}: it defines a minor
+version bump as ``values have been added, existing values are
+unchanged''.
+
+Note that while backwards-compatible additions to the API virtually
+always indicate a feature addition (at least for a flexible enough
+definition of ``feature''), not all feature additions have to be
+accompanied by such a change. For example, a major performance
+improvement may be notable enough that the authors consider it a
+feature.
+
+While Autobump is guaranteed to miss some of the cases where a feature
+was added because it had no bearing on the API, this does not devalue
+its usefulness. The main point of semantic versioning is to guard
+against breaking changes, which can be done deterministically by just
+looking at the API.
 
 \section{Feature set and usage}
 
@@ -1801,6 +1835,9 @@ In this chapter, we try to use Autobump with real-world libraries
 written in the different target languages. We look at whether Autobump
 automatically produces similar or identical version numbers compared
 to the ones assigned manually by the developers and interpret our findings.
+Looking at this data, we discuss whether the assumptions Autobump
+makes about the target languages are valid, and whether it's approach
+of looking at only the public API is beneficial.
 
 % TODO: Evaluation was continuous in nature
 
