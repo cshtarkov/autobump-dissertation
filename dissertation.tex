@@ -153,6 +153,12 @@ inspects changes to a codebase and proposes the next version number
 according to semantic versioning. This reduces friction when releasing
 packages, and encourages more frequent, even fully automated,
 releases.
+\\\\
+While similar previous work does exist, we impose the additional
+requirement of abstracting changes to a codebase in a way appropriate
+across different languages. Then, we evaluate how feasible that
+approach is and compare how well projects in different languages
+already adhere to semantic versioning.
 \end{abstract}
 
 \educationalconsent
@@ -233,13 +239,27 @@ frameworks\footnote{Those are the most common use cases for one piece
 of software interfacing with another. The same argument also applies
 to philosophically similar use cases, like invoking command-line tools
 such as \textit{sed} or \textit{awk} from a script.} to avoid
-duplication of effort. Given that client applications and the
-libraries they depend on have separate development cycles, a problem
-arises in determining whether a client application is compatible with
-a different version of the same library. A common solution is to take
-a sequence-based scheme and attach meaning to the positions in order
-to measure degree of compatibility.
-% TODO: not true, there is still meaning
+duplication of effort.
+
+The way that client code usually interacts with these libraries is
+through a publically declared interface known as the
+\textit{application program interface} (API). In some languages,
+such as C, depending on how the vendor provides the library a binary
+interface may be used instead (\textit{application binary interface},
+ABI), but the general idea of a publically known interface remains the
+same.
+
+Given that client applications and the libraries they depend on have
+separate development cycles, a problem arises in determining whether a
+client application is compatible with a different version of the same
+library. In software development, backwards compatibility is often
+valued because it increases confidence and reduces cost when upgrading
+the dependencies of a software package. A common solution is to take a
+sequence-based scheme and attach meaning to the positions in order to
+measure degree of compatibility. That way the library authors take
+responsibility for noting changes in their software -- as is
+appropriate, because offloading this reponsibility to the users
+increases cost disproportionally.
 
 Semantic versioning\cite{SemanticVersioning} (Semver) is a strict
 formalization of such a scheme, where the format and significance of
@@ -492,6 +512,8 @@ configurable\cite{GitVersionConfiguration}.
 \section{JDiff}
 % TODO: Jdiff
 % http://javadiff.cvs.sourceforge.net/viewvc/javadiff/jdiff/doc/jdiff.html
+
+\section{Clirr}
 
 \section{Endjin.Assembly.ChangeDetection}
 
