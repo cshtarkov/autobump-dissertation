@@ -205,8 +205,9 @@
    #+END_SRC
 ** mockito
 
-   From v2.2.0 to v2.6.9
+   From v1.0 to v2.6.9
 
+   java_ast from v2.2.0 to v2.6.9:
    - Very small additions, like one new method, overloaded method, exception or class considered patches
    - v2.2.21 --- v2.2.22 proposes a major change because of a wildcard import
    - v2.3.6 --- v2.3.9 versions skipped
@@ -217,18 +218,21 @@
    Main problems (/java_ast/):
 
    - Adding one or two new methods, classes, not considered a feature
+   - Most missed major releases see the removal of very few random entities
+   - Other major releases are because of changing signature slightly (Object → T)
+   - At least some major because of wildcard imports *bug in autobump*
    - Waiting for those to aggregate, then considered a feature release
      BUT! Autobump claims it's a patch because nothing changed since the last one,
      i.e. features were already present.
      (/Overly frequent releases?/)
-   - Backwards compatibility strictly preserved, only Autobump failed
 
-   | 64 versions | /java_ast/                                               | /java_native/ |
-   |             | 16 different (25%)                                       |               |
-   |             | only 1 major (because of wildcard /failure in autobump/) |               |
-   |             | 11 feature additions                                     |               |
+   | 245 versions | /java_ast/           | /java_native/ |
+   |              | 70 different (30%)   |               |
+   |              | 39 major             |               |
+   |              | 22 feature additions |               |
+   |              | 9 patches            |               |
 
-   java_ast:
+   java_ast from v2.2.0 to v2.6.9:
    #+BEGIN_SRC text
      v2.2.2 --- v2.2.3 should have been v2.2.2 --- 2.3.0
      v2.2.10 --- v2.2.11 should have been v2.2.10 --- 2.3.0
@@ -247,10 +251,1542 @@
      v2.5.1 --- v2.5.2 should have been v2.5.1 --- 2.6.0
      v2.5.7 --- v2.6.0 should have been v2.5.7 --- 2.5.8
    #+END_SRC
+
+   java_ast from v1.0 to v2.2.0:
+   #+BEGIN_SRC text
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Entity was introduced
+     org.mockito.exceptions.verification.NeverWantedButInvoked: Entity was introduced
+     org.mockito.Mockito.never: Entity was introduced
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Entity was introduced
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooManyActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedDiffersFromActual: Entity was removed
+     org.mockito.exceptions.Reporter.tooManyActualInvocations: Type was changed to an incompatible type
+     org.mockito.Decamelizer: Entity was introduced
+     org.mockito.exceptions.verification.ArgumentsAreDifferentException: Entity was introduced
+     org.mockito.exceptions.Printable: Entity was removed
+     org.mockito.exceptions.cause.WantedDiffersFromActual: Entity was removed
+     org.mockito.exceptions.cause.ActualArgumentsAreDifferent: Entity was introduced
+     org.mockito.exceptions.PrintableInvocation: Entity was introduced
+     org.mockito.exceptions.verification.InvocationDiffersFromActual: Entity was removed
+     ---- v1.1 --- v1.2 should have been v1.1 --- 2.0.0
+     org.mockito.invocation.InvocationOnMock: Entity was introduced
+     org.mockito.Decamelizer: Entity was removed
+     org.mockito.exceptions.verification.ArgumentsAreDifferentException: Entity was removed
+     org.mockito.Matchers.anyObject: Type was changed to an incompatible type
+     org.mockito.configuration.ReturnValues: Entity was introduced
+     org.mockito.exceptions.verification.ArgumentsAreDifferent: Entity was introduced
+     org.mockito.configuration.experimental.ConfigurationSupport: Entity was introduced
+     org.mockito.exceptions.verification.ArgumentsAreDifferentEclipseReady: Entity was introduced
+     ---- v1.2 --- v1.3 should have been v1.2 --- 2.0.0
+     org.mockito.exceptions.Reporter.nullPassedWhenCreatingInOrder: Entity was introduced
+     org.mockito.exceptions.Reporter.nullPassedToVerify: Entity was introduced
+     org.mockito.exceptions.Reporter.nullPassedToVerifyNoMoreInteractions: Entity was introduced
+     org.mockito.exceptions.misusing.NullInsteadOfMockException: Entity was introduced
+     org.mockito.Matchers.anyList: Entity was introduced
+     org.mockito.Matchers.anyCollection: Entity was introduced
+     org.mockito.Matchers.anyMap: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotStubVoidMethodWithAReturnValue: Entity was introduced
+     org.mockito.exceptions.Reporter.notAMockPassedToWhenMethod: Entity was introduced
+     org.mockito.exceptions.Reporter.nullPassedToWhenMethod: Entity was introduced
+     org.mockito.exceptions.Reporter.onlyVoidMethodsCanBeSetToDoNothing: Entity was introduced
+     org.mockito.Matchers.isNotNull: Entity was introduced
+     org.mockito.stubbing.Answer: Entity was introduced
+     org.mockito.Mockito.doNothing: Entity was introduced
+     org.mockito.Mockito.doReturn: Entity was introduced
+     org.mockito.Mockito.doThrow: Entity was introduced
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.doAnswer: Entity was introduced
+     org.mockito.Mockito.spy: Entity was introduced
+     annotation: Entity was introduced
+     org.mockito.exceptions.Reporter.wantedAtMostX: Entity was introduced
+     org.mockito.exceptions.Reporter.wrongTypeOfReturnValue: Entity was introduced
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrderInAtLeastMode: Entity was introduced
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInAtLeastMode: Entity was introduced
+     org.mockito.exceptions.verification.junit.ArgumentsAreDifferent: Entity was introduced
+     org.mockito.exceptions.verification.ArgumentsAreDifferentEclipseReady: Entity was removed
+     org.mockito.runners.MockitoJUnitRunner: Entity was introduced
+     org.mockito.runners.MockitoJUnit44Runner: Entity was introduced
+     org.mockito.exceptions.verification.junit.JUnitTool: Entity was introduced
+     org.mockito.exceptions.misusing.WrongTypeOfReturnValue: Entity was introduced
+     org.mockito.InOrderImpl: Entity was introduced
+     org.mockito.InOrderVerifier: Entity was removed
+     org.mockito.Mockito.atLeastOnce: Type was changed to an incompatible type
+     org.mockito.Mockito.when: Entity was introduced
+     org.mockito.Mockito.atLeast: Entity was introduced
+     org.mockito.Mockito.never: Type was changed to an incompatible type
+     org.mockito.Mockito.times: Type was changed to an incompatible type
+     org.mockito.Mockito.stub: Type was changed to an incompatible type
+     org.mockito.Mockito.verify: Function was overloaded
+     org.mockito.Mockito.verify: Overloaded function removed
+     org.mockito.Mockito.atMost: Entity was introduced
+     org.mockito.exceptions.cause.ShouldBeInvokedAfter: Entity was removed
+     ---- v1.5 --- v1.6 should have been v1.5 --- 2.0.0
+     org.mockito.configuration.DefaultMockitoConfiguration: Entity was introduced
+     org.mockito.configuration.IMockitoConfiguration: Entity was introduced
+     org.mockito.exceptions.misusing.MockitoConfigurationException: Entity was introduced
+     org.mockito.exceptions.verification.SmartNullPointerException: Entity was introduced
+     org.mockito.exceptions.StringJoiner: Entity was removed
+     org.mockito.configuration.AnnotationEngine: Entity was introduced
+     org.mockito.Matchers.any: Entity was introduced
+     org.mockito.configuration.ReturnValues: Entity was removed
+     org.mockito.exceptions.cause.BecauseThisMethodWasNotStubbed: Entity was introduced
+     org.mockito.ReturnValues: Entity was introduced
+     org.mockito.Mockito.RETURNS_DEFAULTS: Entity was introduced
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Entity was introduced
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.exceptions.Reporter.misplacedArgumentMatcher: Entity was introduced
+     ---- v1.6 --- v1.7 should have been v1.6 --- 2.0.0
+     org.mockito.cglib.util.ParallelSorterEmitter: Entity was introduced
+     org.mockito.InOrderImpl: Entity was removed
+     org.mockito.asm.util.ASMifierMethodVisitor: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicVerifier: Entity was introduced
+     org.mockito.asm.tree.FieldInsnNode: Entity was introduced
+     org.mockito.asm.util.ASMifierClassVisitor: Entity was introduced
+     org.mockito.exceptions.verification.junit.ArgumentsAreDifferent.toString: Entity was introduced
+     org.mockito.asm.tree.LookupSwitchInsnNode: Entity was introduced
+     org.mockito.cglib.core.RejectModifierPredicate: Entity was introduced
+     org.mockito.asm.tree.MemberNode: Entity was introduced
+     org.mockito.asm.util.TraceFieldVisitor: Entity was introduced
+     org.mockito.cglib.reflect.FastClass: Entity was introduced
+     org.mockito.cglib.core.DefaultNamingPolicy: Entity was introduced
+     org.mockito.Matchers.anySet: Entity was introduced
+     org.mockito.Matchers.anyCollectionOf: Entity was introduced
+     org.mockito.Matchers.refEq: Parameter(s) added to function signature
+     org.mockito.Matchers.anySetOf: Entity was introduced
+     org.mockito.Matchers.anyListOf: Entity was introduced
+     org.mockito.Matchers.any: Function was overloaded
+     org.mockito.Matchers.any: Function was overloaded
+     org.mockito.cglib.transform.impl.AddPropertyTransformer: Entity was introduced
+     org.mockito.cglib.transform.AbstractProcessTask: Entity was introduced
+     org.mockito.cglib.beans.BulkBeanException: Entity was introduced
+     org.mockito.asm.util.CheckAnnotationAdapter: Entity was introduced
+     org.mockito.cglib.core.ClassesKey: Entity was introduced
+     org.mockito.cglib.core.EmitUtils: Entity was introduced
+     org.mockito.asm.ClassAdapter: Entity was introduced
+     org.mockito.asm.tree.analysis.Interpreter: Entity was introduced
+     org.mockito.asm.MethodVisitor: Entity was introduced
+     org.mockito.cglib.proxy.UndeclaredThrowableException: Entity was introduced
+     org.mockito.asm.tree.InsnNode: Entity was introduced
+     org.mockito.cglib.proxy.FixedValue: Entity was introduced
+     org.mockito.cglib.core.Constants: Entity was introduced
+     org.mockito.cglib.transform.AnnotationVisitorTee: Entity was introduced
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Parameter(s) removed from function signature
+     org.mockito.exceptions.Reporter.extraInterfacesRequiresAtLeastOneInterface: Entity was introduced
+     org.mockito.exceptions.Reporter.extraInterfacesCannotContainMockedType: Entity was introduced
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrderInAtLeastMode: Entity was removed
+     org.mockito.exceptions.Reporter.noArgumentValueWasCaptured: Entity was introduced
+     org.mockito.exceptions.Reporter.tooManyActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.misplacedArgumentMatcher: Parameter(s) added to function signature
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInAtLeastMode: Entity was removed
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.unfinishedVerificationException: Parameter(s) added to function signature
+     org.mockito.exceptions.Reporter.unfinishedStubbing: Parameter(s) added to function signature
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Parameter(s) removed from function signature
+     org.mockito.exceptions.Reporter.extraInterfacesAcceptsOnlyInterfaces: Entity was introduced
+     org.mockito.exceptions.Reporter.tooManyActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Parameter(s) removed from function signature
+     org.mockito.exceptions.Reporter.extraInterfacesDoesNotAcceptNullParameters: Entity was introduced
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Parameter(s) removed from function signature
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.smartNullPointerException: Entity was introduced
+     org.mockito.configuration.IMockitoConfiguration: Entity was introduced
+     org.mockito.cglib.beans.FixedKeySet: Entity was introduced
+     org.mockito.asm.tree.AbstractInsnNode: Entity was introduced
+     org.mockito.cglib.transform.MethodFilter: Entity was introduced
+     org.mockito.asm.tree.LineNumberNode: Entity was introduced
+     org.mockito.cglib.core.DefaultGeneratorStrategy: Entity was introduced
+     org.mockito.asm.signature.SignatureWriter: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicValue: Entity was introduced
+     org.mockito.asm.tree.analysis.SimpleVerifier: Entity was introduced
+     org.mockito.asm.Frame: Entity was introduced
+     org.mockito.cglib.reflect.MulticastDelegate: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassFilterTransformer: Entity was introduced
+     org.mockito.cglib.core.DuplicatesPredicate: Entity was introduced
+     org.mockito.cglib.transform.impl.AddDelegateTransformer: Entity was introduced
+     org.mockito.asm.tree.LabelNode: Entity was introduced
+     org.mockito.cglib.transform.impl.FieldProviderTransformer: Entity was introduced
+     org.mockito.asm.tree.AnnotationNode: Entity was introduced
+     org.mockito.exceptions.cause.BecauseThisMethodWasNotStubbed: Entity was removed
+     org.mockito.asm.signature.SignatureReader: Entity was introduced
+     org.mockito.asm.tree.InsnList: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicInterpreter: Entity was introduced
+     org.mockito.asm.util.ASMifierFieldVisitor: Entity was introduced
+     org.mockito.asm.Item: Entity was introduced
+     org.mockito.asm.FieldWriter: Entity was introduced
+     org.mockito.asm.MethodAdapter: Entity was introduced
+     org.mockito.cglib.beans.BeanCopier: Entity was introduced
+     org.mockito.asm.tree.MultiANewArrayInsnNode: Entity was introduced
+     org.mockito.cglib.proxy.LazyLoaderGenerator: Entity was introduced
+     org.mockito.cglib.proxy.InterfaceMaker: Entity was introduced
+     org.mockito.cglib.proxy.CallbackFilter: Entity was introduced
+     org.mockito.cglib.core.ReflectUtils: Entity was introduced
+     org.mockito.cglib.core.MethodInfoTransformer: Entity was introduced
+     org.mockito.cglib.transform.ClassEmitterTransformer: Entity was introduced
+     org.mockito.cglib.proxy.Factory: Entity was introduced
+     org.mockito.cglib.core.Converter: Entity was introduced
+     org.mockito.cglib.proxy.MixinBeanEmitter: Entity was introduced
+     org.mockito.cglib.core.ClassEmitter: Entity was introduced
+     org.mockito.asm.tree.analysis.SourceValue: Entity was introduced
+     org.mockito.asm.tree.IntInsnNode: Entity was introduced
+     org.mockito.exceptions.verification.junit.JUnitTool.createArgumentsAreDifferentException: Type was changed to an incompatible type
+     org.mockito.exceptions.verification.junit.JUnitTool.createArgumentsAreDifferentException: Parameter(s) removed from function signature
+     org.mockito.asm.Handler: Entity was introduced
+     org.mockito.cglib.core.DebuggingClassWriter: Entity was introduced
+     org.mockito.cglib.transform.ClassReaderGenerator: Entity was introduced
+     org.mockito.cglib.transform.FieldVisitorTee: Entity was introduced
+     org.mockito.cglib.core.MethodWrapper: Entity was introduced
+     org.mockito.cglib.proxy.FixedValueGenerator: Entity was introduced
+     org.mockito.asm.AnnotationVisitor: Entity was introduced
+     org.mockito.configuration.experimental.ConfigurationSupport: Entity was removed
+     org.mockito.stubbing.OngoingStubbing: Entity was introduced
+     org.mockito.cglib.proxy.Enhancer: Entity was introduced
+     org.mockito.cglib.core.AbstractClassGenerator: Entity was introduced
+     org.mockito.MockSettings: Entity was introduced
+     org.mockito.asm.signature.SignatureVisitor: Entity was introduced
+     org.mockito.cglib.transform.ClassFilter: Entity was introduced
+     org.mockito.cglib.proxy.LazyLoader: Entity was introduced
+     org.mockito.runners.VerboseMockitoJUnitRunner: Entity was introduced
+     org.mockito.exceptions.cause.WantedAnywhereAfterFollowingInteraction: Entity was removed
+     org.mockito.asm.util.TraceMethodVisitor: Entity was introduced
+     org.mockito.exceptions.base.HasStackTrace: Entity was removed
+     org.mockito.cglib.core.VisibilityPredicate: Entity was introduced
+     org.mockito.exceptions.verification.VerificationInOrderFailure: Entity was introduced
+     org.mockito.cglib.transform.impl.UndeclaredThrowableStrategy: Entity was introduced
+     org.mockito.asm.util.AbstractVisitor: Entity was introduced
+     org.mockito.asm.ByteVector: Entity was introduced
+     org.mockito.exceptions.Discrepancy: Entity was introduced
+     org.mockito.cglib.core.ClassGenerator: Entity was introduced
+     org.mockito.asm.ClassReader: Entity was introduced
+     org.mockito.cglib.transform.MethodFilterTransformer: Entity was introduced
+     org.mockito.asm.util.ASMifierAnnotationVisitor: Entity was introduced
+     org.mockito.cglib.proxy.MethodProxy: Entity was introduced
+     org.mockito.asm.tree.MethodInsnNode: Entity was introduced
+     org.mockito.asm.tree.FrameNode: Entity was introduced
+     org.mockito.IMockitoConfiguration: Entity was removed
+     org.mockito.cglib.core.MethodInfo: Entity was introduced
+     org.mockito.cglib.transform.impl.AddInitTransformer: Entity was introduced
+     org.mockito.asm.tree.TableSwitchInsnNode: Entity was introduced
+     org.mockito.configuration.AnnotationEngine: Entity was introduced
+     org.mockito.cglib.core.TinyBitSet: Entity was introduced
+     org.mockito.asm.Opcodes: Entity was introduced
+     org.junit.mockito.VerboseMockitoJUnitRunner: Entity was removed
+     org.mockito.cglib.beans.BeanMap: Entity was introduced
+     org.mockito.cglib.core.ClassInfo: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformerTee: Entity was introduced
+     org.mockito.asm.util.CheckFieldAdapter: Entity was introduced
+     org.mockito.exceptions.verification.ArgumentsAreDifferent.toString: Entity was introduced
+     org.mockito.cglib.proxy.DispatcherGenerator: Entity was introduced
+     org.mockito.asm.util.CheckClassAdapter: Entity was introduced
+     org.mockito.asm.Label: Entity was introduced
+     org.mockito.cglib.beans.ImmutableBean: Entity was introduced
+     org.mockito.cglib.util.SorterTemplate: Entity was introduced
+     org.mockito.exceptions.cause.ActualArgumentsAreDifferent: Entity was removed
+     org.mockito.cglib.proxy.CallbackGenerator: Entity was introduced
+     org.mockito.cglib.reflect.FastMember: Entity was introduced
+     org.mockito.configuration.DefaultMockitoConfiguration: Entity was introduced
+     org.mockito.asm.tree.analysis.Frame: Entity was introduced
+     org.mockito.asm.ClassWriter: Entity was introduced
+     org.mockito.asm.util.CheckSignatureAdapter: Entity was introduced
+     org.mockito.exceptions.cause.UndesiredInvocation: Entity was removed
+     org.mockito.asm.tree.analysis.SourceInterpreter: Entity was introduced
+     org.mockito.asm.util.TraceClassVisitor: Entity was introduced
+     org.mockito.cglib.core.LocalVariablesSorter: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformerChain: Entity was introduced
+     org.mockito.asm.tree.analysis.SmallSet: Entity was introduced
+     org.mockito.cglib.core.CollectionUtils: Entity was introduced
+     org.mockito.cglib.beans.BulkBean: Entity was introduced
+     org.mockito.ArgumentCaptor: Entity was introduced
+     org.mockito.cglib.core.GeneratorStrategy: Entity was introduced
+     org.mockito.asm.tree.LocalVariableNode: Entity was introduced
+     org.mockito.runners.ConsoleSpammingMockitoJUnitRunner: Entity was introduced
+     org.mockito.cglib.proxy.Callback: Entity was introduced
+     org.mockito.exceptions.verification.WantedButNotInvoked.toString: Entity was introduced
+     org.mockito.cglib.proxy.ProxyRefDispatcher: Entity was introduced
+     org.mockito.asm.tree.TypeInsnNode: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassLoader: Entity was introduced
+     org.mockito.stubbing.VoidMethodStubbable: Entity was introduced
+     org.mockito.cglib.reflect.MethodDelegate: Entity was introduced
+     org.mockito.cglib.proxy.Dispatcher: Entity was introduced
+     org.mockito.cglib.core.KeyFactory: Entity was introduced
+     org.mockito.asm.util.TraceAnnotationVisitor: Entity was introduced
+     org.mockito.cglib.transform.TransformingClassGenerator: Entity was introduced
+     org.mockito.DefaultMockitoConfiguration: Entity was removed
+     org.mockito.asm.Type: Entity was introduced
+     org.mockito.cglib.transform.impl.AbstractInterceptFieldCallback: Entity was introduced
+     org.mockito.asm.tree.JumpInsnNode: Entity was introduced
+     org.mockito.cglib.transform.AbstractTransformTask: Entity was introduced
+     org.mockito.cglib.core.CodeEmitter: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformer: Entity was introduced
+     org.mockito.cglib.proxy.InvocationHandlerGenerator: Entity was introduced
+     org.mockito.asm.util.CheckMethodAdapter: Entity was introduced
+     org.mockito.asm.tree.FieldNode: Entity was introduced
+     org.mockito.asm.AnnotationWriter: Entity was introduced
+     org.mockito.cglib.proxy.NoOpGenerator: Entity was introduced
+     org.mockito.cglib.proxy.InvocationHandler: Entity was introduced
+     org.mockito.asm.tree.analysis.Analyzer: Entity was introduced
+     org.mockito.cglib.proxy.Mixin: Entity was introduced
+     org.mockito.asm.util.ASMifierAbstractVisitor: Entity was introduced
+     org.mockito.asm.tree.TryCatchBlockNode: Entity was introduced
+     org.mockito.AnnotationEngine: Entity was removed
+     org.mockito.cglib.core.Transformer: Entity was introduced
+     org.mockito.cglib.transform.impl.AddStaticInitTransformer: Entity was introduced
+     org.mockito.cglib.transform.MethodVisitorTee: Entity was introduced
+     org.mockito.asm.Edge: Entity was introduced
+     org.mockito.cglib.reflect.ConstructorDelegate: Entity was introduced
+     org.mockito.cglib.transform.impl.UndeclaredThrowableTransformer: Entity was introduced
+     org.mockito.BDDMockito: Entity was introduced
+     org.mockito.asm.tree.LdcInsnNode: Entity was introduced
+     org.mockito.exceptions.cause.TooLittleInvocations: Entity was removed
+     org.mockito.stubbing.Stubber: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformerFactory: Entity was introduced
+     org.mockito.asm.tree.VarInsnNode: Entity was introduced
+     org.mockito.asm.util.Traceable: Entity was introduced
+     org.mockito.cglib.transform.impl.AccessFieldTransformer: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassTransformer: Entity was introduced
+     org.mockito.cglib.core.CodeGenerationException: Entity was introduced
+     org.mockito.asm.FieldVisitor: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldTransformer: Entity was introduced
+     org.mockito.cglib.core.Local: Entity was introduced
+     org.mockito.asm.util.TraceSignatureVisitor: Entity was introduced
+     org.mockito.Mockito.RETURNS_MOCKS: Entity was introduced
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Entity was introduced
+     org.mockito.Mockito.validateMockitoUsage: Entity was introduced
+     org.mockito.Mockito.withSettings: Entity was introduced
+     org.mockito.Mockito.doThrow: Type was changed to an incompatible type
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.stub: Type was changed to an incompatible type
+     org.mockito.Mockito.reset: Entity was introduced
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doCallRealMethod: Entity was introduced
+     org.mockito.Mockito.doReturn: Type was changed to an incompatible type
+     org.mockito.Mockito.stubVoid: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.asm.MethodWriter: Entity was introduced
+     org.mockito.asm.Attribute: Entity was introduced
+     org.mockito.exceptions.base.StackTraceFilter: Entity was removed
+     org.mockito.cglib.util.ParallelSorter: Entity was introduced
+     org.mockito.cglib.reflect.FastMethod: Entity was introduced
+     org.mockito.cglib.core.Block: Entity was introduced
+     org.mockito.runners.MockitoJUnitRunner.getDescription: Entity was introduced
+     org.mockito.runners.MockitoJUnitRunner.run: Entity was introduced
+     org.mockito.cglib.proxy.CallbackHelper: Entity was introduced
+     org.mockito.cglib.beans.BeanGenerator: Entity was introduced
+     org.mockito.cglib.util.StringSwitcher: Entity was introduced
+     org.mockito.cglib.proxy.CallbackInfo: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldCallback: Entity was introduced
+     org.mockito.asm.tree.InnerClassNode: Entity was introduced
+     org.mockito.cglib.proxy.NoOp: Entity was introduced
+     org.mockito.asm.tree.ClassNode: Entity was introduced
+     org.mockito.cglib.transform.ClassVisitorTee: Entity was introduced
+     org.mockito.asm.util.TraceAbstractVisitor: Entity was introduced
+     org.mockito.exceptions.Pluralizer: Entity was introduced
+     org.mockito.cglib.transform.impl.FieldProvider: Entity was introduced
+     org.mockito.cglib.proxy.MixinEmitter: Entity was introduced
+     org.mockito.cglib.beans.BulkBeanEmitter: Entity was introduced
+     org.mockito.cglib.core.TypeUtils: Entity was introduced
+     org.mockito.cglib.proxy.Proxy: Entity was introduced
+     org.mockito.cglib.proxy.MethodInterceptor: Entity was introduced
+     org.mockito.asm.tree.analysis.Subroutine: Entity was introduced
+     org.mockito.cglib.core.ProcessSwitchCallback: Entity was introduced
+     org.mockito.asm.tree.IincInsnNode: Entity was introduced
+     org.mockito.asm.ClassVisitor: Entity was introduced
+     org.mockito.cglib.transform.ClassFilterTransformer: Entity was introduced
+     org.mockito.cglib.transform.TransformingClassLoader: Entity was introduced
+     org.mockito.cglib.core.NamingPolicy: Entity was introduced
+     org.mockito.asm.tree.MethodNode: Entity was introduced
+     org.mockito.exceptions.base.HasStackTraceThrowableWrapper: Entity was removed
+     org.mockito.cglib.core.ProcessArrayCallback: Entity was introduced
+     org.mockito.exceptions.verification.VerifcationInOrderFailure: Entity was removed
+     org.mockito.cglib.core.ClassNameReader: Entity was introduced
+     org.mockito.cglib.core.Predicate: Entity was introduced
+     org.mockito.cglib.beans.BeanMapEmitter: Entity was introduced
+     org.mockito.cglib.core.Signature: Entity was introduced
+     org.mockito.asm.util.ASMifiable: Entity was introduced
+     org.mockito.stubbing.DeprecatedOngoingStubbing: Entity was introduced
+     org.mockito.cglib.reflect.FastConstructor: Entity was introduced
+     org.mockito.cglib.proxy.MethodInterceptorGenerator: Entity was introduced
+     org.mockito.cglib.core.Customizer: Entity was introduced
+     org.mockito.cglib.core.ObjectSwitchCallback: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldFilter: Entity was introduced
+     org.mockito.asm.tree.analysis.Value: Entity was introduced
+     org.mockito.cglib.proxy.MixinEverythingEmitter: Entity was introduced
+     org.mockito.asm.tree.analysis.AnalyzerException: Entity was introduced
+     org.mockito.exceptions.base.CommonStackTraceRemover: Entity was removed
+     org.mockito.cglib.reflect.FastClassEmitter: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldEnabled: Entity was introduced
+     ---- v1.7-rc1 --- v1.8.0 should have been v1.7-rc1 --- 2.0.0
+     org.mockito.exceptions.verification.junit.ArgumentsAreDifferent.toString: Entity was introduced
+     org.mockito.Matchers.anyVararg: Entity was introduced
+     org.mockito.exceptions.Reporter.mockedTypeIsInconsistentWithSpiedInstanceType: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotCallRealMethodOnInterface: Entity was introduced
+     org.mockito.runners.VerboseMockitoJUnitRunner: Entity was introduced
+     org.mockito.ArgumentMatcher.describeTo: Type was changed to an incompatible type
+     org.mockito.exceptions.verification.ArgumentsAreDifferent.toString: Entity was introduced
+     org.mockito.ArgumentCaptor.forClass: Entity was introduced
+     org.mockito.exceptions.verification.WantedButNotInvoked.toString: Entity was introduced
+     org.mockito.Mockito.RETURNS_MOCKS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.doThrow: Type was changed to an incompatible type
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.only: Entity was introduced
+     org.mockito.Mockito.stub: Type was changed to an incompatible type
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doCallRealMethod: Type was changed to an incompatible type
+     org.mockito.Mockito.doReturn: Type was changed to an incompatible type
+     org.mockito.Mockito.stubVoid: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     ---- v1.8.0-rc2 --- v1.8.1 should have been v1.8.0-rc2 --- 2.0.0
+     org.mockito.ArgumentMatcher.describeTo: Type was changed to an incompatible type
+     ---- v1.8.1-rc1 --- v1.8.2 should have been v1.8.1-rc1 --- 2.0.0
+     org.mockito.exceptions.Reporter.cannotVerifyToString: Entity was introduced
+     org.mockito.exceptions.Reporter.moreThanOneAnnotationNotAllowed: Entity was introduced
+     org.mockito.exceptions.Reporter.unsupportedCombinationOfAnnotations: Entity was introduced
+     org.mockito.exceptions.Reporter.injectMockAnnotationFieldIsNull: Entity was introduced
+     org.mockito.runners.VerboseMockitoJUnitRunner.filter: Entity was introduced
+     org.mockito.runners.ConsoleSpammingMockitoJUnitRunner.filter: Entity was introduced
+     org.mockito.MockitoDebugger: Entity was introduced
+     org.mockito.Mockito.RETURNS_DEEP_STUBS: Entity was introduced
+     org.mockito.Mockito.atLeastOnce: Type was changed to an incompatible type
+     org.mockito.Mockito.times: Type was changed to an incompatible type
+     org.mockito.Mockito.never: Type was changed to an incompatible type
+     org.mockito.Mockito.verify: Function was overloaded
+     org.mockito.Mockito.verify: Overloaded function removed
+     org.mockito.Mockito.atLeast: Type was changed to an incompatible type
+     org.mockito.Mockito.atMost: Type was changed to an incompatible type
+     org.mockito.Mockito.only: Type was changed to an incompatible type
+     org.mockito.runners.MockitoJUnitRunner.filter: Entity was introduced
+     org.mockito.verification.VerificationMode: Entity was introduced
+     ---- v1.8.2 --- v1.8.3 should have been v1.8.2 --- 2.0.0
+     org.mockito.exceptions.Reporter.cannotStubVoidMethodWithAReturnValue: Parameter(s) added to function signature
+     org.mockito.exceptions.Reporter.noMoreInteractionsWantedInOrder: Entity was introduced
+     org.mockito.stubbing.answers.ReturnsElementsOf: Entity was introduced
+     enum: Entity was introduced
+     ---- v1.8.3 --- v1.8.4 should have been v1.8.3 --- 2.0.0
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Parameter(s) added to function signature
+     org.mockito.verification.Timeout: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout: Entity was introduced
+     org.mockito.Mockito.RETURNS_MOCKS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEEP_STUBS: Type was changed to an incompatible type
+     org.mockito.Mockito.timeout: Entity was introduced
+     org.mockito.Mockito.doThrow: Type was changed to an incompatible type
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.stub: Type was changed to an incompatible type
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doCallRealMethod: Type was changed to an incompatible type
+     org.mockito.Mockito.doReturn: Type was changed to an incompatible type
+     org.mockito.Mockito.stubVoid: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     ---- v1.8.4 --- v1.8.5 should have been v1.8.4 --- 2.0.0
+     org.mockito.exceptions.Reporter.incorrectUseOfApi: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotInitializeForSpyAnnotation: Entity was introduced
+     org.mockito.exceptions.Reporter.notAMockPassedToVerify: Parameter(s) added to function signature
+     org.mockito.exceptions.Reporter.atMostShouldNotBeUsedWithTimeout: Entity was introduced
+     org.mockito.exceptions.Reporter.invocationListenerDoesNotAcceptNullParameters: Entity was introduced
+     org.mockito.exceptions.Reporter.invocationListenersRequiresAtLeastOneListener: Entity was introduced
+     org.mockito.exceptions.Reporter.fieldInitialisationThrewException: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotInjectDependency: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotInitializeForInjectMocksAnnotation: Entity was introduced
+     org.mockito.exceptions.Reporter.injectMockAnnotationFieldIsNull: Entity was removed
+     org.mockito.exceptions.Reporter.invocationListenerThrewException: Entity was introduced
+     org.mockito.exceptions.Reporter.smartNullPointerException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.smartNullPointerException: Parameter(s) added to function signature
+     org.mockito.exceptions.misusing.FriendlyReminderException: Entity was introduced
+     org.mockito.BDDMockito.willThrow: Function was overloaded
+     org.mockito.BDDMockito.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.will: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.getMock: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.willThrow: Function was overloaded
+     org.mockito.cglib.proxy.CallbackHelper.accept: Parameter(s) added to function signature
+     org.mockito.listeners.MethodInvocationReport: Entity was introduced
+     org.mockito.Matchers.anyMapOf: Entity was introduced
+     org.mockito.Matchers.isNull: Function was overloaded
+     org.mockito.Matchers.isNull: Function was overloaded
+     org.mockito.Matchers.notNull: Function was overloaded
+     org.mockito.Matchers.notNull: Function was overloaded
+     org.mockito.Matchers.isNotNull: Function was overloaded
+     org.mockito.Matchers.isNotNull: Function was overloaded
+     org.mockito.listeners.InvocationListener: Entity was introduced
+     org.mockito.Mockito.RETURNS_MOCKS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEEP_STUBS: Type was changed to an incompatible type
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.stub: Type was changed to an incompatible type
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.ignoreStubs: Entity was introduced
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doCallRealMethod: Type was changed to an incompatible type
+     org.mockito.Mockito.doReturn: Type was changed to an incompatible type
+     org.mockito.Mockito.stubVoid: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     ---- v1.8.5 --- v1.9-rc1 should have been v1.8.5 --- 2.0.0
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willCallRealMethod: Entity was introduced
+     org.mockito.exceptions.Reporter.wrongTypeOfArgumentToReturn: Entity was introduced
+     org.mockito.exceptions.Reporter.noMoreInteractionsWantedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invalidUseOfMatchers: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invalidArgumentPositionRangeAtInvocationTime: Entity was introduced
+     org.mockito.exceptions.Reporter.tooManyActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooManyActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to a compatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.stubPassedToVerify: Entity was introduced
+     org.mockito.exceptions.Reporter.tooManyActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooManyActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to a compatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.misplacedArgumentMatcher: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.smartNullPointerException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.reportNoSubMatchersFound: Entity was introduced
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.incorrectUseOfAdditionalMatchers: Entity was introduced
+     org.mockito.exceptions.Reporter.serializableWontWorkForObjectsThatDontImplementSerializable: Entity was introduced
+     org.mockito.exceptions.Reporter.unfinishedVerificationException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.unfinishedStubbing: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.spyAndDelegateAreMutuallyExclusive: Entity was introduced
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Overloaded function removed
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Overloaded function removed
+     org.mockito.exceptions.Reporter.mockedTypeIsInconsistentWithDelegatedInstanceType: Entity was introduced
+     org.mockito.exceptions.Reporter.invalidArgumentRangeAtIdentityAnswerCreationTime: Entity was introduced
+     org.mockito.mock.MockCreationSettings: Entity was introduced
+     org.mockito.invocation.StubInfo: Entity was introduced
+     org.mockito.plugins.MockMaker: Entity was introduced
+     org.mockito.plugins.StackTraceCleanerProvider: Entity was introduced
+     org.mockito.exceptions.Discrepancy.getActualCount: Entity was removed
+     org.mockito.exceptions.Discrepancy.getWantedCount: Entity was removed
+     org.mockito.exceptions.Discrepancy.getPluralizedActualCount: Entity was removed
+     org.mockito.exceptions.Discrepancy.getPluralizedWantedCount: Entity was removed
+     org.mockito.ArgumentMatcher.describeTo: Type was changed to an incompatible type
+     org.mockito.exceptions.stacktrace.StackTraceCleaner: Entity was introduced
+     org.mockito.configuration.DefaultMockitoConfiguration.enableClassCache: Entity was introduced
+     org.mockito.ArgumentCaptor.captureVararg: Entity was introduced
+     org.mockito.ArgumentCaptor.getVarargsValues: Entity was introduced
+     org.mockito.ArgumentCaptor.getAllVarargsValues: Entity was introduced
+     org.mockito.invocation.MockHandler: Entity was introduced
+     org.mockito.exceptions.misusing.CannotVerifyStubOnlyMock: Entity was introduced
+     org.mockito.AdditionalAnswers: Entity was introduced
+     org.mockito.invocation.Invocation: Entity was introduced
+     org.mockito.stubbing.answers.ReturnsElementsOf.answer: Entity was removed
+     org.mockito.MockingDetails: Entity was introduced
+     org.mockito.Mockito.mockingDetails: Entity was introduced
+     org.mockito.Mockito.calls: Entity was introduced
+     org.mockito.invocation.DescribedInvocation: Entity was introduced
+     org.mockito.exceptions.Pluralizer.pluralize: Entity was removed
+     org.mockito.mock.MockName: Entity was introduced
+     org.mockito.invocation.Location: Entity was introduced
+     ---- v1.9.0-rc1 --- v1.9.5 should have been v1.9.0-rc1 --- 2.0.0
+     org.mockito.BDDMockito.then: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.Then: Entity was introduced
+     org.mockito.exceptions.base.MockitoSerializationIssue: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotCallAbstractRealMethod: Entity was introduced
+     org.mockito.exceptions.Reporter.atMostShouldNotBeUsedWithTimeout: Entity was removed
+     org.mockito.exceptions.Reporter.stubPassedToVerify: Entity was introduced
+     org.mockito.exceptions.Reporter.serializableWontWorkForObjectsThatDontImplementSerializable: Entity was introduced
+     org.mockito.exceptions.Reporter.atMostAndNeverShouldNotBeUsedWithTimeout: Entity was introduced
+     org.mockito.exceptions.Reporter.cannotCallRealMethodOnInterface: Entity was removed
+     org.mockito.exceptions.Reporter.defaultAnswerDoesNotAcceptNullParameter: Entity was introduced
+     org.mockito.verification.Timeout.atLeastOnce: Entity was removed
+     org.mockito.verification.Timeout.verify: Entity was removed
+     org.mockito.verification.Timeout.only: Entity was removed
+     org.mockito.verification.Timeout.times: Entity was removed
+     org.mockito.verification.Timeout.atLeast: Entity was removed
+     org.mockito.verification.VerificationAfterDelay: Entity was introduced
+     org.mockito.plugins.StackTraceCleanerProvider: Entity was introduced
+     org.mockito.ArgumentMatcher.describeTo: Type was changed to an incompatible type
+     org.mockito.exceptions.stacktrace.StackTraceCleaner: Entity was introduced
+     org.mockito.exceptions.misusing.CannotVerifyStubOnlyMock: Entity was introduced
+     org.mockito.verification.VerificationWrapper: Entity was introduced
+     org.mockito.verification.After: Entity was introduced
+     org.mockito.Mockito.after: Entity was introduced
+     org.mockito.Mockito.timeout: Type was changed to an incompatible type
+     ---- v1.9.5-rc1 --- v1.10.0 should have been v1.9.5-rc1 --- 2.0.0
+     org.mockito.exceptions.misusing.CannotStubVoidMethodWithReturnValue: Entity was introduced
+     ---- v1.10.3 --- v1.10.4 should have been v1.10.3 --- 1.11.0
+     org.mockito.junit.MockitoJUnitRule: Entity was introduced
+     ---- v1.10.4 --- v1.10.5 should have been v1.10.4 --- 1.11.0
+     org.mockito.exceptions.Reporter.delegatedMethodHasWrongReturnType: Entity was introduced
+     org.mockito.exceptions.Reporter.delegatedMethodDoesNotExistOnDelegate: Entity was introduced
+     ---- v1.10.10 --- v1.10.11 should have been v1.10.10 --- 1.11.0
+     org.mockito.exceptions.Reporter.usingConstructorWithFancySerializable: Entity was introduced
+     org.mockito.Mockito.spy: Function was overloaded
+     org.mockito.Mockito.spy: Function was overloaded
+     ---- v1.10.11 --- v1.10.12 should have been v1.10.11 --- 1.11.0
+     org.mockito.Mockito.atLeastOnce: Type was changed to an incompatible type
+     org.mockito.Mockito.calls: Type was changed to an incompatible type
+     org.mockito.Mockito.atLeast: Type was changed to an incompatible type
+     org.mockito.Mockito.after: Type was changed to an incompatible type
+     org.mockito.Mockito.never: Type was changed to an incompatible type
+     org.mockito.Mockito.timeout: Type was changed to an incompatible type
+     org.mockito.Mockito.times: Type was changed to an incompatible type
+     org.mockito.Mockito.verify: Function was overloaded
+     org.mockito.Mockito.verify: Overloaded function removed
+     org.mockito.Mockito.atMost: Type was changed to an incompatible type
+     org.mockito.Mockito.only: Type was changed to an incompatible type
+     ---- v1.10.13 --- v1.10.14 should have been v1.10.13 --- 2.0.0
+     org.mockito.plugins.PluginSwitch: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.Then.should: Entity was removed
+     ---- v1.10.14 --- v1.10.15 should have been v1.10.14 --- 2.0.0
+     org.mockito.junit.MockitoJUnit: Entity was introduced
+     org.mockito.junit.MockitoRule: Entity was introduced
+     org.mockito.junit.MockitoJUnitRule.apply: Type was changed to an incompatible type
+     org.mockito.junit.MockitoJUnitRule.apply: Parameter(s) added to function signature
+     ---- v1.10.16 --- v1.10.17 should have been v1.10.16 --- 2.0.0
+     org.mockito.exceptions.misusing.CannotStubVoidMethodWithReturnValue: Entity was removed
+     org.mockito.exceptions.Reporter.delegatedMethodHasWrongReturnType: Entity was removed
+     org.mockito.exceptions.Reporter.delegatedMethodDoesNotExistOnDelegate: Entity was removed
+     org.mockito.exceptions.Reporter.usingConstructorWithFancySerializable: Entity was removed
+     org.mockito.plugins.PluginSwitch: Entity was removed
+     org.mockito.BDDMockito.org.mockito.Then.should: Entity was introduced
+     org.mockito.Mockito.atLeastOnce: Type was changed to an incompatible type
+     org.mockito.Mockito.calls: Type was changed to an incompatible type
+     org.mockito.Mockito.atLeast: Type was changed to an incompatible type
+     org.mockito.Mockito.after: Type was changed to an incompatible type
+     org.mockito.Mockito.never: Type was changed to an incompatible type
+     org.mockito.Mockito.timeout: Type was changed to an incompatible type
+     org.mockito.Mockito.times: Type was changed to an incompatible type
+     org.mockito.Mockito.spy: Overloaded function removed
+     org.mockito.Mockito.spy: Overloaded function removed
+     org.mockito.Mockito.verify: Function was overloaded
+     org.mockito.Mockito.verify: Overloaded function removed
+     org.mockito.Mockito.atMost: Type was changed to an incompatible type
+     org.mockito.Mockito.only: Type was changed to an incompatible type
+     org.mockito.junit.MockitoJUnit: Entity was removed
+     org.mockito.junit.MockitoRule: Entity was removed
+     org.mockito.junit.MockitoJUnitRule: Entity was removed
+     ---- v1.10.19 --- v1.10.28-dev should have been v1.10.19 --- 2.0.0
+     ---- v1.10.33-dev --- v1.10.35-dev should have been v1.10.33-dev --- 1.10.34
+     ---- v1.10.35-dev --- v1.10.38-dev should have been v1.10.35-dev --- 1.10.36
+     ---- v1.10.38-dev --- v1.10.40-dev should have been v1.10.38-dev --- 1.10.39
+     org.mockito.exceptions.misusing.CannotStubVoidMethodWithReturnValue: Entity was introduced
+     org.mockito.exceptions.Reporter.usingConstructorWithFancySerializable: Entity was introduced
+     org.mockito.exceptions.Reporter.delegatedMethodHasWrongReturnType: Entity was introduced
+     org.mockito.exceptions.Reporter.delegatedMethodDoesNotExistOnDelegate: Entity was introduced
+     org.mockito.plugins.PluginSwitch: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.Then.should: Entity was removed
+     org.mockito.Mockito.atLeastOnce: Type was changed to an incompatible type
+     org.mockito.Mockito.calls: Type was changed to an incompatible type
+     org.mockito.Mockito.atLeast: Type was changed to an incompatible type
+     org.mockito.Mockito.after: Type was changed to an incompatible type
+     org.mockito.Mockito.never: Type was changed to an incompatible type
+     org.mockito.Mockito.timeout: Type was changed to an incompatible type
+     org.mockito.Mockito.times: Type was changed to an incompatible type
+     org.mockito.Mockito.spy: Function was overloaded
+     org.mockito.Mockito.spy: Function was overloaded
+     org.mockito.Mockito.verify: Function was overloaded
+     org.mockito.Mockito.verify: Overloaded function removed
+     org.mockito.Mockito.atMost: Type was changed to an incompatible type
+     org.mockito.Mockito.only: Type was changed to an incompatible type
+     org.mockito.junit.MockitoJUnit: Entity was introduced
+     org.mockito.junit.MockitoRule: Entity was introduced
+     org.mockito.junit.MockitoJUnitRule: Entity was introduced
+     org.mockito.cglib.util.ParallelSorterEmitter: Entity was introduced
+     org.mockito.asm.util.ASMifierMethodVisitor: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicVerifier: Entity was introduced
+     org.mockito.asm.tree.FieldInsnNode: Entity was introduced
+     org.mockito.asm.util.ASMifierClassVisitor: Entity was introduced
+     org.mockito.asm.tree.LookupSwitchInsnNode: Entity was introduced
+     org.mockito.cglib.core.RejectModifierPredicate: Entity was introduced
+     org.mockito.asm.tree.MemberNode: Entity was introduced
+     org.mockito.asm.util.TraceFieldVisitor: Entity was introduced
+     org.mockito.AdditionalMatchers.cmpEq: Type was changed to an incompatible type
+     org.mockito.AdditionalMatchers.gt: Function was overloaded
+     org.mockito.AdditionalMatchers.gt: Overloaded function removed
+     org.mockito.AdditionalMatchers.geq: Function was overloaded
+     org.mockito.AdditionalMatchers.geq: Overloaded function removed
+     org.mockito.AdditionalMatchers.leq: Function was overloaded
+     org.mockito.AdditionalMatchers.leq: Overloaded function removed
+     org.mockito.AdditionalMatchers.lt: Function was overloaded
+     org.mockito.AdditionalMatchers.lt: Overloaded function removed
+     org.mockito.cglib.reflect.FastClass: Entity was introduced
+     org.mockito.cglib.core.DefaultNamingPolicy: Entity was introduced
+     org.mockito.Matchers.contains: Entity was introduced
+     org.mockito.Matchers.anyShort: Entity was introduced
+     org.mockito.Matchers.anyList: Entity was introduced
+     org.mockito.Matchers.anySet: Entity was introduced
+     org.mockito.Matchers.floatThat: Entity was introduced
+     org.mockito.Matchers.anyFloat: Entity was introduced
+     org.mockito.Matchers.anyCollection: Entity was introduced
+     org.mockito.Matchers.doubleThat: Entity was introduced
+     org.mockito.Matchers.anyMapOf: Entity was introduced
+     org.mockito.Matchers.anyLong: Entity was introduced
+     org.mockito.Matchers.anyCollectionOf: Entity was introduced
+     org.mockito.Matchers.refEq: Entity was introduced
+     org.mockito.Matchers.longThat: Entity was introduced
+     org.mockito.Matchers.anyVararg: Entity was introduced
+     org.mockito.Matchers.isA: Entity was introduced
+     org.mockito.Matchers.anyInt: Entity was introduced
+     org.mockito.Matchers.anySetOf: Entity was introduced
+     org.mockito.Matchers.anyListOf: Entity was introduced
+     org.mockito.Matchers.anyMap: Entity was introduced
+     org.mockito.Matchers.shortThat: Entity was introduced
+     org.mockito.Matchers.isNull: Entity was introduced
+     org.mockito.Matchers.booleanThat: Entity was introduced
+     org.mockito.Matchers.byteThat: Entity was introduced
+     org.mockito.Matchers.notNull: Entity was introduced
+     org.mockito.Matchers.anyDouble: Entity was introduced
+     org.mockito.Matchers.charThat: Entity was introduced
+     org.mockito.Matchers.anyString: Entity was introduced
+     org.mockito.Matchers.argThat: Entity was introduced
+     org.mockito.Matchers.anyByte: Entity was introduced
+     org.mockito.Matchers.anyChar: Entity was introduced
+     org.mockito.Matchers.endsWith: Entity was introduced
+     org.mockito.Matchers.anyBoolean: Entity was introduced
+     org.mockito.Matchers.any: Entity was introduced
+     org.mockito.Matchers.matches: Entity was introduced
+     org.mockito.Matchers.same: Entity was introduced
+     org.mockito.Matchers.anyObject: Entity was introduced
+     org.mockito.Matchers.eq: Entity was introduced
+     org.mockito.Matchers.intThat: Entity was introduced
+     org.mockito.Matchers.isNotNull: Entity was introduced
+     org.mockito.Matchers.startsWith: Entity was introduced
+     org.mockito.cglib.transform.impl.AddPropertyTransformer: Entity was introduced
+     org.mockito.cglib.transform.AbstractProcessTask: Entity was introduced
+     org.mockito.cglib.beans.BulkBeanException: Entity was introduced
+     org.mockito.BDDMockito.willReturn: Overloaded function removed
+     org.mockito.BDDMockito.willReturn: Overloaded function removed
+     org.mockito.BDDMockito.will: Entity was removed
+     org.mockito.BDDMockito.willThrow: Overloaded function removed
+     org.mockito.BDDMockito.willThrow: Overloaded function removed
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl: Entity was introduced
+     org.mockito.asm.util.CheckAnnotationAdapter: Entity was introduced
+     org.mockito.cglib.core.ClassesKey: Entity was introduced
+     org.mockito.exceptions.base.MockitoSerializationIssue.getStackTrace: Entity was introduced
+     org.mockito.asm.ClassAdapter: Entity was introduced
+     org.mockito.asm.tree.analysis.Interpreter: Entity was introduced
+     org.mockito.asm.MethodVisitor: Entity was introduced
+     org.mockito.cglib.proxy.UndeclaredThrowableException: Entity was introduced
+     org.mockito.asm.tree.InsnNode: Entity was introduced
+     org.mockito.cglib.proxy.FixedValue: Entity was introduced
+     org.mockito.cglib.core.Constants: Entity was introduced
+     org.mockito.cglib.transform.AnnotationVisitorTee: Entity was introduced
+     org.mockito.exceptions.Reporter: Entity was introduced
+     org.mockito.cglib.beans.FixedKeySet: Entity was introduced
+     org.mockito.asm.tree.AbstractInsnNode: Entity was introduced
+     org.mockito.cglib.transform.MethodFilter: Entity was introduced
+     org.mockito.asm.tree.LineNumberNode: Entity was introduced
+     org.mockito.quality.MockitoHint: Entity was removed
+     org.mockito.cglib.core.DefaultGeneratorStrategy: Entity was introduced
+     org.mockito.asm.tree.analysis.SimpleVerifier: Entity was introduced
+     org.mockito.verification.Timeout.description: Entity was removed
+     org.mockito.asm.Frame: Entity was introduced
+     org.mockito.asm.tree.AnnotationNode: Entity was introduced
+     org.mockito.cglib.reflect.MulticastDelegate: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassFilterTransformer: Entity was introduced
+     org.mockito.cglib.core.DuplicatesPredicate: Entity was introduced
+     org.mockito.cglib.transform.impl.AddDelegateTransformer: Entity was introduced
+     org.mockito.asm.tree.LabelNode: Entity was introduced
+     org.mockito.cglib.transform.impl.FieldProviderTransformer: Entity was introduced
+     org.mockito.asm.tree.analysis.SmallSet: Entity was introduced
+     org.mockito.plugins.InstantiatorProvider: Entity was removed
+     org.mockito.listeners.MockitoListener: Entity was removed
+     org.mockito.asm.signature.SignatureReader: Entity was introduced
+     org.mockito.ReturnValues: Entity was introduced
+     org.mockito.asm.tree.InsnList: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicInterpreter: Entity was introduced
+     org.mockito.asm.util.ASMifierFieldVisitor: Entity was introduced
+     org.mockito.asm.Item: Entity was introduced
+     org.mockito.asm.FieldWriter: Entity was introduced
+     org.mockito.asm.MethodAdapter: Entity was introduced
+     org.mockito.cglib.beans.BeanCopier: Entity was introduced
+     org.mockito.asm.tree.MultiANewArrayInsnNode: Entity was introduced
+     org.mockito.cglib.proxy.LazyLoaderGenerator: Entity was introduced
+     org.mockito.cglib.proxy.InterfaceMaker: Entity was introduced
+     org.mockito.cglib.proxy.CallbackFilter: Entity was introduced
+     org.mockito.cglib.core.ReflectUtils: Entity was introduced
+     org.mockito.cglib.core.MethodInfoTransformer: Entity was introduced
+     org.mockito.cglib.transform.ClassEmitterTransformer: Entity was introduced
+     org.mockito.cglib.proxy.Factory: Entity was introduced
+     org.mockito.cglib.core.Converter: Entity was introduced
+     org.mockito.cglib.proxy.MixinBeanEmitter: Entity was introduced
+     org.mockito.cglib.core.ClassEmitter: Entity was introduced
+     org.mockito.asm.tree.analysis.SourceValue: Entity was introduced
+     org.mockito.asm.tree.IntInsnNode: Entity was introduced
+     org.mockito.exceptions.verification.junit.JUnitTool: Entity was introduced
+     org.mockito.asm.Handler: Entity was introduced
+     org.mockito.cglib.core.DebuggingClassWriter: Entity was introduced
+     org.mockito.cglib.transform.ClassReaderGenerator: Entity was introduced
+     org.mockito.cglib.transform.FieldVisitorTee: Entity was introduced
+     org.mockito.cglib.core.MethodWrapper: Entity was introduced
+     org.mockito.exceptions.misusing.UnnecessaryStubbingException: Entity was removed
+     org.mockito.cglib.proxy.FixedValueGenerator: Entity was introduced
+     org.mockito.asm.AnnotationVisitor: Entity was introduced
+     org.mockito.cglib.proxy.Enhancer: Entity was introduced
+     org.mockito.cglib.core.AbstractClassGenerator: Entity was introduced
+     org.mockito.asm.signature.SignatureVisitor: Entity was introduced
+     org.mockito.cglib.transform.ClassFilter: Entity was introduced
+     org.mockito.cglib.proxy.LazyLoader: Entity was introduced
+     org.mockito.asm.signature.SignatureWriter: Entity was introduced
+     org.mockito.asm.util.TraceMethodVisitor: Entity was introduced
+     org.mockito.cglib.core.VisibilityPredicate: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.atLeastOnce: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.never: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.only: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.times: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.atLeast: Entity was introduced
+     org.mockito.verification.VerificationAfterDelay.atMost: Entity was introduced
+     org.mockito.cglib.transform.impl.UndeclaredThrowableStrategy: Entity was introduced
+     org.mockito.asm.util.AbstractVisitor: Entity was introduced
+     org.mockito.asm.ByteVector: Entity was introduced
+     org.mockito.exceptions.Discrepancy: Entity was introduced
+     org.mockito.cglib.core.ClassGenerator: Entity was introduced
+     org.mockito.asm.ClassReader: Entity was introduced
+     org.mockito.cglib.transform.MethodFilterTransformer: Entity was introduced
+     org.mockito.asm.util.ASMifierAnnotationVisitor: Entity was introduced
+     org.mockito.cglib.proxy.MethodProxy: Entity was introduced
+     org.mockito.asm.tree.MethodInsnNode: Entity was introduced
+     org.mockito.asm.tree.FrameNode: Entity was introduced
+     org.mockito.runners.MockitoJUnit44Runner: Entity was introduced
+     org.mockito.cglib.core.MethodInfo: Entity was introduced
+     org.mockito.cglib.transform.impl.AddInitTransformer: Entity was introduced
+     org.mockito.asm.util.CheckSignatureAdapter: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.atLeastOnce: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.never: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.only: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.times: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.atLeast: Entity was introduced
+     org.mockito.verification.VerificationWithTimeout.atMost: Entity was introduced
+     org.mockito.cglib.core.TinyBitSet: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassLoader: Entity was introduced
+     org.mockito.cglib.beans.BeanMap: Entity was introduced
+     org.mockito.cglib.core.ClassInfo: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformerTee: Entity was introduced
+     org.mockito.asm.util.CheckFieldAdapter: Entity was introduced
+     org.mockito.ArgumentMatcher.describeTo: Entity was introduced
+     org.mockito.ArgumentMatcher.matches: Entity was introduced
+     org.mockito.junit.MockitoJUnit.collector: Entity was removed
+     org.mockito.asm.util.CheckClassAdapter: Entity was introduced
+     org.mockito.asm.Label: Entity was introduced
+     org.mockito.cglib.beans.ImmutableBean: Entity was introduced
+     org.mockito.cglib.util.SorterTemplate: Entity was introduced
+     org.mockito.cglib.proxy.CallbackGenerator: Entity was introduced
+     org.mockito.cglib.reflect.FastMember: Entity was introduced
+     org.mockito.configuration.DefaultMockitoConfiguration.getReturnValues: Entity was introduced
+     org.mockito.asm.tree.analysis.Frame: Entity was introduced
+     org.mockito.asm.ClassWriter: Entity was introduced
+     org.mockito.asm.tree.TableSwitchInsnNode: Entity was introduced
+     org.mockito.asm.tree.analysis.SourceInterpreter: Entity was introduced
+     org.mockito.asm.util.TraceClassVisitor: Entity was introduced
+     org.mockito.cglib.core.LocalVariablesSorter: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformerChain: Entity was introduced
+     org.mockito.cglib.core.CollectionUtils: Entity was introduced
+     org.mockito.cglib.beans.BulkBean: Entity was introduced
+     org.mockito.cglib.core.GeneratorStrategy: Entity was introduced
+     org.mockito.asm.tree.LocalVariableNode: Entity was introduced
+     org.mockito.cglib.proxy.Callback: Entity was introduced
+     org.mockito.cglib.proxy.ProxyRefDispatcher: Entity was introduced
+     org.mockito.asm.tree.TypeInsnNode: Entity was introduced
+     org.mockito.asm.Opcodes: Entity was introduced
+     org.mockito.stubbing.VoidMethodStubbable: Entity was introduced
+     org.mockito.cglib.reflect.MethodDelegate: Entity was introduced
+     org.mockito.cglib.proxy.Dispatcher: Entity was introduced
+     org.mockito.cglib.core.KeyFactory: Entity was introduced
+     org.mockito.asm.util.TraceAnnotationVisitor: Entity was introduced
+     org.mockito.cglib.transform.TransformingClassGenerator: Entity was introduced
+     org.mockito.cglib.core.Transformer: Entity was introduced
+     org.mockito.verification.VerificationWrapper: Entity was introduced
+     org.mockito.asm.Type: Entity was introduced
+     org.mockito.cglib.transform.impl.AbstractInterceptFieldCallback: Entity was introduced
+     org.mockito.asm.tree.JumpInsnNode: Entity was introduced
+     org.mockito.cglib.transform.AbstractTransformTask: Entity was introduced
+     org.mockito.cglib.core.CodeEmitter: Entity was introduced
+     org.mockito.cglib.transform.ClassTransformer: Entity was introduced
+     org.mockito.exceptions.PrintableInvocation: Entity was introduced
+     org.mockito.AdditionalAnswers.answerVoid: Entity was removed
+     org.mockito.AdditionalAnswers.answer: Entity was removed
+     org.mockito.asm.util.CheckMethodAdapter: Entity was introduced
+     org.mockito.asm.tree.FieldNode: Entity was introduced
+     org.mockito.asm.AnnotationWriter: Entity was introduced
+     org.mockito.cglib.proxy.NoOpGenerator: Entity was introduced
+     org.mockito.cglib.proxy.InvocationHandler: Entity was introduced
+     org.mockito.asm.tree.analysis.Analyzer: Entity was introduced
+     org.mockito.cglib.proxy.Mixin: Entity was introduced
+     org.mockito.MockitoFramework: Entity was removed
+     org.mockito.asm.util.ASMifierAbstractVisitor: Entity was introduced
+     org.mockito.asm.tree.TryCatchBlockNode: Entity was introduced
+     org.mockito.cglib.transform.impl.AddStaticInitTransformer: Entity was introduced
+     org.mockito.cglib.transform.MethodVisitorTee: Entity was introduced
+     org.mockito.asm.Edge: Entity was introduced
+     org.mockito.cglib.reflect.ConstructorDelegate: Entity was introduced
+     org.mockito.cglib.transform.impl.UndeclaredThrowableTransformer: Entity was introduced
+     org.mockito.stubbing.answers.ReturnsElementsOf: Entity was introduced
+     org.mockito.verification.After.description: Entity was removed
+     org.mockito.cglib.transform.ClassTransformerFactory: Entity was introduced
+     org.mockito.asm.tree.VarInsnNode: Entity was introduced
+     org.mockito.asm.util.Traceable: Entity was introduced
+     org.mockito.cglib.transform.impl.AccessFieldTransformer: Entity was introduced
+     org.mockito.cglib.transform.AbstractClassTransformer: Entity was introduced
+     org.mockito.cglib.core.CodeGenerationException: Entity was introduced
+     org.mockito.asm.FieldVisitor: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldTransformer: Entity was introduced
+     org.mockito.cglib.core.Local: Entity was introduced
+     org.mockito.asm.util.TraceSignatureVisitor: Entity was introduced
+     org.mockito.Mockito.RETURNS_SELF: Entity was removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.stubVoid: Entity was introduced
+     org.mockito.Mockito.description: Entity was removed
+     org.mockito.Mockito.clearInvocations: Entity was removed
+     org.mockito.Mockito.framework: Entity was removed
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.stub: Entity was introduced
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.asm.MethodWriter: Entity was introduced
+     org.mockito.asm.Attribute: Entity was introduced
+     org.mockito.cglib.util.ParallelSorter: Entity was introduced
+     org.mockito.cglib.reflect.FastMethod: Entity was introduced
+     org.mockito.cglib.proxy.DispatcherGenerator: Entity was introduced
+     org.mockito.cglib.core.Block: Entity was introduced
+     org.mockito.runners.MockitoJUnitRunner.org.mockito.runners.Strict: Entity was removed
+     org.mockito.runners.MockitoJUnitRunner.org.mockito.runners.Silent: Entity was removed
+     org.mockito.cglib.proxy.CallbackHelper: Entity was introduced
+     org.mockito.cglib.beans.BeanGenerator: Entity was introduced
+     org.mockito.cglib.util.StringSwitcher: Entity was introduced
+     org.mockito.verification.VerificationStrategy: Entity was removed
+     org.mockito.cglib.proxy.CallbackInfo: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldCallback: Entity was introduced
+     org.mockito.asm.tree.InnerClassNode: Entity was introduced
+     org.mockito.cglib.proxy.InvocationHandlerGenerator: Entity was introduced
+     org.mockito.asm.tree.ClassNode: Entity was introduced
+     org.mockito.cglib.transform.ClassVisitorTee: Entity was introduced
+     org.mockito.asm.util.TraceAbstractVisitor: Entity was introduced
+     org.mockito.exceptions.Pluralizer: Entity was introduced
+     org.mockito.cglib.transform.impl.FieldProvider: Entity was introduced
+     org.mockito.cglib.proxy.MixinEmitter: Entity was introduced
+     org.mockito.cglib.beans.BulkBeanEmitter: Entity was introduced
+     org.mockito.cglib.core.TypeUtils: Entity was introduced
+     org.mockito.asm.tree.analysis.AnalyzerException: Entity was introduced
+     org.mockito.cglib.proxy.Proxy: Entity was introduced
+     org.mockito.cglib.proxy.NoOp: Entity was introduced
+     org.mockito.ArgumentMatchers: Entity was removed
+     org.mockito.cglib.proxy.MethodInterceptor: Entity was introduced
+     org.mockito.asm.tree.analysis.Subroutine: Entity was introduced
+     org.mockito.cglib.core.ProcessSwitchCallback: Entity was introduced
+     org.mockito.asm.tree.IincInsnNode: Entity was introduced
+     org.mockito.asm.ClassVisitor: Entity was introduced
+     org.mockito.cglib.transform.ClassFilterTransformer: Entity was introduced
+     org.mockito.cglib.transform.TransformingClassLoader: Entity was introduced
+     org.mockito.cglib.core.NamingPolicy: Entity was introduced
+     org.mockito.asm.tree.LdcInsnNode: Entity was introduced
+     org.mockito.asm.tree.MethodNode: Entity was introduced
+     org.mockito.cglib.core.ProcessArrayCallback: Entity was introduced
+     org.mockito.listeners.MockCreationListener: Entity was removed
+     org.mockito.cglib.core.ClassNameReader: Entity was introduced
+     org.mockito.cglib.core.Predicate: Entity was introduced
+     org.mockito.cglib.beans.BeanMapEmitter: Entity was introduced
+     org.mockito.asm.tree.analysis.BasicValue: Entity was introduced
+     org.mockito.cglib.core.Signature: Entity was introduced
+     org.mockito.asm.util.ASMifiable: Entity was introduced
+     org.mockito.stubbing.DeprecatedOngoingStubbing: Entity was introduced
+     org.mockito.cglib.reflect.FastConstructor: Entity was introduced
+     org.mockito.cglib.proxy.MethodInterceptorGenerator: Entity was introduced
+     org.mockito.cglib.core.Customizer: Entity was introduced
+     org.mockito.cglib.core.ObjectSwitchCallback: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldFilter: Entity was introduced
+     org.mockito.asm.tree.analysis.Value: Entity was introduced
+     org.mockito.junit.MockitoJUnitRule: Entity was introduced
+     org.mockito.junit.VerificationCollector: Entity was removed
+     org.mockito.cglib.proxy.MixinEverythingEmitter: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest: Entity was removed
+     org.mockito.cglib.core.EmitUtils: Entity was introduced
+     org.mockito.cglib.reflect.FastClassEmitter: Entity was introduced
+     org.mockito.cglib.transform.impl.InterceptFieldEnabled: Entity was introduced
+     ---- v2.0.0-beta.118 --- v2.0.1-beta should have been v2.0.0-beta.118 --- 3.0.0
+     org.mockito.exceptions.Reporter.wrongTypeReturnedByDefaultAnswer: Entity was introduced
+     ---- v2.0.6-beta --- v2.0.7-beta should have been v2.0.6-beta --- 2.1.0
+     org.mockito.exceptions.Reporter.cannotCreateTimerWithNegativeDurationTime: Entity was introduced
+     ---- v2.0.7-beta --- v2.0.8-beta should have been v2.0.7-beta --- 2.1.0
+     org.mockito.verification.Timeout.description: Entity was introduced
+     org.mockito.verification.After.description: Entity was introduced
+     org.mockito.Mockito.description: Entity was introduced
+     ---- v2.0.12-beta --- v2.0.14-beta should have been v2.0.12-beta --- 2.1.0
+     org.mockito.exceptions.Reporter.cannotMockFinalClass: Entity was removed
+     org.mockito.exceptions.Reporter.cannotMockClass: Entity was introduced
+     ---- v2.0.17-beta --- v2.0.18-beta should have been v2.0.17-beta --- 3.0.0
+     org.mockito.Matchers.floatThat: Type was changed to an incompatible type
+     org.mockito.Matchers.doubleThat: Type was changed to an incompatible type
+     org.mockito.Matchers.longThat: Type was changed to an incompatible type
+     org.mockito.Matchers.shortThat: Type was changed to an incompatible type
+     org.mockito.Matchers.booleanThat: Type was changed to an incompatible type
+     org.mockito.Matchers.byteThat: Type was changed to an incompatible type
+     org.mockito.Matchers.charThat: Type was changed to an incompatible type
+     org.mockito.Matchers.argThat: Type was changed to an incompatible type
+     org.mockito.Matchers.intThat: Type was changed to an incompatible type
+     org.mockito.ArgumentMatcher.describeTo: Entity was removed
+     org.mockito.hamcrest.MatcherGenericTypeExtractor: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest: Entity was introduced
+     ---- v2.0.21-beta --- v2.0.22-beta should have been v2.0.21-beta --- 3.0.0
+     org.mockito.cglib.util.ParallelSorterEmitter: Entity was removed
+     org.mockito.asm.util.ASMifierMethodVisitor: Entity was removed
+     org.mockito.asm.tree.analysis.BasicVerifier: Entity was removed
+     org.mockito.asm.tree.FieldInsnNode: Entity was removed
+     org.mockito.asm.util.ASMifierClassVisitor: Entity was removed
+     org.mockito.asm.tree.LookupSwitchInsnNode: Entity was removed
+     org.mockito.cglib.core.RejectModifierPredicate: Entity was removed
+     org.mockito.asm.tree.MemberNode: Entity was removed
+     org.mockito.asm.util.TraceFieldVisitor: Entity was removed
+     org.mockito.cglib.reflect.FastClass: Entity was removed
+     org.mockito.cglib.core.DefaultNamingPolicy: Entity was removed
+     org.mockito.cglib.core.AbstractClassGenerator: Entity was removed
+     org.mockito.cglib.transform.impl.AddPropertyTransformer: Entity was removed
+     org.mockito.cglib.transform.AbstractProcessTask: Entity was removed
+     org.mockito.cglib.beans.BulkBeanException: Entity was removed
+     org.mockito.asm.util.CheckAnnotationAdapter: Entity was removed
+     org.mockito.cglib.core.ClassesKey: Entity was removed
+     org.mockito.exceptions.base.MockitoSerializationIssue.getStackTrace: Entity was removed
+     org.mockito.asm.ClassAdapter: Entity was removed
+     org.mockito.asm.tree.analysis.Interpreter: Entity was removed
+     org.mockito.asm.MethodVisitor: Entity was removed
+     org.mockito.cglib.proxy.UndeclaredThrowableException: Entity was removed
+     org.mockito.asm.tree.InsnNode: Entity was removed
+     org.mockito.cglib.proxy.FixedValue: Entity was removed
+     org.mockito.cglib.core.Constants: Entity was removed
+     org.mockito.cglib.transform.AnnotationVisitorTee: Entity was removed
+     org.mockito.exceptions.Reporter.notAnException: Entity was introduced
+     org.mockito.cglib.beans.FixedKeySet: Entity was removed
+     org.mockito.asm.tree.AbstractInsnNode: Entity was removed
+     org.mockito.cglib.transform.MethodFilter: Entity was removed
+     org.mockito.asm.tree.LineNumberNode: Entity was removed
+     org.mockito.cglib.core.DefaultGeneratorStrategy: Entity was removed
+     org.mockito.asm.tree.analysis.SimpleVerifier: Entity was removed
+     org.mockito.asm.Frame: Entity was removed
+     org.mockito.cglib.reflect.MulticastDelegate: Entity was removed
+     org.mockito.cglib.transform.AbstractClassFilterTransformer: Entity was removed
+     org.mockito.cglib.core.DuplicatesPredicate: Entity was removed
+     org.mockito.cglib.transform.impl.AddDelegateTransformer: Entity was removed
+     org.mockito.asm.tree.LabelNode: Entity was removed
+     org.mockito.cglib.transform.impl.FieldProviderTransformer: Entity was removed
+     org.mockito.asm.tree.AnnotationNode: Entity was removed
+     org.mockito.plugins.InstantiatorProvider: Entity was introduced
+     org.mockito.cglib.core.CodeEmitter: Entity was removed
+     org.mockito.asm.signature.SignatureReader: Entity was removed
+     org.mockito.ReturnValues: Entity was removed
+     org.mockito.asm.tree.InsnList: Entity was removed
+     org.mockito.asm.tree.analysis.BasicInterpreter: Entity was removed
+     org.mockito.asm.util.ASMifierFieldVisitor: Entity was removed
+     org.mockito.asm.Item: Entity was removed
+     org.mockito.asm.FieldWriter: Entity was removed
+     org.mockito.asm.MethodAdapter: Entity was removed
+     org.mockito.cglib.beans.BeanCopier: Entity was removed
+     org.mockito.asm.tree.MultiANewArrayInsnNode: Entity was removed
+     org.mockito.cglib.proxy.LazyLoaderGenerator: Entity was removed
+     org.mockito.cglib.proxy.InterfaceMaker: Entity was removed
+     org.mockito.cglib.proxy.CallbackFilter: Entity was removed
+     org.mockito.cglib.core.ReflectUtils: Entity was removed
+     org.mockito.cglib.core.MethodInfoTransformer: Entity was removed
+     org.mockito.cglib.transform.ClassEmitterTransformer: Entity was removed
+     org.mockito.cglib.proxy.Factory: Entity was removed
+     org.mockito.cglib.core.Converter: Entity was removed
+     org.mockito.cglib.proxy.MixinBeanEmitter: Entity was removed
+     org.mockito.cglib.core.ClassEmitter: Entity was removed
+     org.mockito.asm.tree.analysis.SourceValue: Entity was removed
+     org.mockito.asm.tree.IntInsnNode: Entity was removed
+     org.mockito.asm.Handler: Entity was removed
+     org.mockito.cglib.core.DebuggingClassWriter: Entity was removed
+     org.mockito.cglib.transform.ClassReaderGenerator: Entity was removed
+     org.mockito.cglib.transform.FieldVisitorTee: Entity was removed
+     org.mockito.cglib.core.MethodWrapper: Entity was removed
+     org.mockito.cglib.proxy.FixedValueGenerator: Entity was removed
+     org.mockito.asm.AnnotationVisitor: Entity was removed
+     org.mockito.cglib.proxy.Enhancer: Entity was removed
+     org.mockito.asm.signature.SignatureVisitor: Entity was removed
+     org.mockito.cglib.transform.ClassFilter: Entity was removed
+     org.mockito.cglib.proxy.LazyLoader: Entity was removed
+     org.mockito.asm.signature.SignatureWriter: Entity was removed
+     org.mockito.asm.util.TraceMethodVisitor: Entity was removed
+     org.mockito.cglib.core.VisibilityPredicate: Entity was removed
+     org.mockito.cglib.transform.impl.UndeclaredThrowableStrategy: Entity was removed
+     org.mockito.asm.util.AbstractVisitor: Entity was removed
+     org.mockito.asm.ByteVector: Entity was removed
+     org.mockito.cglib.core.ClassGenerator: Entity was removed
+     org.mockito.asm.ClassReader: Entity was removed
+     org.mockito.cglib.transform.MethodFilterTransformer: Entity was removed
+     org.mockito.asm.util.ASMifierAnnotationVisitor: Entity was removed
+     org.mockito.cglib.proxy.MethodProxy: Entity was removed
+     org.mockito.asm.tree.MethodInsnNode: Entity was removed
+     org.mockito.asm.tree.FrameNode: Entity was removed
+     org.mockito.cglib.core.MethodInfo: Entity was removed
+     org.mockito.cglib.transform.impl.AddInitTransformer: Entity was removed
+     org.mockito.asm.util.CheckSignatureAdapter: Entity was removed
+     org.mockito.cglib.core.TinyBitSet: Entity was removed
+     org.mockito.cglib.transform.AbstractClassLoader: Entity was removed
+     org.mockito.cglib.beans.BeanMap: Entity was removed
+     org.mockito.cglib.core.ClassInfo: Entity was removed
+     org.mockito.cglib.transform.ClassTransformerTee: Entity was removed
+     org.mockito.asm.util.CheckFieldAdapter: Entity was removed
+     org.mockito.cglib.proxy.DispatcherGenerator: Entity was removed
+     org.mockito.asm.util.CheckClassAdapter: Entity was removed
+     org.mockito.asm.Label: Entity was removed
+     org.mockito.cglib.beans.ImmutableBean: Entity was removed
+     org.mockito.cglib.util.SorterTemplate: Entity was removed
+     org.mockito.cglib.proxy.CallbackGenerator: Entity was removed
+     org.mockito.cglib.reflect.FastMember: Entity was removed
+     org.mockito.configuration.DefaultMockitoConfiguration.getReturnValues: Entity was removed
+     org.mockito.asm.tree.analysis.Frame: Entity was removed
+     org.mockito.junit.VerificationCollectorImpl: Entity was introduced
+     org.mockito.asm.ClassWriter: Entity was removed
+     org.mockito.asm.tree.TableSwitchInsnNode: Entity was removed
+     org.mockito.asm.tree.analysis.SourceInterpreter: Entity was removed
+     org.mockito.asm.util.TraceClassVisitor: Entity was removed
+     org.mockito.cglib.core.LocalVariablesSorter: Entity was removed
+     org.mockito.cglib.transform.ClassTransformerChain: Entity was removed
+     org.mockito.asm.tree.analysis.SmallSet: Entity was removed
+     org.mockito.cglib.core.CollectionUtils: Entity was removed
+     org.mockito.cglib.beans.BulkBean: Entity was removed
+     org.mockito.cglib.core.GeneratorStrategy: Entity was removed
+     org.mockito.asm.tree.LocalVariableNode: Entity was removed
+     org.mockito.cglib.proxy.Callback: Entity was removed
+     org.mockito.cglib.proxy.ProxyRefDispatcher: Entity was removed
+     org.mockito.asm.tree.TypeInsnNode: Entity was removed
+     org.mockito.asm.Opcodes: Entity was removed
+     org.mockito.cglib.reflect.MethodDelegate: Entity was removed
+     org.mockito.cglib.proxy.Dispatcher: Entity was removed
+     org.mockito.cglib.core.KeyFactory: Entity was removed
+     org.mockito.asm.util.TraceAnnotationVisitor: Entity was removed
+     org.mockito.cglib.transform.TransformingClassGenerator: Entity was removed
+     org.mockito.cglib.core.Transformer: Entity was removed
+     org.mockito.asm.Type: Entity was removed
+     org.mockito.cglib.transform.impl.AbstractInterceptFieldCallback: Entity was removed
+     org.mockito.asm.tree.JumpInsnNode: Entity was removed
+     org.mockito.cglib.transform.AbstractTransformTask: Entity was removed
+     org.mockito.cglib.transform.ClassTransformer: Entity was removed
+     org.mockito.cglib.proxy.InvocationHandlerGenerator: Entity was removed
+     org.mockito.asm.util.CheckMethodAdapter: Entity was removed
+     org.mockito.asm.tree.FieldNode: Entity was removed
+     org.mockito.asm.AnnotationWriter: Entity was removed
+     org.mockito.cglib.proxy.NoOpGenerator: Entity was removed
+     org.mockito.cglib.proxy.InvocationHandler: Entity was removed
+     org.mockito.asm.tree.analysis.Analyzer: Entity was removed
+     org.mockito.cglib.proxy.Mixin: Entity was removed
+     org.mockito.asm.util.ASMifierAbstractVisitor: Entity was removed
+     org.mockito.asm.tree.TryCatchBlockNode: Entity was removed
+     org.mockito.cglib.transform.impl.AddStaticInitTransformer: Entity was removed
+     org.mockito.cglib.transform.MethodVisitorTee: Entity was removed
+     org.mockito.asm.Edge: Entity was removed
+     org.mockito.cglib.reflect.ConstructorDelegate: Entity was removed
+     org.mockito.cglib.transform.impl.UndeclaredThrowableTransformer: Entity was removed
+     org.mockito.BDDMockito.willReturn: Function was overloaded
+     org.mockito.BDDMockito.willReturn: Function was overloaded
+     org.mockito.BDDMockito.will: Entity was introduced
+     org.mockito.BDDMockito.willThrow: Function was overloaded
+     org.mockito.BDDMockito.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willReturn: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willReturn: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.will: Entity was introduced
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.willThrow: Function was overloaded
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl.willThrow: Function was overloaded
+     org.mockito.cglib.transform.ClassTransformerFactory: Entity was removed
+     org.mockito.asm.tree.VarInsnNode: Entity was removed
+     org.mockito.asm.util.Traceable: Entity was removed
+     org.mockito.cglib.transform.impl.AccessFieldTransformer: Entity was removed
+     org.mockito.cglib.transform.AbstractClassTransformer: Entity was removed
+     org.mockito.cglib.core.CodeGenerationException: Entity was removed
+     org.mockito.asm.FieldVisitor: Entity was removed
+     org.mockito.cglib.transform.impl.InterceptFieldTransformer: Entity was removed
+     org.mockito.cglib.core.Local: Entity was removed
+     org.mockito.asm.util.TraceSignatureVisitor: Entity was removed
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.clearInvocations: Entity was introduced
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.asm.MethodWriter: Entity was removed
+     org.mockito.asm.Attribute: Entity was removed
+     org.mockito.cglib.util.ParallelSorter: Entity was removed
+     org.mockito.cglib.reflect.FastMethod: Entity was removed
+     org.mockito.junit.MockitoJUnit.collector: Entity was introduced
+     org.mockito.cglib.core.Block: Entity was removed
+     org.mockito.cglib.proxy.CallbackHelper: Entity was removed
+     org.mockito.cglib.beans.BeanGenerator: Entity was removed
+     org.mockito.cglib.util.StringSwitcher: Entity was removed
+     org.mockito.cglib.proxy.CallbackInfo: Entity was removed
+     org.mockito.cglib.transform.impl.InterceptFieldCallback: Entity was removed
+     org.mockito.asm.tree.InnerClassNode: Entity was removed
+     org.mockito.asm.tree.ClassNode: Entity was removed
+     org.mockito.cglib.transform.ClassVisitorTee: Entity was removed
+     org.mockito.asm.util.TraceAbstractVisitor: Entity was removed
+     org.mockito.cglib.transform.impl.FieldProvider: Entity was removed
+     org.mockito.cglib.proxy.MixinEmitter: Entity was removed
+     org.mockito.cglib.beans.BulkBeanEmitter: Entity was removed
+     org.mockito.cglib.core.TypeUtils: Entity was removed
+     org.mockito.asm.tree.analysis.AnalyzerException: Entity was removed
+     org.mockito.cglib.proxy.Proxy: Entity was removed
+     org.mockito.cglib.proxy.NoOp: Entity was removed
+     org.mockito.cglib.proxy.MethodInterceptor: Entity was removed
+     org.mockito.asm.tree.analysis.Subroutine: Entity was removed
+     org.mockito.cglib.core.ProcessSwitchCallback: Entity was removed
+     org.mockito.asm.tree.IincInsnNode: Entity was removed
+     org.mockito.asm.ClassVisitor: Entity was removed
+     org.mockito.cglib.transform.ClassFilterTransformer: Entity was removed
+     org.mockito.cglib.transform.TransformingClassLoader: Entity was removed
+     org.mockito.cglib.core.NamingPolicy: Entity was removed
+     org.mockito.asm.tree.LdcInsnNode: Entity was removed
+     org.mockito.asm.tree.MethodNode: Entity was removed
+     org.mockito.cglib.core.ProcessArrayCallback: Entity was removed
+     org.mockito.cglib.core.ClassNameReader: Entity was removed
+     org.mockito.cglib.core.Predicate: Entity was removed
+     org.mockito.cglib.beans.BeanMapEmitter: Entity was removed
+     org.mockito.asm.tree.analysis.BasicValue: Entity was removed
+     org.mockito.cglib.core.Signature: Entity was removed
+     org.mockito.asm.util.ASMifiable: Entity was removed
+     org.mockito.cglib.reflect.FastConstructor: Entity was removed
+     org.mockito.cglib.proxy.MethodInterceptorGenerator: Entity was removed
+     org.mockito.cglib.core.Customizer: Entity was removed
+     org.mockito.cglib.core.ObjectSwitchCallback: Entity was removed
+     org.mockito.cglib.transform.impl.InterceptFieldFilter: Entity was removed
+     org.mockito.asm.tree.analysis.Value: Entity was removed
+     org.mockito.junit.VerificationCollector: Entity was introduced
+     org.mockito.cglib.proxy.MixinEverythingEmitter: Entity was removed
+     org.mockito.cglib.core.EmitUtils: Entity was removed
+     org.mockito.cglib.reflect.FastClassEmitter: Entity was removed
+     org.mockito.cglib.transform.impl.InterceptFieldEnabled: Entity was removed
+     ---- v2.0.26-beta --- v2.0.32-beta should have been v2.0.26-beta --- 3.0.0
+     org.mockito.Mockito.RETURNS_SELF: Entity was introduced
+     ---- v2.0.32-beta --- v2.0.33-beta should have been v2.0.32-beta --- 2.1.0
+     org.mockito.hamcrest.MatcherGenericTypeExtractor: Entity was removed
+     ---- v2.0.33-beta --- v2.0.34-beta should have been v2.0.33-beta --- 3.0.0
+     org.mockito.hamcrest.MockitoHamcrest.byteThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.floatThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.charThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.doubleThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.intThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.shortThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.longThat: Entity was introduced
+     org.mockito.hamcrest.MockitoHamcrest.booleanThat: Entity was introduced
+     ---- v2.0.34-beta --- v2.0.35-beta should have been v2.0.34-beta --- 2.1.0
+     org.mockito.exceptions.Discrepancy: Entity was removed
+     org.mockito.exceptions.verification.junit.JUnitTool: Entity was removed
+     org.mockito.exceptions.Pluralizer: Entity was removed
+     org.mockito.runners.MockitoJUnit44Runner: Entity was removed
+     org.mockito.exceptions.PrintableInvocation: Entity was removed
+     org.mockito.stubbing.answers.ReturnsElementsOf: Entity was removed
+     ---- v2.0.46-beta --- v2.0.47-beta should have been v2.0.46-beta --- 3.0.0
+     org.mockito.verification.VerificationWithTimeout.never: Entity was removed
+     org.mockito.verification.VerificationWithTimeout.atMost: Entity was removed
+     org.mockito.BDDMockito.org.mockito.BDDStubberImpl: Entity was removed
+     org.mockito.BDDMockito.org.mockito.BDDOngoingStubbingImpl: Entity was removed
+     org.mockito.stubbing.DeprecatedOngoingStubbing: Entity was removed
+     org.mockito.junit.MockitoJUnitRule: Entity was removed
+     org.mockito.Mockito.stub: Entity was removed
+     org.mockito.Mockito.stubVoid: Entity was removed
+     ---- v2.0.53-beta --- v2.0.54-beta should have been v2.0.53-beta --- 3.0.0
+     org.mockito.exceptions.Reporter.incorrectUseOfApi: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotCallAbstractRealMethod: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.notAMockPassedWhenCreatingInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.notAMockPassedToWhenMethod: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotInitializeForSpyAnnotation: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wrongTypeOfArgumentToReturn: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noMoreInteractionsWantedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invalidUseOfMatchers: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invalidArgumentPositionRangeAtInvocationTime: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.notAMockPassedToVerifyNoMoreInteractions: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooManyActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.mockedTypeIsInconsistentWithSpiedInstanceType: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.fieldInitialisationThrewException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.neverWantedButInvoked: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotInjectDependency: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.serializableWontWorkForObjectsThatDontImplementSerializable: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.stubPassedToVerify: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.delegatedMethodHasWrongReturnType: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooManyActualInvocationsInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.tooLittleActualInvocations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.mocksHaveToBePassedWhenCreatingInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.mocksHaveToBePassedToVerifyNoMoreInteractions: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.nullPassedToWhenMethod: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotCreateTimerWithNegativeDurationTime: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noMoreInteractionsWanted: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invocationListenerThrewException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.inOrderRequiresFamiliarMock: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotStubWithNullThrowable: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotVerifyToString: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.misplacedArgumentMatcher: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.smartNullPointerException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.reportNoSubMatchersFound: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.onlyVoidMethodsCanBeSetToDoNothing: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvokedInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.notAnException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.nullPassedToVerify: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.extraInterfacesRequiresAtLeastOneInterface: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.notAMockPassedToVerify: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedAtMostX: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.incorrectUseOfAdditionalMatchers: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wrongTypeOfReturnValue: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotMockClass: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.extraInterfacesCannotContainMockedType: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotStubVoidMethodWithAReturnValue: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.unfinishedStubbing: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.nullPassedToVerifyNoMoreInteractions: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invocationListenerDoesNotAcceptNullParameters: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invocationListenersRequiresAtLeastOneListener: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.missingMethodInvocation: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.cannotInitializeForInjectMocksAnnotation: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.unfinishedVerificationException: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.delegatedMethodDoesNotExistOnDelegate: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.moreThanOneAnnotationNotAllowed: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.noArgumentValueWasCaptured: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.unsupportedCombinationOfAnnotations: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.extraInterfacesAcceptsOnlyInterfaces: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.atMostAndNeverShouldNotBeUsedWithTimeout: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.extraInterfacesDoesNotAcceptNullParameters: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.spyAndDelegateAreMutuallyExclusive: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.argumentsAreDifferent: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.defaultAnswerDoesNotAcceptNullParameter: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.checkedExceptionInvalid: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.nullPassedWhenCreatingInOrder: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wrongTypeReturnedByDefaultAnswer: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Function was overloaded
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Overloaded function removed
+     org.mockito.exceptions.Reporter.wantedButNotInvoked: Overloaded function removed
+     org.mockito.exceptions.Reporter.usingConstructorWithFancySerializable: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.mockedTypeIsInconsistentWithDelegatedInstanceType: Type was changed to an incompatible type
+     org.mockito.exceptions.Reporter.invalidArgumentRangeAtIdentityAnswerCreationTime: Type was changed to an incompatible type
+     ---- v2.0.54-beta --- v2.0.55-beta should have been v2.0.54-beta --- 3.0.0
+     org.mockito.junit.VerificationCollectorImpl.assertLazily: Entity was introduced
+     org.mockito.junit.VerificationCollectorImpl.verify: Entity was removed
+     org.mockito.verification.VerificationStrategy: Entity was introduced
+     ---- v2.0.60-beta --- v2.0.61-beta should have been v2.0.60-beta --- 3.0.0
+     org.mockito.verification.VerificationWrapperInOrderWrapper: Entity was introduced
+     ---- v2.0.62-beta --- v2.0.63-beta should have been v2.0.62-beta --- 2.1.0
+     org.mockito.stubbing.VoidMethodStubbable: Entity was removed
+     org.mockito.AdditionalAnswers.answerVoid: Entity was introduced
+     org.mockito.AdditionalAnswers.answer: Entity was introduced
+     org.mockito.ArgumentMatcher.matches: Type was changed to an incompatible type
+     ---- v2.0.63-beta --- v2.0.64-beta should have been v2.0.63-beta --- 3.0.0
+     org.mockito.ArgumentMatcher.matches: Entity was removed
+     ---- v2.0.68-beta --- v2.0.69-beta should have been v2.0.68-beta --- 3.0.0
+     ---- v2.0.74-beta --- v2.0.76-beta should have been v2.0.74-beta --- 2.0.75
+     org.mockito.AdditionalMatchers.cmpEq: Type was changed to an incompatible type
+     org.mockito.AdditionalMatchers.gt: Function was overloaded
+     org.mockito.AdditionalMatchers.gt: Overloaded function removed
+     org.mockito.AdditionalMatchers.geq: Function was overloaded
+     org.mockito.AdditionalMatchers.geq: Overloaded function removed
+     org.mockito.AdditionalMatchers.leq: Function was overloaded
+     org.mockito.AdditionalMatchers.leq: Overloaded function removed
+     org.mockito.AdditionalMatchers.lt: Function was overloaded
+     org.mockito.AdditionalMatchers.lt: Overloaded function removed
+     ---- v2.0.79-beta --- v2.0.80-beta should have been v2.0.79-beta --- 3.0.0
+     org.mockito.verification.VerificationWithTimeout.only: Entity was removed
+     org.mockito.verification.VerificationWithTimeout.atLeastOnce: Entity was removed
+     org.mockito.verification.VerificationWithTimeout.times: Entity was removed
+     org.mockito.verification.VerificationWithTimeout.atLeast: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.atLeastOnce: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.never: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.only: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.times: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.atLeast: Entity was removed
+     org.mockito.verification.VerificationAfterDelay.atMost: Entity was removed
+     ---- v2.0.81-beta --- v2.0.82-beta should have been v2.0.81-beta --- 3.0.0
+     org.mockito.Matchers.contains: Entity was removed
+     org.mockito.Matchers.anyShort: Entity was removed
+     org.mockito.Matchers.anyList: Entity was removed
+     org.mockito.Matchers.anySet: Entity was removed
+     org.mockito.Matchers.floatThat: Entity was removed
+     org.mockito.Matchers.anyFloat: Entity was removed
+     org.mockito.Matchers.anyCollection: Entity was removed
+     org.mockito.Matchers.doubleThat: Entity was removed
+     org.mockito.Matchers.anyMapOf: Entity was removed
+     org.mockito.Matchers.anyLong: Entity was removed
+     org.mockito.Matchers.anyCollectionOf: Entity was removed
+     org.mockito.Matchers.refEq: Entity was removed
+     org.mockito.Matchers.longThat: Entity was removed
+     org.mockito.Matchers.anyVararg: Entity was removed
+     org.mockito.Matchers.isA: Entity was removed
+     org.mockito.Matchers.anyInt: Entity was removed
+     org.mockito.Matchers.anySetOf: Entity was removed
+     org.mockito.Matchers.anyListOf: Entity was removed
+     org.mockito.Matchers.anyMap: Entity was removed
+     org.mockito.Matchers.shortThat: Entity was removed
+     org.mockito.Matchers.isNull: Entity was removed
+     org.mockito.Matchers.booleanThat: Entity was removed
+     org.mockito.Matchers.byteThat: Entity was removed
+     org.mockito.Matchers.notNull: Entity was removed
+     org.mockito.Matchers.anyDouble: Entity was removed
+     org.mockito.Matchers.charThat: Entity was removed
+     org.mockito.Matchers.anyString: Entity was removed
+     org.mockito.Matchers.argThat: Entity was removed
+     org.mockito.Matchers.anyByte: Entity was removed
+     org.mockito.Matchers.anyChar: Entity was removed
+     org.mockito.Matchers.endsWith: Entity was removed
+     org.mockito.Matchers.anyBoolean: Entity was removed
+     org.mockito.Matchers.any: Entity was removed
+     org.mockito.Matchers.matches: Entity was removed
+     org.mockito.Matchers.same: Entity was removed
+     org.mockito.Matchers.anyObject: Entity was removed
+     org.mockito.Matchers.eq: Entity was removed
+     org.mockito.Matchers.intThat: Entity was removed
+     org.mockito.Matchers.isNotNull: Entity was removed
+     org.mockito.Matchers.startsWith: Entity was removed
+     org.mockito.ArgumentMatchers: Entity was introduced
+     ---- v2.0.84-beta --- v2.0.85-beta should have been v2.0.84-beta --- 3.0.0
+     org.mockito.exceptions.Reporter: Entity was removed
+     ---- v2.0.85-beta --- v2.0.86-beta should have been v2.0.85-beta --- 3.0.0
+     org.mockito.runners.MockitoJUnitRunner.org.mockito.runners.Strict: Entity was introduced
+     org.mockito.runners.MockitoJUnitRunner.org.mockito.runners.Silent: Entity was introduced
+     org.mockito.exceptions.misusing.UnnecessaryStubbingException: Entity was introduced
+     org.mockito.MockitoFramework: Entity was introduced
+     org.mockito.Mockito.framework: Entity was introduced
+     org.mockito.listeners.StubbingListener: Entity was introduced
+     ---- v2.0.87-beta --- v2.0.88-beta should have been v2.0.87-beta --- 2.1.0
+     org.mockito.ArgumentMatchers.anyIterable: Entity was introduced
+     org.mockito.ArgumentMatchers.anyIterableOf: Entity was introduced
+     org.mockito.ArgumentMatchers.isNull: Function was overloaded
+     org.mockito.ArgumentMatchers.isNull: Overloaded function removed
+     org.mockito.ArgumentMatchers.notNull: Function was overloaded
+     org.mockito.ArgumentMatchers.notNull: Overloaded function removed
+     org.mockito.ArgumentMatchers.isNotNull: Function was overloaded
+     org.mockito.ArgumentMatchers.isNotNull: Overloaded function removed
+     ---- v2.0.92-beta --- v2.0.93-beta should have been v2.0.92-beta --- 3.0.0
+     org.mockito.ArgumentMatchers.anyIterable: Type was changed to an incompatible type
+     ---- v2.0.95-beta --- v2.0.96-beta should have been v2.0.95-beta --- 3.0.0
+     org.mockito.junit.VerificationCollectorImpl: Entity was removed
+     org.mockito.verification.VerificationWrapperInOrderWrapper: Entity was removed
+     org.mockito.verification.VerificationWrapper: Entity was removed
+     ---- v2.0.102-beta --- v2.0.103-beta should have been v2.0.102-beta --- 3.0.0
+     org.mockito.quality.MockitoHint: Entity was introduced
+     org.mockito.listeners.MockCreationListener: Entity was introduced
+     org.mockito.listeners.MockitoListener: Entity was introduced
+     ---- v2.0.103-beta --- v2.0.104-beta should have been v2.0.103-beta --- 2.1.0
+     org.mockito.listeners.StubbingListener: Entity was removed
+     ---- v2.0.110-beta --- v2.0.111-beta should have been v2.0.110-beta --- 3.0.0
+     org.mockito.stubbing.Answer4: Entity was introduced
+     org.mockito.stubbing.Answer3: Entity was introduced
+     org.mockito.stubbing.VoidAnswer1: Entity was introduced
+     org.mockito.stubbing.Answer1: Entity was introduced
+     org.mockito.stubbing.Answer5: Entity was introduced
+     org.mockito.stubbing.VoidAnswer4: Entity was introduced
+     org.mockito.stubbing.VoidAnswer2: Entity was introduced
+     org.mockito.AdditionalAnswers.answerVoid: Function was overloaded
+     org.mockito.AdditionalAnswers.answerVoid: Function was overloaded
+     org.mockito.AdditionalAnswers.answerVoid: Function was overloaded
+     org.mockito.AdditionalAnswers.answerVoid: Function was overloaded
+     org.mockito.AdditionalAnswers.answerVoid: Function was overloaded
+     org.mockito.AdditionalAnswers.answerVoid: Overloaded function removed
+     org.mockito.AdditionalAnswers.answer: Function was overloaded
+     org.mockito.AdditionalAnswers.answer: Function was overloaded
+     org.mockito.AdditionalAnswers.answer: Function was overloaded
+     org.mockito.AdditionalAnswers.answer: Function was overloaded
+     org.mockito.AdditionalAnswers.answer: Function was overloaded
+     org.mockito.AdditionalAnswers.answer: Overloaded function removed
+     org.mockito.stubbing.VoidAnswer5: Entity was introduced
+     org.mockito.stubbing.VoidAnswer3: Entity was introduced
+     org.mockito.Mockito.RETURNS_MOCKS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEEP_STUBS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SELF: Type was changed to an incompatible type
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doCallRealMethod: Type was changed to an incompatible type
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.stubbing.Answer2: Entity was introduced
+     ---- v2.0.111-beta --- v2.1.0 should have been v2.0.111-beta --- 3.0.0
+     org.mockito.Mockito.RETURNS_MOCKS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEFAULTS: Type was changed to an incompatible type
+     org.mockito.Mockito.CALLS_REAL_METHODS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SMART_NULLS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_DEEP_STUBS: Type was changed to an incompatible type
+     org.mockito.Mockito.RETURNS_SELF: Type was changed to an incompatible type
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Function was overloaded
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doThrow: Overloaded function removed
+     org.mockito.Mockito.doCallRealMethod: Type was changed to an incompatible type
+     org.mockito.Mockito.mock: Function was overloaded
+     org.mockito.Mockito.mock: Overloaded function removed
+     org.mockito.Mockito.doNothing: Type was changed to an incompatible type
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.Mockito.doReturn: Function was overloaded
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.Mockito.doReturn: Overloaded function removed
+     org.mockito.Mockito.when: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     org.mockito.Mockito.doAnswer: Type was changed to an incompatible type
+     ---- v2.1.0-beta.126 --- v2.2.0 should have been v2.1.0-beta.126 --- 3.0.0
+
+   #+END_SRC
 ** guava
 
    From v1.0 to v20.0, skipping labeled versions (like rcs)
 
+   java_ast:
    - v1.0 -- v2.0 many new additions, but no breaking change, considered major
    - v10.0-rc3 -- v10.0.1 random utility method removed
    - v11.0-rc1 -- v11.0.1 two more random utility methods, they were /deprecated/ though
@@ -258,12 +1794,17 @@
 
    According to semver, deprecation should be minor version number!
 
+   java_native:
+   - v2 to v6, v10 to v18 do not compile, 1 or 2 syntax or type errors per build
+     out of 27 versions, *only 5 compile*
+   - they all agree with the authors though
+
    *Summary*: 2 author mistakes, 2 autobump bugs, actual mismatches are just 2
    (for such a huge project!)
 
-   | 27 versions | /java_ast/  | /java_native/ |
-   |             | 4 different |               |
-   |             | 3 major     |               |
+   | 27 versions | /java_ast/  | /java_native/       |
+   |             | 4 different | 0 different         |
+   |             | 3 major     | but only 5 compile! |
 
    java_ast:
    #+BEGIN_SRC diff
