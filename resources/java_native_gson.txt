@@ -1,0 +1,910 @@
+----
+com.google.gson.DefaultTypeAdapters$BooleanCreator: Entity was introduced
+com.google.gson.JsonEscapingVisitor.visitNullObjectMember: Entity was introduced
+com.google.gson.DefaultTypeAdapters$ByteCreator: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator$Visitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator$Visitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.JsonArrayDeserializationVisitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.JsonArrayDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.JsonArrayDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.JsonArrayDeserializationVisitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.DefaultTypeAdapters: Entity was introduced
+com.google.gson.DefaultJsonSerializers$UriSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongCreator: Entity was introduced
+com.google.gson.JsonArray.isJsonNull: Entity was introduced
+com.google.gson.JsonArray.getAsJsonNull: Entity was introduced
+com.google.gson.JsonArray.getAsBigDecimal: Entity was introduced
+com.google.gson.JsonArray.getAsBigInteger: Entity was introduced
+com.google.gson.DefaultTypeAdapters$UriTypeAdapter: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.JsonDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.JsonDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.JsonDeserializationVisitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.JsonPrimitive.isJsonNull: Entity was introduced
+com.google.gson.JsonPrimitive.getAsJsonNull: Entity was introduced
+com.google.gson.JsonPrimitive.getAsBigInteger: Entity was introduced
+com.google.gson.JsonPrimitive.getAsBigDecimal: Entity was introduced
+com.google.gson.DefaultJsonSerializers$UrlSerializer: Entity was removed
+com.google.gson.DefaultInstanceCreators$LocaleCreator: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.JsonObjectDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.JsonObjectDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.JsonObjectDeserializationVisitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.JsonSerializationVisitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.JsonSerializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.JsonSerializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.JsonSerializationVisitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.DefaultJsonSerializers$LocaleSerializer: Entity was removed
+com.google.gson.DefaultJsonDeserializers$LocaleDeserializer: Entity was removed
+com.google.gson.DefaultInstanceCreators$MapCreator: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap.copyOf: Entity was introduced
+com.google.gson.ParameterizedTypeHandlerMap.entrySet: Entity was introduced
+com.google.gson.ParameterizedTypeHandlerMap.makeUnmodifiable: Entity was introduced
+com.google.gson.ParameterizedTypeHandlerMap.registerIfAbsent: Entity was introduced
+com.google.gson.JsonObject.isJsonNull: Entity was introduced
+com.google.gson.JsonObject.getAsJsonNull: Entity was introduced
+com.google.gson.JsonObject.getAsBigDecimal: Entity was introduced
+com.google.gson.JsonObject.getAsBigInteger: Entity was introduced
+com.google.gson.DefaultTypeAdapters$FloatCreator: Entity was introduced
+com.google.gson.ParameterizedTypeImpl: Entity was introduced
+com.google.gson.DefaultTypeAdapters$LinkedListCreator: Entity was introduced
+com.google.gson.JsonFormatter.format: Parameter(s) added to function signature
+com.google.gson.DefaultTypeAdapters$LocaleTypeAdapter: Entity was introduced
+com.google.gson.DefaultInstanceCreators$EnumCreator: Entity was removed
+com.google.gson.DefaultJsonSerializers: Entity was removed
+com.google.gson.DefaultJsonSerializers$EnumSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultDateTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$EnumTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$MapTypeAdapter: Entity was introduced
+com.google.gson.JsonCompactFormatter.format: Parameter(s) added to function signature
+com.google.gson.DefaultInstanceCreators$ByteCreator: Entity was removed
+com.google.gson.DefaultJsonDeserializers$EnumDeserializer: Entity was removed
+com.google.gson.TypeInfoFactory: Entity was introduced
+com.google.gson.DefaultInstanceCreators$BooleanCreator: Entity was removed
+com.google.gson.JsonElement.isJsonNull: Entity was introduced
+com.google.gson.JsonElement.getAsJsonNull: Entity was introduced
+com.google.gson.JsonElement.getAsBigInteger: Entity was introduced
+com.google.gson.JsonElement.getAsBigDecimal: Entity was introduced
+com.google.gson.DefaultJsonDeserializers$UriDeserializer: Entity was removed
+com.google.gson.DefaultInstanceCreators$LongCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$BigDecimalTypeAdapter: Entity was introduced
+com.google.gson.DefaultInstanceCreators$TreeSetCreator: Entity was removed
+com.google.gson.DefaultJsonSerializers$MapSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$ShortCreator: Entity was introduced
+com.google.gson.DefaultInstanceCreators$UrlCreator: Entity was removed
+com.google.gson.TypeInfoMap: Entity was introduced
+com.google.gson.DefaultTypeAdapters$BigIntegerTypeAdapter: Entity was introduced
+com.google.gson.DefaultInstanceCreators$IntegerCreator: Entity was removed
+com.google.gson.MapTypeInfo: Entity was removed
+com.google.gson.JsonNull: Entity was introduced
+com.google.gson.DefaultInstanceCreators$CharacterCreator: Entity was removed
+com.google.gson.TypeUtils: Entity was introduced
+com.google.gson.GenericArrayTypeImpl: Entity was introduced
+com.google.gson.DefaultInstanceCreators$FloatCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$UrlTypeAdapter: Entity was introduced
+com.google.gson.DefaultJsonDeserializers: Entity was removed
+com.google.gson.GsonBuilder.serializeNulls: Entity was introduced
+com.google.gson.GsonBuilder.setDateFormat: Entity was introduced
+com.google.gson.DefaultJsonDeserializers$1: Entity was removed
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.JsonPrimitiveDeserializationVisitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.DefaultInstanceCreators$ShortCreator: Entity was removed
+com.google.gson.DefaultInstanceCreators: Entity was removed
+com.google.gson.JsonPrintFormatter.format: Parameter(s) added to function signature
+com.google.gson.TypeInfoArray: Entity was introduced
+com.google.gson.JsonElementVisitor.visitNullObjectMember: Entity was introduced
+com.google.gson.DefaultInstanceCreators$1: Entity was removed
+com.google.gson.TypeInfo.getComponentType: Entity was removed
+com.google.gson.TypeInfo.getSecondLevelClass: Entity was removed
+com.google.gson.TypeInfo.isPrimitive: Entity was introduced
+com.google.gson.TypeInfo.toClass: Entity was removed
+com.google.gson.TypeInfo.getWrappedClass: Entity was introduced
+com.google.gson.TypeInfo.isCollectionOrArray: Entity was introduced
+com.google.gson.TypeInfo.getWrappedClazz: Entity was removed
+com.google.gson.TypeInfo.getRawClass: Entity was introduced
+com.google.gson.TypeInfo.getTopLevelClass: Entity was removed
+com.google.gson.TypeInfo.isString: Entity was introduced
+com.google.gson.TypeInfo.getActualType: Entity was introduced
+com.google.gson.TypeInfo.getGenericClass: Entity was removed
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitArrayField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitObjectField: Parameter(s) added to function signature
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Parameter(s) added to function signature
+com.google.gson.DefaultJsonSerializers$1: Entity was removed
+com.google.gson.DefaultInstanceCreators$LinkedListCreator: Entity was removed
+com.google.gson.JsonCompactFormatter$FormattingVisitor.visitNullObjectMember: Entity was introduced
+com.google.gson.JsonSerializerExceptionWrapper: Entity was introduced
+com.google.gson.DefaultTypeAdapters$TreeSetCreator: Entity was introduced
+com.google.gson.JsonDeserializerExceptionWrapper: Entity was introduced
+com.google.gson.DefaultTypeAdapters$1: Entity was introduced
+com.google.gson.DelegatingJsonElementVisitor.visitNullObjectMember: Entity was introduced
+com.google.gson.DefaultJsonDeserializers$UrlDeserializer: Entity was removed
+com.google.gson.DefaultInstanceCreators$DoubleCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$CharacterCreator: Entity was introduced
+com.google.gson.DefaultTypeAdapters$DoubleCreator: Entity was introduced
+com.google.gson.DefaultTypeAdapters$IntegerCreator: Entity was introduced
+com.google.gson.DefaultJsonDeserializers$MapDeserializer: Entity was removed
+com.google.gson.JsonPrintFormatter$PrintFormattingVisitor.visitNullObjectMember: Entity was introduced
+----
+---- 1.1.1 --- 1.2 should have been 1.1.1 --- 2.0.0
+com.google.gson.JsonParserConstants.SINGLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParserConstants.ESCAPE_CHAR: Entity was introduced
+com.google.gson.JsonParserConstants.UNICODE_CHAR: Entity was introduced
+com.google.gson.JsonParserConstants.DOUBLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParserConstants.HEX_CHAR: Entity was introduced
+com.google.gson.JsonParserTokenManager.DOUBLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParserTokenManager.HEX_CHAR: Entity was introduced
+com.google.gson.JsonParserTokenManager.SINGLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParserTokenManager.ESCAPE_CHAR: Entity was introduced
+com.google.gson.JsonParserTokenManager.UNICODE_CHAR: Entity was introduced
+com.google.gson.StringUnmarshaller: Entity was introduced
+com.google.gson.JsonParser.HEX_CHAR: Entity was introduced
+com.google.gson.JsonParser.DOUBLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParser.SINGLE_QUOTE_LITERAL: Entity was introduced
+com.google.gson.JsonParser.ESCAPE_CHAR: Entity was introduced
+com.google.gson.JsonParser.UNICODE_CHAR: Entity was introduced
+com.google.gson.GsonBuilder.setDateFormat: Function was overloaded
+com.google.gson.GsonBuilder.setDateFormat: Function was overloaded
+----
+---- 1.2 --- 1.2.1 should have been 1.2 --- 1.3.0
+----
+com.google.gson.TypeInfoCollection: Entity was introduced
+com.google.gson.DefaultTypeAdapters$BooleanCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$BooleanTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$ByteCreator: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.visitPrimitiveField: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.visitEnum: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.endVisitingObject: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.JsonArrayDeserializationVisitor.visitPrimitiveValue: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.visitCollection: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor.visitCollectionField: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongCreator: Entity was removed
+com.google.gson.JsonArray.getAsByte: Entity was introduced
+com.google.gson.JsonArray.getAsCharacter: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.visitPrimitiveField: Entity was removed
+com.google.gson.JsonDeserializationVisitor.visitEnum: Entity was removed
+com.google.gson.JsonDeserializationVisitor.endVisitingObject: Entity was removed
+com.google.gson.JsonDeserializationVisitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.visitPrimitiveValue: Entity was removed
+com.google.gson.JsonDeserializationVisitor.visitCollection: Entity was removed
+com.google.gson.JsonDeserializationVisitor.visitCollectionField: Entity was removed
+com.google.gson.JsonPrimitive.getAsByte: Entity was introduced
+com.google.gson.JsonPrimitive.getAsCharacter: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.visitPrimitiveField: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.visitEnum: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.endVisitingObject: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.visitPrimitiveValue: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.visitCollection: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor.visitCollectionField: Entity was removed
+com.google.gson.JsonSerializationVisitor.visitPrimitiveField: Entity was removed
+com.google.gson.JsonSerializationVisitor.visitEnum: Entity was removed
+com.google.gson.JsonSerializationVisitor.endVisitingObject: Entity was removed
+com.google.gson.JsonSerializationVisitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.JsonSerializationVisitor.visitCollection: Entity was removed
+com.google.gson.JsonSerializationVisitor.visitPrimitiveValue: Entity was removed
+com.google.gson.JsonSerializationVisitor.visitCollectionField: Entity was removed
+com.google.gson.DefaultTypeAdapters$ShortTypeAdapter: Entity was introduced
+com.google.gson.JsonObject.getAsByte: Entity was introduced
+com.google.gson.JsonObject.getAsCharacter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$FloatCreator: Entity was removed
+com.google.gson.PrimitiveTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$ByteTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$IntegerTypeAdapter: Entity was introduced
+com.google.gson.TypeAdapterNotRequired: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongTypeAdapter: Entity was introduced
+com.google.gson.JsonElement.getAsCharacter: Entity was introduced
+com.google.gson.JsonElement.getAsByte: Entity was introduced
+com.google.gson.DefaultTypeAdapters$ShortCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$CollectionTypeAdapter: Entity was introduced
+com.google.gson.JsonNull.getAsCharacter: Entity was introduced
+com.google.gson.JsonNull.getAsByte: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.visitEnum: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.endVisitingObject: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.visitCollection: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.visitPrimitiveValue: Entity was removed
+com.google.gson.JsonPrimitiveDeserializationVisitor: Entity was removed
+com.google.gson.TypeInfoArray.isString: Entity was removed
+com.google.gson.TypeInfoArray.isPrimitiveOrStringAndNotAnArray: Entity was removed
+com.google.gson.TypeInfo.isString: Entity was removed
+com.google.gson.TypeInfo.isPrimitiveOrStringAndNotAnArray: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitPrimitiveField: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitEnum: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.endVisitingObject: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitCollection: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitFieldUsingCustomHandler: Entity was introduced
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitCollectionField: Entity was removed
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitPrimitiveValue: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleTypeAdapter: Entity was introduced
+com.google.gson.JsonSerializerExceptionWrapper: Entity was removed
+com.google.gson.DefaultTypeAdapters$StringTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$CharacterTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$FloatTypeAdapter: Entity was introduced
+com.google.gson.Preconditions.checkState: Entity was introduced
+com.google.gson.DefaultTypeAdapters$CharacterCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$IntegerCreator: Entity was removed
+----
+---- 1.2.2 --- 1.2.3 should have been 1.2.2 --- 2.0.0
+com.google.gson.AnonymousAndLocalClassExclusionStrategy: Entity was introduced
+com.google.gson.JsonParserConstants: Entity was removed
+com.google.gson.DefaultTypeAdapters$BooleanTypeAdapter.createInstance: Entity was removed
+com.google.gson.JsonParserJavaccTokenManager: Entity was introduced
+com.google.gson.JsonArrayDeserializationVisitor.getTarget: Entity was introduced
+com.google.gson.JsonParserJavacc$JJCalls: Entity was introduced
+com.google.gson.DefaultTypeAdapters$FloatDeserializer: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.getTarget: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.getTarget: Entity was introduced
+com.google.gson.JsonSerializationVisitor.getTarget: Entity was introduced
+com.google.gson.ObjectNavigatorFactory.create: Overloaded function removed
+com.google.gson.ObjectNavigatorFactory.create: Overloaded function removed
+com.google.gson.DefaultTypeAdapters$ShortTypeAdapter.createInstance: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap.hasAnyHandlerFor: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap.registerIfAbsent: Function was overloaded
+com.google.gson.ParameterizedTypeHandlerMap.registerIfAbsent: Function was overloaded
+com.google.gson.JsonObject.addProperty: Function was overloaded
+com.google.gson.JsonObject.addProperty: Function was overloaded
+com.google.gson.JsonObject.addProperty: Function was overloaded
+com.google.gson.JsonObject.remove: Entity was introduced
+com.google.gson.LongSerializationPolicy$1: Entity was introduced
+com.google.gson.JsonParserTokenManager: Entity was removed
+com.google.gson.DefaultTypeAdapters$GregorianCalendarTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$LinkedListCreator: Entity was removed
+com.google.gson.JsonFormatter.format: Type was changed to a compatible type
+com.google.gson.DefaultTypeAdapters$LongSerializer: Entity was introduced
+com.google.gson.DefaultTypeAdapters$PropertiesCreator: Entity was introduced
+com.google.gson.DefaultTypeAdapters$FloatSerializer: Entity was introduced
+com.google.gson.JsonParserJavaccConstants: Entity was introduced
+com.google.gson.DefaultTypeAdapters$LocaleTypeAdapter.createInstance: Entity was removed
+com.google.gson.DefaultTypeAdapters$HashSetCreator: Entity was introduced
+com.google.gson.DefaultTypeAdapters$ByteTypeAdapter.createInstance: Entity was removed
+com.google.gson.LongSerializationPolicy$DefaultStrategy: Entity was introduced
+com.google.gson.LongSerializationPolicy: Entity was introduced
+com.google.gson.DefaultTypeAdapters$EnumTypeAdapter.createInstance: Entity was removed
+com.google.gson.JsonCompactFormatter.format: Type was changed to a compatible type
+com.google.gson.DefaultTypeAdapters$IntegerTypeAdapter.createInstance: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleDeserializer: Entity was introduced
+com.google.gson.DefaultTypeAdapters$BigDecimalTypeAdapter.createInstance: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$BigIntegerTypeAdapter.createInstance: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleSerializer: Entity was introduced
+com.google.gson.DefaultTypeAdapters$DoubleTypeAdapter: Entity was removed
+com.google.gson.annotations.Until: Entity was introduced
+com.google.gson.DefaultTypeAdapters$UuidTypeAdapter: Entity was introduced
+com.google.gson.JsonParserJavacc$LookaheadSuccess: Entity was introduced
+com.google.gson.JsonParser.token_source: Entity was removed
+com.google.gson.JsonParser.EOF: Entity was removed
+com.google.gson.JsonParser.jj_nt: Entity was removed
+com.google.gson.JsonParser.HEX_CHAR: Entity was removed
+com.google.gson.JsonParser.DOUBLE_QUOTE_LITERAL: Entity was removed
+com.google.gson.JsonParser.CNTRL_ESC: Entity was removed
+com.google.gson.JsonParser.ENDQUOTE: Entity was removed
+com.google.gson.JsonParser.HEX_ESC: Entity was removed
+com.google.gson.JsonParser.CHAR: Entity was removed
+com.google.gson.JsonParser.tokenImage: Entity was removed
+com.google.gson.JsonParser.STRING_STATE: Entity was removed
+com.google.gson.JsonParser.HEX_STATE: Entity was removed
+com.google.gson.JsonParser.DIGITS: Entity was removed
+com.google.gson.JsonParser.SINGLE_QUOTE_LITERAL: Entity was removed
+com.google.gson.JsonParser.ESCAPE_CHAR: Entity was removed
+com.google.gson.JsonParser.UNICODE_CHAR: Entity was removed
+com.google.gson.JsonParser.token: Entity was removed
+com.google.gson.JsonParser.ESC_STATE: Entity was removed
+com.google.gson.JsonParser.QUOTE: Entity was removed
+com.google.gson.JsonParser.DEFAULT: Entity was removed
+com.google.gson.JsonParser.E: Entity was removed
+com.google.gson.JsonParser.HEX: Entity was removed
+com.google.gson.JsonParser.getToken: Entity was removed
+com.google.gson.JsonParser.enable_tracing: Entity was removed
+com.google.gson.JsonParser.ReInit: Entity was removed
+com.google.gson.JsonParser.getNextToken: Entity was removed
+com.google.gson.JsonParser.disable_tracing: Entity was removed
+com.google.gson.JsonParser.parse: Function was overloaded
+com.google.gson.JsonParser.parse: Function was overloaded
+com.google.gson.JsonParser.parse: Function was overloaded
+com.google.gson.JsonParser.parse: Overloaded function removed
+com.google.gson.JsonParser.generateParseException: Entity was removed
+com.google.gson.ObjectNavigator$Visitor.getTarget: Entity was introduced
+com.google.gson.DefaultTypeAdapters$UrlTypeAdapter.createInstance: Entity was removed
+com.google.gson.GsonBuilder.setLongSerializationPolicy: Entity was introduced
+com.google.gson.GsonBuilder.serializeSpecialFloatingPointValues: Entity was introduced
+com.google.gson.GsonBuilder.generateNonExecutableJson: Entity was introduced
+com.google.gson.GsonBuilder.setFieldNamingStrategy: Entity was introduced
+com.google.gson.GsonBuilder.disableHtmlEscaping: Entity was introduced
+com.google.gson.GsonBuilder.disableInnerClassSerialization: Entity was introduced
+com.google.gson.JsonParserJavacc$1: Entity was introduced
+com.google.gson.JsonParserJavacc: Entity was introduced
+com.google.gson.JsonPrintFormatter.format: Type was changed to a compatible type
+com.google.gson.LongSerializationPolicy$StringStrategy: Entity was introduced
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.getTarget: Entity was introduced
+com.google.gson.DefaultTypeAdapters$NumberTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$StringTypeAdapter.createInstance: Entity was removed
+com.google.gson.LongSerializationPolicy$Strategy: Entity was introduced
+com.google.gson.DefaultTypeAdapters$CharacterTypeAdapter.createInstance: Entity was removed
+com.google.gson.DefaultTypeAdapters$FloatTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongDeserializer: Entity was introduced
+----
+---- 1.2.3 --- 1.3 should have been 1.2.3 --- 2.0.0
+com.google.gson.AnonymousAndLocalClassExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonEscapingVisitor: Entity was removed
+com.google.gson.JsonParserImplConstants: Entity was removed
+com.google.gson.JsonParserJavaccTokenManager: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitPrimitive: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.end: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.start: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.JsonArrayDeserializationVisitor.end: Entity was introduced
+com.google.gson.JsonArrayDeserializationVisitor.visitPrimitive: Entity was introduced
+com.google.gson.JsonArrayDeserializationVisitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.JsonArrayDeserializationVisitor.start: Entity was introduced
+com.google.gson.JsonParserJavacc$JJCalls: Entity was introduced
+com.google.gson.ExposeAnnotationSerializationExclusionStrategy: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.end: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.visitPrimitive: Entity was introduced
+com.google.gson.JsonDeserializationVisitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.JsonDeserializationVisitor.start: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.end: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.visitPrimitive: Entity was introduced
+com.google.gson.JsonObjectDeserializationVisitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.JsonObjectDeserializationVisitor.start: Entity was introduced
+com.google.gson.JsonSerializationVisitor.visitPrimitive: Entity was introduced
+com.google.gson.JsonSerializationVisitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.JsonSerializationVisitor.end: Entity was introduced
+com.google.gson.JsonSerializationVisitor.start: Entity was introduced
+com.google.gson.ObjectNavigatorFactory.create: Type was changed to an incompatible type
+com.google.gson.ObjectNavigatorFactory.create: Parameter(s) removed from function signature
+com.google.gson.InnerClassExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.VersionExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonParserImpl: Entity was removed
+com.google.gson.SyntheticFieldExclusionStrategy: Entity was introduced
+com.google.gson.JsonParserJavaccConstants: Entity was introduced
+com.google.gson.NullExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonParserImpl$LookaheadSuccess: Entity was removed
+com.google.gson.ExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationContextDefault.serialize: Function was overloaded
+com.google.gson.JsonSerializationContextDefault.serialize: Function was overloaded
+com.google.gson.ModifierBasedExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonStreamParser: Entity was introduced
+com.google.gson.DisjunctionExclusionStrategy.shouldSkipField: Type was changed to an incompatible type
+com.google.gson.JsonParserImpl$1: Entity was removed
+com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_DASHES: Entity was introduced
+com.google.gson.annotations.Expose.serialize: Entity was introduced
+com.google.gson.annotations.Expose.deserialize: Entity was introduced
+com.google.gson.ObjectTypePair: Entity was introduced
+com.google.gson.JsonParserImpl$JJCalls: Entity was removed
+com.google.gson.FieldAttributes: Entity was introduced
+com.google.gson.JsonParserJavacc$LookaheadSuccess: Entity was introduced
+com.google.gson.GsonBuilder.setExclusionStrategies: Entity was introduced
+com.google.gson.JsonParserJavacc$1: Entity was introduced
+com.google.gson.JsonParserJavacc: Entity was introduced
+com.google.gson.ExposeAnnotationDeserializationExclusionStrategy: Entity was introduced
+com.google.gson.MemoryRefStack.push: Type was changed to an incompatible type
+com.google.gson.MemoryRefStack.push: Type was changed to an incompatible type
+com.google.gson.MemoryRefStack.pop: Type was changed to an incompatible type
+com.google.gson.MemoryRefStack.peek: Type was changed to an incompatible type
+com.google.gson.MemoryRefStack.contains: Type was changed to an incompatible type
+com.google.gson.MemoryRefStack.isEmpty: Entity was introduced
+com.google.gson.JsonParserImplTokenManager: Entity was removed
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJsonTree: Entity was introduced
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitPrimitive: Entity was introduced
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.end: Entity was introduced
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.start: Entity was introduced
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitUsingCustomHandler: Parameter(s) removed from function signature
+com.google.gson.CircularReferenceException: Entity was introduced
+com.google.gson.ExposeAnnotationBasedExclusionStrategy: Entity was removed
+com.google.gson.Token.newToken: Function was overloaded
+com.google.gson.Token.newToken: Function was overloaded
+com.google.gson.Token.getValue: Entity was introduced
+com.google.gson.Pair: Entity was introduced
+----
+---- 1.3beta3 --- 1.4-beta should have been 1.3beta3 --- 2.0.0
+com.google.gson.Cache: Entity was introduced
+com.google.gson.JsonArrayDeserializationVisitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonArrayDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonObjectDeserializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.JsonSerializationVisitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.ParameterizedTypeHandlerMap.entrySet: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap.registerForTypeHierarchy: Entity was introduced
+com.google.gson.DefaultTypeAdapters$DefaultTimeTypeAdapter: Entity was introduced
+com.google.gson.CamelCaseSeparatorNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.SerializedNameAnnotationInterceptingNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.CompositionFieldNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.LruCache: Entity was introduced
+com.google.gson.ModifyFirstLetterNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES: Entity was introduced
+com.google.gson.FieldNamingStrategy2Adapter: Entity was introduced
+com.google.gson.FieldAttributes.getAnnotations: Entity was introduced
+com.google.gson.UpperCamelCaseSeparatorNamingPolicy: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator$Visitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.LowerCaseNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.DefaultTypeAdapters$DefaultTimestampDeserializer: Entity was introduced
+com.google.gson.LowerCamelCaseSeparatorNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.FieldNamingStrategy2: Entity was introduced
+com.google.gson.UpperCaseNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitArrayField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitObjectField: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.com.google.gson.ObjectNavigator$Visitor.visitFieldUsingCustomHandler: Type was changed to an incompatible type
+com.google.gson.CircularReferenceException.createDetailedException: Type was changed to an incompatible type
+com.google.gson.RecursiveFieldNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.JavaFieldNamingPolicy.translateName: Type was changed to an incompatible type
+com.google.gson.DefaultTypeAdapters$DefaultJavaSqlDateTypeAdapter: Entity was introduced
+com.google.gson.Pair.getSecond: Entity was removed
+com.google.gson.Pair.getFirst: Entity was removed
+----
+---- 1.4-beta --- 1.5 should have been 1.4-beta --- 2.0.0
+com.google.gson.stream.JsonReader$1: Entity was introduced
+com.google.gson.JsonParserJavaccTokenManager: Entity was removed
+com.google.gson.JsonParserJavacc$JJCalls: Entity was removed
+com.google.gson.Streams$1: Entity was introduced
+com.google.gson.JsonSyntaxException: Entity was introduced
+com.google.gson.JsonFormatter: Entity was removed
+com.google.gson.stream.JsonScope: Entity was introduced
+com.google.gson.SimpleCharStream: Entity was removed
+com.google.gson.JsonCompactFormatter$FormattingVisitor: Entity was removed
+com.google.gson.ParseException: Entity was removed
+com.google.gson.stream.JsonWriter: Entity was introduced
+com.google.gson.stream.MalformedJsonException: Entity was introduced
+com.google.gson.JsonCompactFormatter: Entity was removed
+com.google.gson.Streams$AppendableWriter$CurrentWrite: Entity was introduced
+com.google.gson.StringUnmarshaller: Entity was removed
+com.google.gson.FieldAttributes.getDeclaringClass: Entity was introduced
+com.google.gson.JsonParserJavacc$LookaheadSuccess: Entity was removed
+com.google.gson.JsonParser.parse: Function was overloaded
+com.google.gson.JsonParser.parse: Function was overloaded
+com.google.gson.JsonParserJavacc$1: Entity was removed
+com.google.gson.JsonParserJavacc: Entity was removed
+com.google.gson.JsonPrintFormatter: Entity was removed
+com.google.gson.JsonIOException: Entity was introduced
+com.google.gson.Streams: Entity was introduced
+com.google.gson.JsonParserJavaccConstants: Entity was removed
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.toJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.Gson.fromJson: Function was overloaded
+com.google.gson.stream.JsonToken: Entity was introduced
+com.google.gson.Token: Entity was removed
+com.google.gson.Streams$AppendableWriter: Entity was introduced
+com.google.gson.stream.JsonWriter$1: Entity was introduced
+com.google.gson.stream.JsonReader: Entity was introduced
+com.google.gson.JsonPrintFormatter$JsonWriter: Entity was removed
+com.google.gson.TokenMgrError: Entity was removed
+com.google.gson.JsonPrintFormatter$PrintFormattingVisitor: Entity was removed
+----
+---- 1.5 --- 1.6 should have been 1.5 --- 2.0.0
+com.google.gson.TypeInfoCollection: Entity was removed
+com.google.gson.Cache.size: Entity was removed
+com.google.gson.Cache.clear: Entity was removed
+com.google.gson.MapTypeAdapter: Entity was introduced
+com.google.gson.ObjectNavigatorFactory: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap.register: Function was overloaded
+com.google.gson.ParameterizedTypeHandlerMap.register: Function was overloaded
+com.google.gson.DefaultTypeAdapters$DefaultInetAddressAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$TreeSetCreator: Entity was removed
+com.google.gson.ParameterizedTypeImpl: Entity was removed
+com.google.gson.DefaultTypeAdapters$StringBuilderTypeAdapter: Entity was introduced
+com.google.gson.UnsafeAllocator$2: Entity was introduced
+com.google.gson.DefaultTypeAdapters$PropertiesCreator: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultConstructorCreator: Entity was introduced
+com.google.gson.MapAsArrayTypeAdapter: Entity was introduced
+com.google.gson.DefaultTypeAdapters$HashSetCreator: Entity was removed
+com.google.gson.UnsafeAllocator$4: Entity was introduced
+com.google.gson.Primitives.PRIMITIVE_TO_WRAPPER_TYPE: Entity was removed
+com.google.gson.Primitives.WRAPPER_TO_PRIMITIVE_TYPE: Entity was removed
+com.google.gson.Primitives.isPrimitive: Entity was introduced
+com.google.gson.JsonFieldNameValidator: Entity was removed
+com.google.gson.JsonSerializationContextDefault.serialize: Overloaded function removed
+com.google.gson.JsonSerializationContextDefault.serialize: Overloaded function removed
+com.google.gson.UnsafeAllocator$3: Entity was introduced
+com.google.gson.UnsafeAllocator$1: Entity was introduced
+com.google.gson.DefaultTypeAdapters$MapTypeAdapter: Entity was removed
+com.google.gson.reflect.TypeToken$1: Entity was removed
+com.google.gson.TypeInfoFactory: Entity was removed
+com.google.gson.ReflectingFieldNavigator: Entity was introduced
+com.google.gson.reflect.TypeToken$SimpleTypeToken: Entity was removed
+com.google.gson.TypeInfoMap: Entity was removed
+com.google.gson.TypeUtils: Entity was removed
+com.google.gson.GenericArrayTypeImpl: Entity was removed
+com.google.gson.UnsafeAllocator: Entity was introduced
+com.google.gson.GsonBuilder.enableComplexMapKeySerialization: Entity was introduced
+com.google.gson.GsonBuilder.addSerializationExclusionStrategy: Entity was introduced
+com.google.gson.GsonBuilder.registerTypeHierarchyAdapter: Entity was introduced
+com.google.gson.GsonBuilder.addDeserializationExclusionStrategy: Entity was introduced
+com.google.gson.DefaultConstructorAllocator: Entity was introduced
+com.google.gson.TypeAdapter: Entity was removed
+com.google.gson.Preconditions: Entity was removed
+com.google.gson.DefaultTypeAdapters$CollectionTypeAdapter.createInstance: Entity was removed
+com.google.gson.TypeInfoArray: Entity was removed
+com.google.gson.BaseMapTypeAdapter: Entity was introduced
+com.google.gson.TypeInfo: Entity was removed
+com.google.gson.ObjectNavigator.accept: Type was changed to an incompatible type
+com.google.gson.ObjectNavigator.accept: Parameter(s) added to function signature
+com.google.gson.DefaultConstructorAllocator$Null: Entity was introduced
+com.google.gson.Pair.second: Entity was introduced
+com.google.gson.Pair.first: Entity was introduced
+com.google.gson.DefaultTypeAdapters$StringBufferTypeAdapter: Entity was introduced
+----
+---- 1.6 --- 1.7 should have been 1.6 --- 2.0.0
+----
+----
+com.google.gson.Cache.removeElement: Entity was removed
+com.google.gson.Gson$1: Entity was introduced
+com.google.gson.DefaultTypeAdapters$BooleanTypeAdapter: Entity was removed
+com.google.gson.JsonDeserializationContextDefault: Entity was removed
+com.google.gson.JsonArrayDeserializationVisitor: Entity was removed
+com.google.gson.Streams$1: Entity was removed
+com.google.gson.DefaultTypeAdapters$FloatDeserializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$UriTypeAdapter: Entity was removed
+com.google.gson.JsonDeserializationVisitor: Entity was removed
+com.google.gson.DefaultTypeAdapters$1: Entity was removed
+com.google.gson.JsonObjectDeserializationVisitor: Entity was removed
+com.google.gson.JsonSerializationVisitor: Entity was removed
+com.google.gson.MapTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$ShortTypeAdapter: Entity was removed
+com.google.gson.ParameterizedTypeHandlerMap: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultInetAddressAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultTimeTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$StringBuilderTypeAdapter: Entity was removed
+com.google.gson.UnsafeAllocator$2: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$GregorianCalendarTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultConstructorCreator: Entity was removed
+com.google.gson.Gson$4: Entity was introduced
+com.google.gson.MapAsArrayTypeAdapter: Entity was removed
+com.google.gson.NullExclusionStrategy: Entity was removed
+com.google.gson.DefaultTypeAdapters$LocaleTypeAdapter: Entity was removed
+com.google.gson.UnsafeAllocator$4: Entity was removed
+com.google.gson.DefaultTypeAdapters$ByteTypeAdapter: Entity was removed
+com.google.gson.Primitives: Entity was removed
+com.google.gson.JsonSerializationContextDefault: Entity was removed
+com.google.gson.UnsafeAllocator$3: Entity was removed
+com.google.gson.UnsafeAllocator$1: Entity was removed
+com.google.gson.DefaultTypeAdapters$EnumTypeAdapter: Entity was removed
+com.google.gson.stream.StringPool: Entity was introduced
+com.google.gson.DefaultTypeAdapters$IntegerTypeAdapter: Entity was removed
+com.google.gson.Streams$AppendableWriter$CurrentWrite: Entity was removed
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$3: Entity was introduced
+com.google.gson.ReflectingFieldNavigator: Entity was removed
+com.google.gson.JsonTreeNavigator: Entity was removed
+com.google.gson.DefaultTypeAdapters$BigDecimalTypeAdapter: Entity was removed
+com.google.gson.GsonToMiniGsonTypeAdapterFactory: Entity was introduced
+com.google.gson.DefaultTypeAdapters$BigIntegerTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$UuidTypeAdapter: Entity was removed
+com.google.gson.ObjectTypePair: Entity was removed
+com.google.gson.Gson$3: Entity was introduced
+com.google.gson.JsonNull.INSTANCE: Entity was introduced
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$1: Entity was introduced
+com.google.gson.ObjectNavigator$Visitor: Entity was removed
+com.google.gson.DefaultTypeAdapters$UrlTypeAdapter: Entity was removed
+com.google.gson.UnsafeAllocator: Entity was removed
+com.google.gson.DefaultTypeAdapters$FloatSerializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultTimestampDeserializer: Entity was removed
+com.google.gson.DefaultTypeAdapters$CollectionTypeAdapter: Entity was removed
+com.google.gson.MemoryRefStack: Entity was removed
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$2: Entity was introduced
+com.google.gson.Gson$2: Entity was introduced
+com.google.gson.ObjectConstructor: Entity was removed
+com.google.gson.BaseMapTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$DoubleDeserializer: Entity was removed
+com.google.gson.LruCache.removeElement: Entity was removed
+com.google.gson.ObjectNavigator: Entity was removed
+com.google.gson.DefaultTypeAdapters$NumberTypeAdapter: Entity was removed
+com.google.gson.CircularReferenceException: Entity was removed
+com.google.gson.Escaper: Entity was removed
+com.google.gson.Streams: Entity was removed
+com.google.gson.DefaultConstructorAllocator$Null: Entity was removed
+com.google.gson.DefaultTypeAdapters$StringTypeAdapter: Entity was removed
+com.google.gson.stream.JsonWriter.getSerializeNulls: Entity was introduced
+com.google.gson.stream.JsonWriter.setSerializeNulls: Entity was introduced
+com.google.gson.Pair: Entity was removed
+com.google.gson.DefaultTypeAdapters$StringBufferTypeAdapter: Entity was removed
+com.google.gson.DefaultTypeAdapters$CharacterTypeAdapter: Entity was removed
+com.google.gson.Streams$AppendableWriter: Entity was removed
+com.google.gson.DelegatingJsonElementVisitor: Entity was removed
+com.google.gson.DefaultConstructorAllocator: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultJavaSqlDateTypeAdapter: Entity was removed
+com.google.gson.MappedObjectConstructor: Entity was removed
+com.google.gson.DefaultTypeAdapters$LongDeserializer: Entity was removed
+----
+com.google.gson.stream.JsonReader$1.INSTANCE: Entity was introduced
+com.google.gson.stream.JsonReader$1.promoteNameToValue: Entity was introduced
+com.google.gson.DefaultTypeAdapters: Entity was removed
+com.google.gson.AnonymousAndLocalClassExclusionStrategy: Entity was removed
+com.google.gson.Gson$5: Entity was introduced
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$1: Entity was removed
+com.google.gson.UpperCamelCaseSeparatorNamingPolicy: Entity was removed
+com.google.gson.LowerCamelCaseSeparatorNamingPolicy: Entity was removed
+com.google.gson.Gson.getAdapter: Entity was introduced
+com.google.gson.CompositionFieldNamingPolicy: Entity was removed
+com.google.gson.GsonToMiniGsonTypeAdapterFactory: Entity was removed
+com.google.gson.FieldNamingPolicy$1: Entity was introduced
+com.google.gson.ExposeAnnotationSerializationExclusionStrategy: Entity was removed
+com.google.gson.FieldNamingPolicy.IDENTITY: Entity was introduced
+com.google.gson.FieldNamingPolicy.translateName: Entity was introduced
+com.google.gson.Cache: Entity was removed
+com.google.gson.Gson$3.com.google.gson.internal.bind.TypeAdapter$Factory: Entity was removed
+com.google.gson.Gson$3.read: Entity was removed
+com.google.gson.Gson$3.toJson: Entity was removed
+com.google.gson.Gson$3.fromJsonElement: Entity was removed
+com.google.gson.Gson$3.toJsonElement: Entity was removed
+com.google.gson.Gson$3.fromJson: Entity was removed
+com.google.gson.Gson$3.serialize: Entity was introduced
+com.google.gson.Gson$3.write: Entity was removed
+com.google.gson.ModifyFirstLetterNamingPolicy$LetterModifier: Entity was removed
+com.google.gson.stream.JsonReader$2: Entity was introduced
+com.google.gson.FieldNamingPolicy$3: Entity was introduced
+com.google.gson.Gson$1.com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter: Entity was removed
+com.google.gson.Gson$1.create: Entity was removed
+com.google.gson.Gson$1.withInitial: Entity was introduced
+com.google.gson.Gson$1.set: Entity was introduced
+com.google.gson.Gson$1.deserializeField: Entity was removed
+com.google.gson.Gson$1.getFieldName: Entity was removed
+com.google.gson.Gson$1.serializeField: Entity was removed
+com.google.gson.Gson$1.remove: Entity was introduced
+com.google.gson.Gson$1.get: Entity was introduced
+com.google.gson.LowerCaseNamingPolicy: Entity was removed
+com.google.gson.TypeAdapterFactory: Entity was introduced
+com.google.gson.LongSerializationPolicy$2: Entity was introduced
+com.google.gson.GsonBuilder.registerTypeAdapterFactory: Entity was introduced
+com.google.gson.InnerClassExclusionStrategy: Entity was removed
+com.google.gson.TreeTypeAdapter$1: Entity was introduced
+com.google.gson.ModifyFirstLetterNamingPolicy: Entity was removed
+com.google.gson.CamelCaseSeparatorNamingPolicy: Entity was removed
+com.google.gson.DisjunctionExclusionStrategy: Entity was removed
+com.google.gson.FieldNamingStrategy2: Entity was removed
+com.google.gson.DefaultDateTypeAdapter: Entity was introduced
+com.google.gson.VersionConstants: Entity was removed
+com.google.gson.SyntheticFieldExclusionStrategy: Entity was removed
+com.google.gson.SerializedNameAnnotationInterceptingNamingPolicy: Entity was removed
+com.google.gson.TreeTypeAdapter$SingleTypeFactory: Entity was introduced
+com.google.gson.UpperCaseNamingPolicy: Entity was removed
+com.google.gson.FieldNamingStrategy2Adapter: Entity was removed
+com.google.gson.ExposeAnnotationDeserializationExclusionStrategy: Entity was removed
+com.google.gson.LongSerializationPolicy$StringStrategy: Entity was removed
+com.google.gson.LongSerializationPolicy$1.STRING: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.DEFAULT: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.compareTo: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.valueOf: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.values: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.ordinal: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.name: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.serialize: Entity was introduced
+com.google.gson.LongSerializationPolicy$1.getDeclaringClass: Entity was introduced
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$2: Entity was removed
+com.google.gson.Gson$2.com.google.gson.internal.bind.TypeAdapter$Factory: Entity was removed
+com.google.gson.Gson$2.read: Entity was removed
+com.google.gson.Gson$2.toJson: Entity was removed
+com.google.gson.Gson$2.fromJsonElement: Entity was removed
+com.google.gson.Gson$2.toJsonElement: Entity was removed
+com.google.gson.Gson$2.fromJson: Entity was removed
+com.google.gson.Gson$2.write: Entity was removed
+com.google.gson.Gson$2.deserialize: Entity was introduced
+com.google.gson.GsonToMiniGsonTypeAdapterFactory$3: Entity was removed
+com.google.gson.JsonElementVisitor: Entity was removed
+com.google.gson.Gson$4.com.google.gson.internal.bind.TypeAdapter$Factory: Entity was removed
+com.google.gson.Gson$4.read: Overloaded function removed
+com.google.gson.Gson$4.read: Function was overloaded
+com.google.gson.Gson$4.read: Overloaded function removed
+com.google.gson.Gson$4.read: Overloaded function removed
+com.google.gson.Gson$4.toJson: Entity was removed
+com.google.gson.Gson$4.fromJsonElement: Entity was removed
+com.google.gson.Gson$4.toJsonElement: Entity was removed
+com.google.gson.Gson$4.fromJson: Entity was removed
+com.google.gson.Gson$4.nullSafe: Entity was introduced
+com.google.gson.Gson$4.write: Overloaded function removed
+com.google.gson.Gson$4.write: Overloaded function removed
+com.google.gson.LruCache: Entity was removed
+com.google.gson.DefaultTypeAdapters$DefaultDateTypeAdapter: Entity was removed
+com.google.gson.Gson$7: Entity was introduced
+com.google.gson.TypeAdapter: Entity was introduced
+com.google.gson.FieldNamingPolicy$4: Entity was introduced
+com.google.gson.FieldNamingPolicy$5: Entity was introduced
+com.google.gson.RecursiveFieldNamingPolicy: Entity was removed
+com.google.gson.Gson$FutureTypeAdapter: Entity was introduced
+com.google.gson.LongSerializationPolicy$DefaultStrategy: Entity was removed
+com.google.gson.ModifierBasedExclusionStrategy: Entity was removed
+com.google.gson.VersionExclusionStrategy: Entity was removed
+com.google.gson.JsonDeserializerExceptionWrapper: Entity was removed
+com.google.gson.TreeTypeAdapter: Entity was introduced
+com.google.gson.LongSerializationPolicy$Strategy: Entity was removed
+com.google.gson.JavaFieldNamingPolicy: Entity was removed
+com.google.gson.FieldNamingPolicy$2: Entity was introduced
+com.google.gson.Gson$6: Entity was introduced
+com.google.gson.TypeAdapter$1: Entity was introduced
+----
+---- gson-2.0 --- gson-2.1 should have been gson-2.0 --- 3.0.0
+com.google.gson.Gson$5.toJson: Entity was introduced
+com.google.gson.Gson$5.fromJson: Entity was introduced
+com.google.gson.Gson$5.fromJsonTree: Entity was introduced
+com.google.gson.Gson$5.toJsonTree: Entity was introduced
+com.google.gson.Gson$FutureTypeAdapter.toJson: Entity was introduced
+com.google.gson.Gson$FutureTypeAdapter.fromJson: Entity was introduced
+com.google.gson.Gson$FutureTypeAdapter.fromJsonTree: Entity was introduced
+com.google.gson.Gson$FutureTypeAdapter.toJsonTree: Entity was introduced
+com.google.gson.TypeAdapter.toJson: Entity was introduced
+com.google.gson.TypeAdapter.fromJson: Entity was introduced
+com.google.gson.TypeAdapter.fromJsonTree: Entity was introduced
+com.google.gson.TypeAdapter.toJsonTree: Entity was introduced
+com.google.gson.Gson.getDelegateAdapter: Entity was introduced
+com.google.gson.Gson$4.toJson: Entity was introduced
+com.google.gson.Gson$4.fromJson: Entity was introduced
+com.google.gson.Gson$4.fromJsonTree: Entity was introduced
+com.google.gson.Gson$4.toJsonTree: Entity was introduced
+com.google.gson.Gson$7: Entity was removed
+com.google.gson.TreeTypeAdapter.toJson: Entity was introduced
+com.google.gson.TreeTypeAdapter.fromJson: Entity was introduced
+com.google.gson.TreeTypeAdapter.fromJsonTree: Entity was introduced
+com.google.gson.TreeTypeAdapter.toJsonTree: Entity was introduced
+com.google.gson.Gson$6.toJson: Entity was introduced
+com.google.gson.Gson$6.fromJson: Entity was introduced
+com.google.gson.Gson$6.fromJsonTree: Entity was introduced
+com.google.gson.Gson$6.toJsonTree: Entity was introduced
+com.google.gson.TypeAdapter$1.toJson: Entity was introduced
+com.google.gson.TypeAdapter$1.fromJson: Entity was introduced
+com.google.gson.TypeAdapter$1.fromJsonTree: Entity was introduced
+com.google.gson.TypeAdapter$1.toJsonTree: Entity was introduced
+----
+---- gson-2.1 --- gson-2.2 should have been gson-2.1 --- 3.0.0
+----
+----
+com.google.gson.stream.JsonReader$2: Entity was removed
+com.google.gson.Gson$1.withInitial: Entity was removed
+com.google.gson.Gson$1.set: Entity was removed
+com.google.gson.Gson$1.get: Entity was removed
+com.google.gson.Gson$1.remove: Entity was removed
+com.google.gson.Gson$1.deserialize: Entity was introduced
+com.google.gson.Gson$3.read: Entity was introduced
+com.google.gson.Gson$3.toJson: Entity was introduced
+com.google.gson.Gson$3.fromJson: Entity was introduced
+com.google.gson.Gson$3.fromJsonTree: Entity was introduced
+com.google.gson.Gson$3.toJsonTree: Entity was introduced
+com.google.gson.Gson$3.nullSafe: Entity was introduced
+com.google.gson.Gson$3.serialize: Entity was removed
+com.google.gson.Gson$3.write: Entity was introduced
+com.google.gson.stream.JsonScope.CLOSED: Entity was removed
+com.google.gson.stream.JsonScope.NONEMPTY_ARRAY: Entity was removed
+com.google.gson.stream.JsonScope.EMPTY_DOCUMENT: Entity was removed
+com.google.gson.stream.JsonScope.DANGLING_NAME: Entity was removed
+com.google.gson.stream.JsonScope.EMPTY_OBJECT: Entity was removed
+com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT: Entity was removed
+com.google.gson.stream.JsonScope.NONEMPTY_OBJECT: Entity was removed
+com.google.gson.stream.JsonScope.EMPTY_ARRAY: Entity was removed
+com.google.gson.stream.JsonScope.valueOf: Entity was removed
+com.google.gson.stream.JsonScope.values: Entity was removed
+com.google.gson.stream.JsonScope.ordinal: Entity was removed
+com.google.gson.stream.JsonScope.name: Entity was removed
+com.google.gson.stream.JsonScope.compareTo: Entity was removed
+com.google.gson.stream.JsonScope.getDeclaringClass: Entity was removed
+com.google.gson.Gson$2.serialize: Entity was introduced
+com.google.gson.Gson$2.deserialize: Entity was removed
+com.google.gson.Gson$4.read: Function was overloaded
+com.google.gson.Gson$4.read: Overloaded function removed
+com.google.gson.stream.StringPool: Entity was removed
+com.google.gson.stream.JsonWriter$1: Entity was removed
+com.google.gson.Gson$6: Entity was removed
+----
+---- gson-2.2.2 --- gson-2.2.3 should have been gson-2.2.2 --- 3.0.0
+----
+com.google.gson.JsonArray.contains: Entity was introduced
+com.google.gson.JsonArray.set: Entity was introduced
+com.google.gson.JsonArray.remove: Entity was introduced
+com.google.gson.annotations.JsonAdapter: Entity was introduced
+com.google.gson.stream.JsonReader.getPath: Entity was introduced
+----
+----
+com.google.gson.Gson$7: Entity was introduced
+com.google.gson.Gson$6: Entity was introduced
+----
+com.google.gson.GsonBuilder.setLenient: Entity was introduced
+com.google.gson.TreeTypeAdapter$1: Entity was removed
+com.google.gson.Gson.newJsonReader: Entity was introduced
+----
+---- gson-parent-2.5 --- gson-parent-2.6 should have been gson-parent-2.5 --- 3.0.0
+----
+----
+com.google.gson.Gson$1.deserialize: Entity was removed
+com.google.gson.Gson$1.isAssignableFrom: Entity was introduced
+com.google.gson.Gson$1.get: Entity was introduced
+com.google.gson.Gson$1.getRawType: Entity was introduced
+com.google.gson.Gson$1.getType: Entity was introduced
+com.google.gson.TreeTypeAdapter: Entity was removed
+com.google.gson.Gson.serializeNulls: Entity was introduced
+com.google.gson.Gson.htmlSafe: Entity was introduced
+com.google.gson.Gson.excluder: Entity was introduced
+com.google.gson.Gson.fieldNamingStrategy: Entity was introduced
+com.google.gson.Gson$7: Entity was removed
+com.google.gson.Gson$5.write: Function was overloaded
+com.google.gson.Gson$5.write: Overloaded function removed
+com.google.gson.Gson$5.read: Function was overloaded
+com.google.gson.Gson$5.read: Overloaded function removed
+com.google.gson.Gson$2.read: Entity was introduced
+com.google.gson.Gson$2.fromJson: Entity was introduced
+com.google.gson.Gson$2.toJsonTree: Entity was introduced
+com.google.gson.Gson$2.nullSafe: Entity was introduced
+com.google.gson.Gson$2.fromJsonTree: Entity was introduced
+com.google.gson.Gson$2.serialize: Entity was removed
+com.google.gson.Gson$2.toJson: Entity was introduced
+com.google.gson.Gson$2.write: Entity was introduced
+com.google.gson.TreeTypeAdapter$SingleTypeFactory: Entity was removed
+com.google.gson.Gson$6.write: Function was overloaded
+com.google.gson.Gson$6.write: Overloaded function removed
+com.google.gson.Gson$6.read: Function was overloaded
+com.google.gson.Gson$6.read: Overloaded function removed
+com.google.gson.Gson$3.read: Function was overloaded
+com.google.gson.Gson$3.read: Overloaded function removed
+com.google.gson.JsonObject.size: Entity was introduced
+com.google.gson.stream.JsonWriter.value: Function was overloaded
+com.google.gson.stream.JsonWriter.value: Function was overloaded
+----
+---- gson-parent-2.6.2 --- gson-parent-2.7 should have been gson-parent-2.6.2 --- 3.0.0
+com.google.gson.Gson$1.getParameterized: Entity was introduced
+com.google.gson.Gson$1.getArray: Entity was introduced
+com.google.gson.annotations.JsonAdapter.nullSafe: Entity was introduced
+com.google.gson.reflect.TypeToken.getParameterized: Entity was introduced
+com.google.gson.reflect.TypeToken.getArray: Entity was introduced
+----
