@@ -467,7 +467,7 @@ expect and draw ideas for how we may go about implementing our own tool.
 
 \section{semantic-release}
 
-\textit{semantic-release}\cite{SemanticRelease} is a Javascript tool
+\textit{semantic-release} \cite{SemanticRelease} is a Javascript tool
 for ``fully automated package publishing''. It can do a range of
 functions related to automated publishing of packages in the
 Javascript ecosystem through the Node Package Manager, but of interest
@@ -484,9 +484,11 @@ of the following format:
 
 This approach suffers from the same drawback as incrementing the
 version number manually does -- it has to be done consistently.
+Not conforming to the format even once would mean that the tool would
+fail to identify that the version should be bumped.
 
 Another way is by employing an additional tool called
-\textit{cracks}\cite{Cracks}. According to the official description
+\textit{cracks} \cite{Cracks}. According to the official description
 ``this module can automatically detect breaking changes by running the
 test suite of your last-release against the current codebase. This
 shouldn't fail''. This is generally a good approach -- by definition
@@ -497,7 +499,7 @@ not meant to be a major release. However, it raises some issues.
 \item It could be that the library in question has whitebox unit
 tests. If they start failing, that does not necessarily constitute a
 breaking change, because while the internal implementation of those
-methods may have changed, the public API is still the same. Cracks has
+methods may have changed, the public API could still be the same. Cracks has
 no way of differentiating blackbox from whitebox tests unless manually
 specified.
 \item The unit tests may not cover the public API in its entirety.
@@ -510,14 +512,14 @@ the authors still want to use semantic versioning.
 
 \section{GitVersion}
 
-\textit{GitVersion}\cite{GitVersion} ``looks at your Git history and
+\textit{GitVersion} \cite{GitVersion} ``looks at your Git history and
 works out the semantic version of the commit being built''.  By
 knowing in advance what workflow contributors to the repository are
-using, it can determine when breaking changes occur, when new features
-are being introduced and when it's only patches that are going
-through. Previous versions of GitVersion have implicit knowledge of
-the workflows \textit{GitFlow}\cite{GitFlow} and
-\textit{GitHubFlow}\cite{GitHubFlow}, but the current one (3.0) at the
+using, it can determine what component of the version number ought to
+be bumped.
+Previous versions of GitVersion have implicit knowledge of
+the workflows \textit{GitFlow} \cite{GitFlow} and
+\textit{GitHubFlow} \cite{GitHubFlow}, but the current one (3.0) at the
 time of writing can be configured to work with more custom workflows.
 
 Consider an example usage of GitVersion on a history of commits.
@@ -547,36 +549,38 @@ Consider an example usage of GitVersion on a history of commits.
 commit were to be released}
 \end{table}
 
-Notice that similarly to semantic-release, GitVersion relies on the
-naming of the branches. This results in the same set of drawbacks. It
-has to be applied consistently, and forces contributors to use one
-particular naming scheme. The latter one is somewhat alleviated in
-this case, as the workflow GitVersion expects is highly
-configurable\cite{GitVersionConfiguration}.
-
-\section{JDiff}
-% TODO: Jdiff
-% http://javadiff.cvs.sourceforge.net/viewvc/javadiff/jdiff/doc/jdiff.html
-
-\section{Clirr}
+Notice that similarly to semantic-release, GitVersion relies on user
+input -- in this case, branch names. This results in the same set of
+drawbacks, with the addition that GitVersion is heavily dependent on
+Git as a version control system and cannot trivially be ported to
+another one. The naming scheme has to be applied consistently, and
+forces contributors to all use the same one\footnote{Arguably, that
+can be a good thing. However, such requirements should not be imposed
+by software like this.} . The choice of naming scheme can be somewhat
+alleviated, as the workflow GitVersion expects is highly configurable
+\cite{GitVersionConfiguration}.
 
 \section{Endjin.Assembly.ChangeDetection}
 
-\textit{Endjin.Assembly.ChangeDetection}\cite{Endjin} is a
+\textit{Endjin.Assembly.ChangeDetection} \cite{Endjin} is a
 proof-of-concept project that takes a very different and less
 error-prone approach. It can identify breaking changes in .NET
-assemblies by looking at the assembly itself. It does this
+assemblies by looking inside the assembly itself. It does this
 by examining any changes made to public types in the assembly, such as
-removing them or changing their signature.
+removing them or changing their signature. It essentially determines
+the binary compatibility of two .NET assemblies.
 
-This way of proposing a version number truly reflects changes to
-the code and imposes no additonal requirements on contributors to
-the repository. However, Endjin.Assembly.ChangeDetection is not really
-a tool, but an experiment, and is tied to the .NET ecosystem.
+This way of proposing a version number is preferred, because it
+imposes no additional requirements on contributors to the repository
+and does not rely on user input to relay changes to the public API.
+Instead, it inspects it itself.
+
+However, Endjin.Assembly.ChangeDetection is not really a fully-fledged
+tool, but an experiment applicable to only one particular ecosystem.
 
 \section{elm-package}
 
-\textit{elm-package}\cite{ElmPackage} is the official package manager
+\textit{elm-package} \cite{ElmPackage} is the official package manager
 of the language Elm -- a purely functional, domain-specific
 language for creating browser-based user interfaces. Elm is heavily
 influenced by Haskell, and elm-package itself is written entirely in
@@ -585,26 +589,64 @@ Haskell.
 As part of the package publishing process, elm-package automatically
 bumps the version number of the package. It never claims outright that
 it follows semantic versioning, but the rules it specifies are very
-reminiscent of it\cite{ElmPackageVR}:
+reminiscent of it \cite{ElmPackageVR}:
 
 \begin{itemize}
 \item Versions all have exactly three parts: \codeinline{MAJOR.MINOR.PATCH}
-\item All packages start with initial version $1.0.0$
+\item All packages start with initial version \textit{1.0.0}
 \item Versions are incremented based on how the API changes:
 \begin{itemize}
-\item \codeinline{PATCH} - the API is the same, no risk of breaking code
-\item \codeinline{MINOR} - values have been added, existing values are unchanged
-\item \codeinline{MAJOR} - existing values have been changed or removed
+\item \codeinline{PATCH} -- the API is the same, no risk of breaking code
+\item \codeinline{MINOR} -- values have been added, existing values are unchanged
+\item \codeinline{MAJOR} -- existing values have been changed or removed
 \end{itemize}
 \end{itemize}
 
 The most notable change from semantic versioning is that elm-package
-disallows versions smaller than $1.0.0$. Semver claims that $1.0.0$
+disallows versions smaller than \textit{1.0.0}. Semver claims that \textit{1.0.0}
 defines the public API, so it would make sense for a tool like this to
 disallow versions smaller than that. If the previously published
-version of the package is $0.9.0$ and the new changeset is breaking,
+version of the package is \textit{0.9.0} and the new changeset is breaking,
 elm-package would have no way of knowing whether the next one should
-be $0.9.1$, $0.10.0$ or $1.0.0$.
+be \textit{0.9.1}, \textit{0.10.0} or \textit{1.0.0}.
+
+\section{JDiff}
+
+\textit{JDiff} \cite{JDiff} is a tool that does not assign version
+numbers, but instead documents changes between two variants of a Java API.
+It then goes on to generate an HTML report of the differences, to act
+as a supplement to the changelog. It not only looks at the API itself,
+but also inspects and notes differences in accompanying documentation
+strings. Those may indicate a change in the behaviour of some functionality,
+even if it's interface remains the same.
+
+% TODO: cite ant?
+JDiff is intended to be used in conjuction with the build system Ant,
+where an \textit{old} and a \textit{new} project have to be defined so
+that JDiff knows what to compare. Alternatively, it can be run twice
+manually with the two versions to compare checked out one after
+the other.
+
+At the time of writing, the tool seems to be somewhat outdated with
+the last release being JDiff \textit{1.1.1} from November 2008.
+
+\section{Clirr}
+
+\textit{Clirr} \cite{Clirr} is another tool that does not explicitly
+assign a version number, but instead only lists changes and warns
+about loss of backward compatibility. It was used in study of the
+Maven repository \cite{SemverMaven} to determine compatibility between
+different versions of published Jar files.
+
+It can act as a plugin for the Maven build system and break builds
+when incompatible changes are introduced unintentionally.
+Additionally, it can be used to generate a report similar to what
+JDiff produces.
+
+Just like JDiff, Clirr seems to be relatively out of date as well, the
+last release being  \textit{0.6} from September 2005.
+
+% TODO: Do Clirr and JDiff care about subclasses and stuff?
 
 \chapter{Requirements}
 \label{Requirements}
