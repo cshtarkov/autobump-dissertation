@@ -68,7 +68,7 @@ language=Java,
 basicstyle=\ttm,
 otherkeywords={},
 keywordstyle=\ttb\color{keyword},
-emph={method},
+emph={method,MyClass,OtherClass,somePackage,YetAnotherClass,SomeClass,InnerClass},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -1296,10 +1296,54 @@ decide whether there was a breaking change without using introspection.
 \textttd{java_ast}, as it is constructing the ASTs of all source files,
 does its best to fully qualify type names based on the surrounding
 statements and keeps track of the inheritance tree for the project. It
-has obvious shortcomings in that it simply misses cases that can be
-determined only by introspection. The optional configuration option
+does this by doing two passes on all source files -- once to establish
+and fully qualify all types found used or declared in the project, and
+then a second pass to actually build CAPIR. To illustrate why two
+passes are necessary, consider a Java file in the codebase which has
+these two variants:
+
+\begin{halfmini}{Variant A}
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
+package somePackage;
+
+public class MyClass {
+    public void method(OtherClass p) {}
+}
+\end{java}
+\end{halfmini}
+\begin{halfmini}{Variant B}
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
+package somePackage;
+
+public class MyClass {
+    public void method(YetAnotherClass p) {}
+}
+\end{java}
+\end{halfmini}
+
+\javainline{OtherClass} and \javainline{YetAnotherClass} may both be
+declared in the same package as this source file. However, it's not
+guaranteed that the parser will have visited those in advance. We
+cannot adequately build CAPIR of a type just by looking at the
+reference type \javainline{OtherClass}, because we can't qualify it
+before having visited all other files. If it is indeed defined in the
+same package, we also have the opportunity to check whether its
+descendants include \javainline{YetAnotherClass} and identify whether
+this particular change is going to be breaking. Note that even if we
+were aware that \javainline{OtherClass} was declared in the same
+package and we could fully qualify it on the first pass, it is still
+possible that \javainline{YetAnotherClass} hasn't been visited and the
+relationship between the two is unknown.
+
+The handler has obvious shortcomings in that it simply misses cases
+that can be determined only by introspection. Considering the same
+example as befor, it could be that both parameters types are after all
+declared in some external dependency and not in the same package. In
+that case there would be no way of knowing the relationship between
+the two using this handler. The optional configuration option
 \texttt{Java/Error On External Types} forces the handler to give up
-when the AST of a source file is needed, but not present in the project.
+when the AST of a source file is needed, but not present in the
+project.
 
 \subsubsection{Using reflection}
 
