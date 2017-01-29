@@ -9,9 +9,10 @@
 
 * Java
 
-  | Project | Semantically versioned                         | Size      | Results      |
-  |---------+------------------------------------------------+-----------+--------------|
-  | mockito | "semantic versioning is rigorously maintained" | 11000 LOC | [[mockito]] ([[#mockito][gh]]) |
+  | Project | Semantically versioned                                             | Size       | Results      |
+  |---------+--------------------------------------------------------------------+------------+--------------|
+  | mockito | "semantic versioning is rigorously maintained"                     | 11000 LOC  | [[mockito]] ([[#mockito][gh]]) |
+  | guava   | "We actually do use semantic versioning with Guava." (contributor) | 150000 LOC | [[guava]] ([[#guava][gh]])   |
 
 * Evaluations
 ** requests
@@ -245,4 +246,29 @@
      v2.5.0 --- v2.5.1 should have been v2.5.0 --- 2.6.0
      v2.5.1 --- v2.5.2 should have been v2.5.1 --- 2.6.0
      v2.5.7 --- v2.6.0 should have been v2.5.7 --- 2.5.8
+   #+END_SRC
+** guava
+
+   From v1.0 to v20.0, skipping labeled versions (like rcs)
+
+   - v1.0 -- v2.0 many new additions, but no breaking change, considered major
+   - v10.0-rc3 -- v10.0.1 random utility method removed
+   - v11.0-rc1 -- v11.0.1 two more random utility methods, they were /deprecated/ though
+   - v11.0.1 -- v11.0.2 changes class to enum, *bug in java_ast*, it didn't catch it
+
+   According to semver, deprecation should be minor version number!
+
+   *Summary*: 2 author mistakes, 2 autobump bugs, actual mismatches are just 2
+   (for such a huge project!)
+
+   | 27 versions | /java_ast/  | /java_native/ |
+   |             | 4 different |               |
+   |             | 3 major     |               |
+
+   java_ast:
+   #+BEGIN_SRC diff
+     v1.0 --- v2.0 should have been v1.0 --- 1.1.0
+     v10.0-rc3 --- v10.0.1 should have been v10.0-rc3 --- 11.0.0
+     v11.0-rc1 --- v11.0.1 should have been v11.0-rc1 --- 12.0.0
+     v11.0.1 --- v11.0.2 should have been v11.0.1 --- 12.0.0
    #+END_SRC
