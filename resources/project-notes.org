@@ -1,0 +1,192 @@
+* Academic research
+** 1/3 of release introduce breaking changes
+   doesn't matter if it's minor or major
+
+* Tools for automatically assigning semantic version numbers
+** semantic-release
+
+*** JavaScript
+
+*** aimed for integration with NPM
+
+*** cracks
+*** grammar in commit messages
+    fix()
+    feat()
+    major()
+
+** GitVersion
+
+*** based on branching workflow
+    feature-foo -> bumps minor upon merge
+    release-2.0.0 -> rc.1 in branch, bumps major upon merge
+
+*** still relies on naming
+
+** Endjin.Assembly.ChangeDetection blog post
+
+*** detects breaking changes in .NET assemblies
+    by looking at public types, signatures, removal
+
+*** plans are to further integrate with MS and .NET
+
+* Classification of changes
+** Breaking
+  - Removing a default value where there was previously one.
+  - Removal of a field, module, class, function or method.
+  - Parameter added to signature with no default value.
+  - Parameter removed from signature.
+  - Type of anything changed to an incompatible type. /What about a compatible type?/
+** Features
+  - Introduction of a new field, module, class, function or method.
+  - Default value added to parameter.
+* Representative Python libraries to test tool on
+   | Name               | Description                         | LOC   | Entity count | Public entity count | Ratio (%) |
+   |--------------------+-------------------------------------+-------+--------------+---------------------+-----------|
+   | hashids            | Generate unique IDs                 | ~285  |           18 |                   6 |        33 |
+   | pytimeparse        | Parse arbitrary date strings        | ~177  |            2 |                   1 |        50 |
+   | simplejson         | JSON parsing                        | ~2000 |           82 |                  54 |        66 |
+   | pycparser          | Complete C99 parser                 | ~9600 |          675 |                 537 |        79 |
+   | pycodestyle (pep8) | Check PEP8 compliance               | ~2200 |          129 |                 118 |        91 |
+   | flask              | Microframework for Web applications | ~6500 |          392 |                 371 |        95 |
+
+** Adherence to semver
+   None of the top 20 libraries outright say "we follow semver"!
+
+   Not even python-semver follows semver - no difference between minor and patch releases.
+
+   hashids does. autobump generates identical versions for all releases except for:
+   - skipped patch number, 0.8.1 -> 0.8.3
+   - renamed (encrypt, decrypt) -> (encode, decode), should be a breaking change but incremented patch
+
+* Using AST to check set of methods called on a parameter
+* Changelog generation & improved UI <2016-10-24 Mon>
+* Java handler
+  Doesn't work with import.* and java.util.ArrayList -> java.util.List
+  Resolution: use two classloaders, use fully-qualified name
+** java_native
+   Need to build
+   Two native Java utils - reflection/type checking, stdin/stdout XML
+   Guava
+
+* Next priorities <2016-11-07 Mon>
+  1. littered with TODOs
+  2. acceptance tests
+  3. changelog generation
+  4. dissertation
+
+* Next language <2016-11-14 Mon>
+  Refactoring, didn't get around to testing, dissertation (assumptions)
+  Picked Clojure because:
+  1. Reasonably popular, has libraries.
+  2. It's a Lisp - homoiconic.
+  3. Functional.
+  4. Type system - dynamic, type hinting, JVM interop, 5 different ways to define classes.
+* Worked on Clojure handler <2016-11-21 Mon>
+  Gets only public forms
+  Does not evaluate anything
+  Resolve symbols with temporary namespace?
+  "Static" typing
+* Further Clojure work <2016-11-28 Mon>
+  1. Wrote unit tests - discovered missing features and bugs.
+  2. definline tries to resolve types? ---- paragraph
+  3. destructuring vector - how to treat arguments? ---- warning
+     #+BEGIN_SRC clojure
+       (defn myfunc [[a b]]
+         (list a b))
+     #+END_SRC
+  4. static typing - defines annotations, "static" checks are done with (check-ns) or
+     by injecting into build tool
+     #+BEGIN_SRC clojure
+       (ann my-function [Int -> Int])
+     #+END_SRC
+  5. travis broken since clojure
+* Work since break
+  1. acceptance tests - series of patches
+     fixed a lot of bugs!
+  2. configuration - fixed travis builds
+  3. type hinting in Python
+
+  Need to look at:
+  - dissertation structure
+  - kind of starting from the middle
+  - appendix primer on clojure, code listings of key parts
+* Lots of stuff <2017-01-24 Tue>
+** Since last time
+  - fixed bug related to overloaded methods in Java
+    #+BEGIN_SRC java
+      /* variant 1 */
+      void m(A a);
+      void m(AImpl a, B a);
+
+      /* variant 2 */
+      void m(A a);
+      void m(A a, B a);
+    #+END_SRC
+  - added support for arrays in java (ast and native)
+  - added support for hg, cpython uses hg
+  - can ignore paths from config instead of hardcoded
+  - java_maven test, add dependency to pom file
+  - clojure_lein test
+  - Tried to implement checks for static types in Clojure,
+    problem that there were two many forms with aliases: =ann=, =ann-form= etc.
+    Need to selectively evaluate, but need to be in the same environment
+
+    + Compared to Java, one /slightly/ different thing:
+      both need access to the runtime and need to have the same environment as the library itself
+      Java needs to be compiled, Clojure doesn't, even though both have build systems
+      Don't need to give a build command to Clojure, but need to fiddle with "lein exec"
+      *Middle ground*: Clojure hooks into runtime, no explicit build step
+    + Ties in together nicely -- we have:
+      1. Python, that can't run the code and then introspect because of side effects
+      2. Java, where you have to compile the code and then introspect
+      3. Clojure, where you can run the code and then introspect because functional
+
+  - *coverage* added code coverage (statement + branch) to build, 85 vs 88%
+
+** Next week
+  - finish off clojure_lein test with type checking and records
+  - start evaluating
+  - set up for pip
+  - binary handler, not tied to specific language
+  - +dissertation: talk about history of clojure handler, or just final result+
+* Started evaluation <2017-01-31 Tue>
+
+  - set up for pip, you can =pip install autobump=
+  - evaluated 4 python libraries + 2 java libraries ([[file:~/Source/autobump-dissertation/resources/projects_for_evaluation.org][notes]] [[https://github.com/cshtarkov/autobump-dissertation/blob/master/resources/projects_for_evaluation.org][githubnotes]])
+
+  Python is more prone to breaking changes than Java
+
+  Not Autobump's fault:
+  /Python/
+  - Authors tend to have a fuzzy definition of what an API is,
+    and it misaligns with what is technically accessible.
+  - Authors move stuff around or rename it and don't consider it breaking.
+  - Authors consider a small breaking change not to be breaking, like removing
+    a random iterator.
+  /Java/
+  - Making small additive changes to the API considered a patch.
+  - An aggregation of small additive changes over several versions considered a feature release,
+    even though API hasn't changed since last one, i.e. features were already present.
+  - Authors consider a small breaking change not to be breaking, like removing
+    a random iterator.
+
+  Autobump's fault:
+  - Versions prefixed with 0. don't have a public API.
+  - Unable to identify new functionality if the API hasn't changed.
+    Semver is ambiguous: "It MAY be incremented if substantial new functionality or
+    improvements are introduced within the private code." - no way to know
+
+  *Summary / Thesis*:
+  1. Authors don't consider "small" changes to be breaking. In the majority of cases where
+     Autobump proposes a major change and the authors didn't, there were at most 3-4 non-backwards
+     compatible changes to the API, and mostly to peripheral entities. Some of these cases just have
+     the entities moved or renamed.
+  2. Calling an entity "internal" doesn't make it so. Example, Java package called "internal"
+     even though everything in there is public. Authors don't always take advantage of language's
+     access restriction capabilities.
+  3. Some versions are just ommitted without explanation, maybe forgot to make a tag?
+  4. Semver is ambiguous about whether new functionality has to change the API -- both
+     authors and Autobump can be right in some cases.
+  5. GSon is odd one out, doesn't claim to follow Semver at all, and yet it's marginally worse
+     than the others.
