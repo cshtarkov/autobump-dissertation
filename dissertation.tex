@@ -668,7 +668,8 @@ implication is that differences arising from types defined in external
 code cannot be identified. Consider for example replacing the type of
 a parameter in an otherwise unchanged method to a superclass of its
 original type -- all previous client code is guaranteed to compile
-fine, because of Java's inheritance rules.
+fine, because of Java's inheritance rules, but there's no way that
+Japicmp would be aware of this.
 
 \chapter{Requirements}
 \label{Requirements}
@@ -2023,13 +2024,9 @@ automatically produces similar or identical version numbers compared
 to the ones assigned manually by the developers and interpret our findings.
 Looking at this data, we discuss whether the assumptions Autobump
 makes about the target languages are valid, and whether it's approach
-of looking at only the public API is beneficial.
-
-% TODO: Evaluation was continuous in nature
-
-\section{Evaluation against real-world projects}
-
-% TODO: Evaluate with students in lab as well?
+of looking at only the public API is beneficial. We also discuss
+whether the authors and users of those libraries would have benefited
+if they had used a tool such as Autobump.
 
 \chapter{Conclusion}
 \label{Conclusion}
