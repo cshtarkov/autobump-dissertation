@@ -190,3 +190,6 @@
      authors and Autobump can be right in some cases.
   5. GSon is odd one out, doesn't claim to follow Semver at all, and yet it's marginally worse
      than the others.
+
+  /ASEP/: ask about tenses
+
