@@ -52,7 +52,7 @@ basicstyle=\ttm,
 otherkeywords={self},
 keywordstyle=\ttb\color{keyword},
 emph={__init__,ThingDoer,accept_foo_bar,THING_QUOTA,do_thing,Discombobulator,discombobulate,
-Discombobulated,func},
+Discombobulated,func,capir_at_commit,get_commit,codebase_to_units},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -910,13 +910,15 @@ and use Python as a middleware language to link back to Autobump.
 \includegraphics[width=\linewidth]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
+
 In normal operation, the top-level program performs the
 following steps:
 
 \begin{enumerate}
-\item Identify which VCS the repository is using and select the
-appropriate handler.
-% TODO: drop vcs handlers?
+\item Identify which version control system the repository is using
+and select the appropriate handler. Operations on the repository are
+abstracted away by the handler, so that Autobump's other functions are
+VCS-agnostic.
 \item Identify which two revisions should be compared -- either from
 command-line arguments or through an educated guess. An educated guess
 consists of comparing the last tagged release of the project with the
@@ -1798,6 +1800,50 @@ new one is compatible with the old one.
 
 \section{Handlers for version control systems}
 \label{VCSHandlers}
+
+Just like Autobump attempts to abstract away details of the languages
+it handles, it is also transparent with regard to the underlying
+version control system the target project uses. Abstracting away
+operations on a VCS is a much easier task, since many of them follow
+similar ideas.
+
+Handlers define a very small API. The central function they are
+expected to implement is
+
+\begin{center}
+\begin{tabular}{c}
+\begin{python}
+def get_commit(repository, commit):
+    ...
+\end{python}
+\end{tabular}
+\end{center}
+
+which returns a directory location, where the state of the repository
+at that particular commit identifier can be found. How the handler
+obtains that is an implementation detail. Both version control systems
+that Autobump supports out of the box (Git and Mercurial) are
+distributed, so their preferred approach is to clone the repository to
+a temporary created location (not necessarily on disk, but in the file
+system), and then issue the appropriate command, e.g.
+\codeinline{checkout}), to get the working tree at a particular
+revision. Appropriate Python features are used so that the temporary
+directories get cleaned up after Autobump is done using them.
+
+The function \pythoninline{get_commit} is used in conjuction with the
+language handlers' \pythoninline{codebase_to_units}, which takes in a
+location in the file system and converts the code there to CAPIR.
+
+Autobump's main program essentially simple function composition to
+obtain the CAPIR of code as it was at some revision:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{python}
+capir_at_commit = compose(codebase_to_units, get_commit)
+\end{python}
+\end{tabular}
+\end{center}
 
 \section{Comparison logic}
 \label{Logic}
