@@ -610,7 +610,9 @@ version of the package is \textit{0.9.0} and the new changeset is breaking,
 elm-package would have no way of knowing whether the next one should
 be \textit{0.9.1}, \textit{0.10.0} or \textit{1.0.0}.
 
-\section{JDiff}
+\section{Java-specific tooling}
+
+\subsection{JDiff}
 
 \textit{JDiff} \cite{JDiff} is a tool that does not assign version
 numbers, but instead documents changes between two variants of a Java API.
@@ -620,23 +622,23 @@ but also inspects and notes differences in accompanying documentation
 strings. Those may indicate a change in the behaviour of some functionality,
 even if it's interface remains the same.
 
-% TODO: cite ant?
 JDiff is intended to be used in conjuction with the build system Ant,
 where an \textit{old} and a \textit{new} project have to be defined so
-that JDiff knows what to compare. Alternatively, it can be run twice
-manually with the two versions to compare checked out one after
-the other.
+that JDiff knows what to compare. It requires that the project is
+compiled (twice) and that its dependencies are available in Java's
+\codeinline{CLASSPATH}, because it uses the Java reflection API which
+allows for compiled code to loaded and inspected at runtime.
 
 At the time of writing, the tool seems to be somewhat outdated with
 the last release being JDiff \textit{1.1.1} from November 2008.
 
-\section{Clirr}
+\subsection{Clirr}
 
 \textit{Clirr} \cite{Clirr} is another tool that does not explicitly
 assign a version number, but instead only lists changes and warns
-about loss of backward compatibility. It was used in study of the
+about loss of backward compatibility. It was used in the study of the
 Maven repository \cite{SemverMaven} to determine compatibility between
-different versions of published Jar files.
+different versions of published Jar files. It also relies on reflection.
 
 It can act as a plugin for the Maven build system and break builds
 when incompatible changes are introduced unintentionally.
@@ -646,7 +648,26 @@ JDiff produces.
 Just like JDiff, Clirr seems to be relatively out of date as well, the
 last release being  \textit{0.6} from September 2005.
 
-% TODO: Do Clirr and JDiff care about subclasses and stuff?
+\subsubsection{japicmp}
+
+compatibility between provided Jar files, which are bundles of
+compiled Java code. It can tie into the build system Maven and
+configure it so that it produces Jar files of two subsequent versions
+and breaks builds when incompatibilities are detected, just like Clirr
+does. Alternatively it can be used as a command-line application to
+find out differences between any two given Jar files.
+
+Unlike the other two Java utilities, this one does not use the Java
+reflection API. Instead it relies on the external library
+\textit{javaassist} \cite{JavaAssist} which allows for bytecode
+manipulation at the of loading external classes \cite{BytecodeManip}.
+This is used to circumvent the requirement that all dependencies of
+the project are in the \codeinline{CLASSPATH}. However, the
+implication is that differences arising from types defined in external
+code cannot be identified. Consider for example replacing the type of
+a parameter in an otherwise unchanged method to a superclass of its
+original type -- all previous client code is guaranteed to compile
+fine, because of Java's inheritance rules.
 
 \chapter{Requirements}
 \label{Requirements}
