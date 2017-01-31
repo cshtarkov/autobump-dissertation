@@ -192,16 +192,32 @@
   /ASEP/: ask about tenses
 
 
-  breaking changes over time, when a decision is made
+  breaking changes over time, when a decision is made, plot it
   measure notion of small
   when does it stop being small, number of breaking changes
   depth of whatever was removed
+
 * Clojure evaluation <2017-02-07 Tue>
 
+  Small change -- never major bump versions starting with 0
   Handler is more or less complete, did two libraries
+
+  Trouble finding a library with static typing, because it's recent
+  few projects with few releases!
 
   Percentage of mismatches (incl. breaking changes) seems to be higher,
   have not investigated in-depth yet
 
   Problem with evaluating projects that are too old, because the Inspector
   runs in the same context as the project
+
+  One large scale Python, automated investigation? *do it*
+  How do I put this in the dissertation?
+
+  histogram for each of the projects in each language
+  of number of releases, percent mismatch, percent breaking changes
+  do projects stabilize eventually
+
+  acumulative mismatches, gradient !
+
+  time intervals between releases
