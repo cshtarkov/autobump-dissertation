@@ -153,9 +153,7 @@
 * Started evaluation <2017-01-31 Tue>
 
   - set up for pip, you can =pip install autobump=
-  - evaluated 4 python libraries + 2 java libraries ([[file:~/Source/autobump-dissertation/resources/projects_for_evaluation.org][notes]] [[https://github.com/cshtarkov/autobump-dissertation/blob/master/resources/projects_for_evaluation.org][githubnotes]])
-
-  Python is more prone to breaking changes than Java
+  - evaluated 4 python libraries + 3 java libraries ([[file:~/Source/autobump-dissertation/resources/projects_for_evaluation.org][notes]] [[https://github.com/cshtarkov/autobump-dissertation/blob/master/resources/projects_for_evaluation.org][githubnotes]])
 
   Not Autobump's fault:
   /Python/
@@ -172,7 +170,7 @@
     a random iterator.
 
   Autobump's fault:
-  - Versions prefixed with 0. don't have a public API.
+  - +Versions prefixed with 0. don't have a public API+
   - Unable to identify new functionality if the API hasn't changed.
     Semver is ambiguous: "It MAY be incremented if substantial new functionality or
     improvements are introduced within the private code." - no way to know
@@ -184,12 +182,17 @@
      the entities moved or renamed.
   2. Calling an entity "internal" doesn't make it so. Example, Java package called "internal"
      even though everything in there is public. Authors don't always take advantage of language's
-     access restriction capabilities.
+     access restriction capabilities. Semver says "published API" though, so evaluations ignore those.
   3. Some versions are just ommitted without explanation, maybe forgot to make a tag?
   4. Semver is ambiguous about whether new functionality has to change the API -- both
      authors and Autobump can be right in some cases.
-  5. Doesn't seem to be any relation between projects that outright say "we follow Semver" and ones
+  5. Doesn't seem to be any difference between projects that outright say "we follow Semver" and ones
      that only seem to do.
 
   /ASEP/: ask about tenses
 
+
+  breaking changes over time, when a decision is made
+  measure notion of small
+  when does it stop being small, number of breaking changes
+  depth of whatever was removed
