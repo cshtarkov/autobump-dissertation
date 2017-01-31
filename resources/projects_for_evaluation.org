@@ -1,22 +1,26 @@
 * Python
 
-   | Project    | Semantically versioned                             | Size     | Downloads | Results         | % Mismatches              |   |
-   |------------+----------------------------------------------------+----------+-----------+-----------------+---------------------------+---|
-   | requests   | Yes, officially                                    | 4500 LOC | 53m       | [[requests]]  ([[#requests][gh]])  | 22 for breaking, 35 total |   |
-   | simplejson | Seems like it, not officially                      | 2000 LOC | 182m      | [[simplejson]] ([[#simplejson][gh]]) | 2 for breaking, 15 total  |   |
-   | docopt     | Seems like it, not officially                      | 600 LOC  | 9m        | [[docopt]] ([[#docopt][gh]])     |                           |   |
-   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | 154,000   | [[hashids]] ([[#hashids][gh]])    | 20 for breaking, 30 total |   |
+   | Project    | Semantically versioned                             | Size     | Downloads | Results         | Mismatches                                         |
+   |------------+----------------------------------------------------+----------+-----------+-----------------+----------------------------------------------------|
+   | requests   | Yes, officially                                    | 4500 LOC | 53m       | [[requests]]  ([[#requests][gh]])  | /s:/ 20/44 (45%) out of which 16/44 (36%) breaking |
+   |            |                                                    |          |           |                 | /ns:/ 16/44 (36%) out of which 9/44 (20%) breaking |
+   | simplejson | Seems like it, not officially                      | 2000 LOC | 182m      | [[simplejson]] ([[#simplejson][gh]]) | /s:/ 6/39 (15%) out of which 1/39 (2%) breaking    |
+   |            |                                                    |          |           |                 | /ns:/ identical                                    |
+   | docopt     | Seems like it, not officially                      | 600 LOC  | 9m        | [[docopt]] ([[#docopt][gh]])     | /s:/ 2/11 (18%), breaking n/a (docopt is 0.x)      |
+   |            |                                                    |          |           |                 | /ns:/ 1/11 (9%), breaking n/a (docopt is 0.x)      |
+   | hashids    | "We try to follow Semver, but check the changelog" | 300 LOC  | 154,000   | [[hashids]] ([[#hashids][gh]])    | /s:/ 3/10 (30%) out of which 1/10 (10%) breaking   |
+   |            |                                                    |          |           |                 | /ns:/ identical                                    |
 
 * Java
 
-  | Project | Semantically versioned                                                   | Size       | Dependents | Results                                                             | % Mismatches                         |
-  |---------+--------------------------------------------------------------------------+------------+------------+---------------------------------------------------------------------+--------------------------------------|
-  | mockito | "semantic versioning is rigorously maintained", but only since Mockito 2 | 11000 LOC  |       8415 | [[mockito]] ([[#mockito][gh]])                                                        | 16 for breaking, 30 total (java_ast) |
-  |         |                                                                          |            |            |                                                                     |                                      |
-  | guava   | "We actually do use semantic versioning with Guava." (contributor)       | 150000 LOC |      10700 | [[guava]] ([[#guava][gh]])                                                          | 7 for breaking, 11 total (java_ast)  |
-  |         |                                                                          |            |            | 0 for both, but there are versions that don't compile (java_native) |                                      |
-  | gson    | Seems like it, not officially                                            | 8000 LOC   |       3400 | [[gson]] ([[#gson][gh]])                                                           | 29 for breaking, 35 total (java_ast) |
-  |         |                                                                          |            |            | 35 for breaking, 38 total (java_native), 1 version doesn't compile  |                                      |
+  | Project | Semantically versioned                                                   | Size       | Dependents | Results      | Mismatches                                                                        |
+  |---------+--------------------------------------------------------------------------+------------+------------+--------------+-----------------------------------------------------------------------------------|
+  | mockito | "semantic versioning is rigorously maintained", but only since Mockito 2 | 11000 LOC  |       8415 | [[mockito]] ([[#mockito][gh]]) | /ast:/ 70/245 (28%) out of which 39/245 (15%) breaking                            |
+  |         |                                                                          |            |            |              |                                                                                   |
+  | guava   | "We actually do use semantic versioning with Guava." (contributor)       | 150000 LOC |      10700 | [[guava]] ([[#guava][gh]])   | /ast:/ 4/27 (14%) out of which 3/27 (11%) breaking                                |
+  |         |                                                                          |            |            |              | /native:/ 0/27, but only 5/27 versions compile                                    |
+  | gson    | Seems like it, not officially                                            | 8000 LOC   |       3400 | [[gson]] ([[#gson][gh]])    | /ast:/ 12/34 (35%) out of which 10/34 (29%) breaking                              |
+  |         |                                                                          |            |            |              | /native:/ 13/34 (38%) out of which 12/34 (35%) breaking, but 1/34 doesn't compile |
 
 * Evaluations
 ** requests
