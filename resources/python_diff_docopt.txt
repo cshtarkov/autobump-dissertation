@@ -1,0 +1,118 @@
+--- structural.txt	2017-01-31 12:27:27.822899750 +0000
++++ nonstructural.txt	2017-01-31 12:26:47.952899103 +0000
+@@ -1,115 +1,107 @@
+ !EVAL Start diffing 0.1.0 and 0.1.1
+ !EVAL End   diffing 0.1.0 and 0.1.1
+ !EVAL Start diffing 0.1.1 and 0.2.0
+ docopt.argument_eval: Entity was removed
+-docopt.docopt: Type was changed to a compatible type
+ docopt.variabalize: Entity was introduced
+ docopt.option: Entity was introduced
+ docopt.do_longs: Entity was introduced
+ docopt.do_shorts: Entity was introduced
+ docopt.split_simple: Entity was introduced
+ docopt.split_either: Entity was introduced
+ docopt.matching_paren: Entity was introduced
+ docopt.pattern: Entity was introduced
+ docopt.parse: Entity was introduced
+ docopt.parse_doc_options: Entity was introduced
+ docopt.printable_usage: Entity was introduced
+ docopt.formal_usage: Entity was introduced
+ docopt.extras: Entity was introduced
+-docopt.Option.__init__: Type was changed to a compatible type
+ docopt.Option.forms: Entity was removed
+ docopt.Option.match: Entity was introduced
+ docopt.Option.is_flag: Entity was introduced
+ docopt.Options.__init__: Entity was removed
+ docopt.DocoptError: Entity was introduced
+ docopt.DocoptExit: Entity was introduced
+ docopt.Pattern: Entity was introduced
+ docopt.Argument: Entity was introduced
+ docopt.Required: Entity was introduced
+ docopt.Optional: Entity was introduced
+ docopt.OneOrMore: Entity was introduced
+ docopt.Either: Entity was introduced
+ docopt.GreedyEither: Entity was introduced
+ docopt.Namespace: Entity was introduced
+ docopt.Arguments: Entity was introduced
+ !EVAL End   diffing 0.1.1 and 0.2.0
+ !EVAL Start diffing 0.2.0 and 0.3.0
+ docopt.variabalize: Entity was removed
+ docopt.option: Entity was removed
+ docopt.do_longs: Entity was removed
+ docopt.do_shorts: Entity was removed
+ docopt.split_simple: Entity was removed
+ docopt.split_either: Entity was removed
+ docopt.matching_paren: Entity was removed
+ docopt.pattern: Entity was removed
+ docopt.parse: Entity was removed
+ docopt.parse_long: Entity was introduced
+ docopt.parse_shorts: Entity was introduced
+ docopt.parse_pattern: Entity was introduced
+ docopt.parse_expr: Entity was introduced
+ docopt.parse_seq: Entity was introduced
+ docopt.parse_atom: Entity was introduced
+ docopt.parse_args: Entity was introduced
+ docopt.DocoptError: Entity was removed
+ docopt.Argument.name: Entity was removed
+ docopt.Option.is_flag: Entity was removed
+ docopt.Option.parse: Entity was introduced
+ docopt.GreedyEither: Entity was removed
+ docopt.Namespace: Entity was removed
+ docopt.Options: Entity was removed
+ docopt.Arguments: Entity was removed
+ docopt.UsageMessageError: Entity was introduced
+ docopt.Command: Entity was introduced
+ docopt.AnyOptions: Entity was introduced
+ docopt.TokenStream: Entity was introduced
+ docopt.Dict: Entity was introduced
+ !EVAL End   diffing 0.2.0 and 0.3.0
+ !EVAL Start diffing 0.3.0 and 0.4.0
+-docopt.parse_long: Type was changed to an incompatible type
+-docopt.parse_shorts: Type was changed to an incompatible type
+ docopt.UsageMessageError: Entity was removed
+ docopt.TokenStream.move: Parameter(s) removed from function signature
+ docopt.TokenStream.current: Parameter(s) removed from function signature
+ docopt.DocoptLanguageError: Entity was introduced
+ !EVAL End   diffing 0.3.0 and 0.4.0
+ !EVAL Start diffing 0.4.0 and 0.4.1
+-docopt.Argument.match: Type was changed to an incompatible type
+-docopt.Command.match: Type was changed to an incompatible type
+ !EVAL End   diffing 0.4.0 and 0.4.1
+-!EVAL MISMATCH: 0.4.0 -- 0.4.1 should have been 0.4.0 -- 0.5.0
+ !EVAL Start diffing 0.4.1 and 0.4.2
+ docopt.parse_args: Entity was removed
+ docopt.parse_argv: Entity was introduced
+ !EVAL End   diffing 0.4.1 and 0.4.2
+ !EVAL MISMATCH: 0.4.1 -- 0.4.2 should have been 0.4.1 -- 0.5.0
+ !EVAL Start diffing 0.4.2 and 0.5.0
+ docopt.Pattern.__init__: Entity was removed
+ docopt.Pattern.flat: Entity was removed
+ docopt.Argument.__init__: Entity was removed
+ docopt.Argument.match: Entity was removed
+ docopt.Argument.single_match: Entity was introduced
+ docopt.Command.match: Entity was removed
+ docopt.Command.single_match: Entity was introduced
+ docopt.Option.match: Entity was removed
+ docopt.Option.single_match: Entity was introduced
+ docopt.AnyOptions: Entity was removed
+ docopt.ChildPattern: Entity was introduced
+ docopt.ParrentPattern: Entity was introduced
+ !EVAL End   diffing 0.4.2 and 0.5.0
+ !EVAL Start diffing 0.5.0 and 0.6.0
+-docopt.parse_argv: Type was changed to an incompatible type
+ docopt.parse_argv: Parameter(s) with default value(s) added to function signature
+ docopt.parse_doc_options: Entity was removed
+ docopt.docopt: Parameter(s) with default value(s) added to function signature
+ docopt.parse_defaults: Entity was introduced
+ docopt.Pattern.fix_list_arguments: Entity was removed
+ docopt.Pattern.fix_repeating_arguments: Entity was introduced
+ docopt.ParrentPattern: Entity was removed
+ docopt.Argument.parse: Entity was introduced
+ docopt.ParentPattern: Entity was introduced
+ docopt.AnyOptions: Entity was introduced
+ !EVAL End   diffing 0.5.0 and 0.6.0
+ !EVAL Start diffing 0.6.0 and 0.6.1
+ !EVAL End   diffing 0.6.0 and 0.6.1
+ !EVAL Start diffing 0.6.1 and 0.6.2
+ !EVAL End   diffing 0.6.1 and 0.6.2

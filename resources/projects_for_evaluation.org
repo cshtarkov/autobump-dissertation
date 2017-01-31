@@ -162,38 +162,20 @@
 
 ** docopt
 
-   *TODO*: Revisit this once Autobump supports 0.* major releases.
+   #+BEGIN_QUOTE
+   Major version zero (0.y.z) is for initial development. Anything may
+   change at any time. The public API should not be considered stable.
 
-   From 0.1.0 to 0.6.2
+   Version 1.0.0 defines the public API. The way in which the version
+   number is incremented after this release is dependent on this public
+   API and how it changes.
+   #+END_QUOTE
 
-   11 versions, 7 different w/ structural, 6 different w/o structural (63%)
+   11 versions, 2 different w/ structural, 1 w/o structural
 
-   - author bumps minor number at breaking changes
+   - 0.4.1 -- 0.4.2 renames a function (parse_args → parse_argv)
 
-   Autobump is actually wrong here, versions starting with
-   0. allow breaking changes at any point:
-
-      #+BEGIN_QUOTE
-      Major version zero (0.y.z) is for initial development. Anything may
-      change at any time. The public API should not be considered stable.
-
-      Version 1.0.0 defines the public API. The way in which the version
-      number is incremented after this release is dependent on this public
-      API and how it changes.
-      #+END_QUOTE
-
-   #+BEGIN_SRC diff
-     --- structural   2017-01-27 13:53:47.913150564 +0000
-     +++ nonstructural   2017-01-27 13:53:52.153150544 +0000
-     @@ -1,7 +1,6 @@
-      0.1.1 --- 0.2.0 should have been 0.1.1 --- 1.0.0
-      0.2.0 --- 0.3.0 should have been 0.2.0 --- 1.0.0
-      0.3.0 --- 0.4.0 should have been 0.3.0 --- 1.0.0
-     -0.4.0 --- 0.4.1 should have been 0.4.0 --- 1.0.0
-      0.4.1 --- 0.4.2 should have been 0.4.1 --- 1.0.0
-      0.4.2 --- 0.5.0 should have been 0.4.2 --- 1.0.0
-      0.5.0 --- 0.6.0 should have been 0.5.0 --- 1.0.0
-   #+END_SRC
+   diff: [[python_diff_docopt.txt]]
 
 ** hashids
 
