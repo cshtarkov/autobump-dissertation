@@ -188,8 +188,8 @@
   3. Some versions are just ommitted without explanation, maybe forgot to make a tag?
   4. Semver is ambiguous about whether new functionality has to change the API -- both
      authors and Autobump can be right in some cases.
-  5. GSon is odd one out, doesn't claim to follow Semver at all, and yet it's marginally worse
-     than the others.
+  5. Doesn't seem to be any relation between projects that outright say "we follow Semver" and ones
+     that only seem to do.
 
   /ASEP/: ask about tenses
 
