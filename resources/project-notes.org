@@ -196,3 +196,12 @@
   measure notion of small
   when does it stop being small, number of breaking changes
   depth of whatever was removed
+* Clojure evaluation <2017-02-07 Tue>
+
+  Handler is more or less complete, did two libraries
+
+  Percentage of mismatches (incl. breaking changes) seems to be higher,
+  have not investigated in-depth yet
+
+  Problem with evaluating projects that are too old, because the Inspector
+  runs in the same context as the project
