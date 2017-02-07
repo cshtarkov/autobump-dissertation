@@ -148,17 +148,17 @@ framework would result in incompatibilities.
 Regardless of
 policy, assigning version numbers is typically done manually and
 leaves room for human mistakes or deviations from the established
-scheme. We propose the tool \textit{Autobump} that automatically
+scheme. This project proposes the tool \textit{Autobump} that automatically
 inspects changes to a codebase and proposes the next version number
 according to semantic versioning. This reduces friction when releasing
 packages, and encourages more frequent, even fully automated,
 releases.
 \\\\
-While similar previous work does exist, we impose the additional
-requirement of abstracting changes to a codebase in a way appropriate
-across different languages. Then, we evaluate how feasible that
-approach is and compare how well projects in different languages
-already adhere to semantic versioning.
+While similar previous work does exist, an additional requirement is
+imposed in that the tool ought to work across different languages.
+Finally, this dissertation evaluates how feasible that approach is and
+compare how well projects in different languages already adhere to
+semantic versioning.
 \end{abstract}
 
 \educationalconsent
@@ -169,10 +169,10 @@ already adhere to semantic versioning.
 \chapter{Introduction}
 \pagenumbering{arabic}
 
-In this chapter, we discuss the background of software versioning and
-more specifically, semantic versioning of software. We also briefly
-state our overall aim for this project and outline the rest of the
-document.
+This chapter discusses the background of software versioning and more
+specifically, semantic versioning of software.
+The overall aim of the project is briefly stated and then an outline
+of the rest of the document is given.
 
 \section{Background}
 
@@ -373,10 +373,10 @@ poorly follow Semver are intended for use only by the developers
 themselves. However, the authors argue, such libraries should have
 probably never been released into a public repository.
 
-A possible reason we propose might be that some authors are reluctant
-to follow semantic versioning, or may be completely unaware that there
-is a formalisation of it. Just because a versioning scheme resembles
-Semver at first glance does not immediately impart any meaning on the
+A possible reason might be that some authors are reluctant to follow
+semantic versioning, or may be completely unaware that there is a
+formalisation of it. Just because a versioning scheme resembles Semver
+at first glance does not immediately impart any meaning on the
 individual numbers.
 
 Even if authors do intend to follow Semver, their own subjectivity may
@@ -402,27 +402,29 @@ mentions, ``this is a question of responsible development and
 foresight. Incompatible changes should not be introduced lightly to
 software that has a lot of dependent code.''
 
-In chapter \ref{Evaluation} we look at concrete examples of when
+Chapter \ref{Evaluation} looks at concrete examples of when
 library developers fail to identify breaking changes by bumping the
 major version number and evaluate whether the above reasons apply.
 
 \section{Aim}
 
-We have identified the reluctance or inconsistency of applying a
-strict versioning scheme like Semver as a problem in software
-engineering that costs development time and disallows automated
-systems like package managers from making decisions about software
-upgrades.
+It has been identified that the reluctance or inconsistency of
+applying a strict versioning scheme like Semver is a problem in
+software engineering that costs development time and disallows
+automated systems like package managers from making decisions about
+software upgrades.
 
-In this project we propose the automated assignment of version numbers
-as a possible solution. Our goal is to develop a tool that given a
+This project proposes the automated assignment of version numbers
+as a possible solution. The goal is to develop a tool that given a
 previous iteration of a project and its version, can automatically
 propose the version of the current iteration. By taking away the
 responsibility of providing a new version number from software
 developers, the level of adherence to semantic versioning could be
-increased. We can then ``replay'' the history of libraries across
-different languages and discuss whether the usage of such a tool would
-have been beneficial.
+increased.
+
+Then, the history of libraries across different languages can be
+``replayed'' in order to discuss whether the usage of such a tool
+would have been beneficial.
 
 \clearpage
 \section{Outline}
@@ -461,11 +463,11 @@ Summarizes what was accomplished by this project and proposes future work.
 \label{PreviousWork}
 
 Automatically assigning version numbers is not a new idea and projects
-exist that already do that to some extent. In this chapter we discuss
-existing tools that claim to do that. We also examine the various
-ways they approach it, why they are not as successful as we would
-expect and draw ideas for how we may go about implementing our own tool.
-% TODO: do we discuss why they aren't successful?
+exist that already do that to some extent.
+This chapter discusses existing tools that claim to do that. It also
+examines the various ways they approach it, why they are not as
+successful as it would be expected and draw ideas for how this project
+might implement a similar tool.
 
 \section{semantic-release}
 
@@ -676,21 +678,23 @@ Japicmp would be aware of this.
 \chapter{Requirements}
 \label{Requirements}
 
-In this chapter we formalise the approach that the tool for this
-project, Autobump, should use to propose version numbers, and
-formulate the set of features that should be expected. We also briefly
-discuss some non-functional requirements.
+This chapter foramlises the approach that the tool for this project,
+Autobump, should use to propose version numbers, and formulates the
+set of features that should be expected. It also goes into some brief
+discussion of non-functional requirements.
 
 \section{Estimating next semantic version through code analysis}
+\label{EstimatingNextSemver}
 
 Much like \textit{elm-package}, Autobump looks at how the code itself
 has changed to estimate what the next version should be. This requires
 little to no manual intervention from the user, no special naming
 schemes, and is as reliable as this kind of software can be. In
-contrast to these tools, we aim to make Autobump much more general and
-not tied to one ecosystem or language. For this reason, we look at how
-we can abstractly define breaking changes and feature additions, and
-how we can apply those definitions to multiple languages.
+contrast to these tools, Autobump aims to be much more general and
+not tied to one ecosystem or language. For this reason,
+ways of abstractly defining breaking changes and feature additions
+need to be examined, as well as considering how those definitions can
+be applied to different languages.
 
 \subsection{Breaking changes}
 \label{BreakingChanges}
@@ -701,20 +705,20 @@ For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
 \textbf{any} change to the API which makes it incompatible with the
 last version as breaking. Determining semantic incompatibilities is
-generally undecidable, so we take a more strict definition of
-``incompatible'' -- we mean changes that make the new code technically
+generally undecidable, so this project takes a more strict definition of
+``incompatible'' -- namely changes that make the new code technically
 incompatible with the old, i.e. it doesn't compile in the case of
 static languages, or throws unexpected runtime errors with dynamic
 languages. It does not take into account number of affected users,
 difficulty of transitioning to the new version, or changes in
 behaviour, because those things cannot be possibly known reliably. It
 also does not subjectively impart more significance on one change than
-another if both are of the same class, as we speculate humans might
+another if both are of the same class, as it can be speculated humans
 tend to do.
 
-In the spirit of Semver, for this project we adopted a technical and
+In the spirit of Semver, this projects adopts a technical and
 deterministic list of changes to entities that are considered
-to be breaking. We make the important assumption that all
+to be breaking. There is an important assumption that all
 public-facing entities (i.e. those accessible externally in a normal
 for the language way) are part of the API. There may be a misalignment
 between what the library authors consider to be the public API and
@@ -723,16 +727,16 @@ the authors' predictions overly liberal. Autobump makes the safer
 choice of being potentially overly conservative by default, and only
 relaxing when configured explicitly to do so.
 
-We attempt to use abstract enough terms so that this list of changes
-is applicable for different target languages. Clirr, as a Java-
-specific tool, is able identify 43 different API changes. The table
-below contains only 6 entries, and yet we argue that that is enough to
-represent all deltas that Clirr can find. It is mainly a reporting
-tool, so a high resolution of changes is necessary to tell the
-difference between, say, removing a method from a class and removing a
-class entirely. Autobump is intended to automate the assignment of
-version numbers, and both of those changes are breaking -- so we can
-safely lump them together under ``removing entities''.
+This dissertation tries to use abstract enough terms so that this list
+of changes is applicable for different target languages. Clirr, as a
+Java-specific tool, is able identify 43 different API changes. The
+table below contains only 6 entries, and yet it can be argued that
+that is enough to represent all deltas that Clirr can find. It is
+mainly a reporting tool, so a high resolution of changes is necessary
+to tell the difference between, say, removing a method from a class
+and removing a class entirely. Autobump is intended to automate the
+assignment of version numbers, and both of those changes are breaking
+-- they can be safely lumped together under ``removing entities''.
 
 \begin{table}[H]
 \centering
@@ -754,8 +758,8 @@ Removing the default value of a parameter.                                      
 \caption{List of changes that are considered breaking}
 \end{table}
 
-When constructing this list, we make a small number of assumptions
-regarding the target language:
+When constructing this list, a small number of assumptions
+regarding the target language are made:
 
 \begin{enumerate}[(i)]
 \item The language provides some mechanism of grouping functionality
@@ -765,7 +769,7 @@ consider a Java library which defines a constant inside a class inside
 a class. In this case the constant and both classes are considered to
 be ``entities''.
 \item The language has some notion of parameterized callable pieces of
-code, which for simplicity's sake we refer to only as ``functions'',
+code, which for simplicity's sake are referred to only as ``functions'',
 even though in reality they may be object methods, macros, procedures etc.
 Additionally, some of those functions are callable from outside of the
 program where they are defined, comprising the majority of the API.
@@ -778,12 +782,12 @@ compatibility:
 where $S$ is the set of all admissable types in the language and
 program. \\
 
-We define compatibility as $T$ being able to replace $Y$
-without violating the rules of the language -- e.g. the Liskov
-substitution principle\cite{Liskov} in a typical object-oriented
-language. Note that this notion is also compatible with dynamically
-typed languages where we can not reasonably check types by taking
-$compatible$ to always be true.
+The notion of type compatibility is defined as the type $T$ being able
+to replace $Y$ without violating the rules of the language -- e.g. the
+Liskov substitution principle\cite{Liskov} in a typical
+object-oriented language. Note that this notion is also compatible
+with dynamically typed languages where types can not be reasonably
+checked by taking $compatible$ to always be true.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
@@ -791,12 +795,12 @@ There are languages that do not conform at all to these assumptions
 are also languages where a tool like Autobump would be utterly
 unuseful. There are also languages that partially conform. In those
 cases, as long as assumption \ref{SecondAssumption} is valid (i.e.
-there is an API), we can ignore the rest -- of course making obsolete
-some functionality of Autobump -- namely identifying in which parts of
+there is an API), the rest can be ignored -- of course making some functionality
+of Autobump obsolete -- namely identifying in which parts of
 the program the changes have occurred and checking type compatibility.
-For this project, we examined the radically different languages
-Python, Java and Clojure\ref{LanguageHandlers} and in section
-\ref{Evaluation} we discuss whether the assumptions were found to be
+This project examines the radically different languages
+Python, Java and Clojure (section \ref{LanguageHandlers}) and chapter
+\ref{Evaluation} discusses whether the assumptions were found to be
 reasonable.
 
 \subsection{Feature additions}
@@ -804,7 +808,7 @@ reasonable.
 Semver specifies that the minor version number should be incremented
 when new or improved functionality is added to the software in a
 backwards-compatible manner. If no breaking changes are identified as
-specified in the previous subsection, we can safely assume that if any
+specified in the previous subsection, it can be safely assumed that if any
 features were indeed added, they would be backwards-compatible.
 
 However, while changes to the API can be used to identify breaking
@@ -822,8 +826,8 @@ perhaps in terms of how the abstract syntax tree was modified, the
 line between a patch change and a feature addition would be quite
 fuzzy.
 
-If we revisit the established list of breaking changes and we replace
-the destructive aspect of each item with a constructive one, we get
+Revisiting the established list of breaking changes and replacing
+the destructive aspect of each item with a constructive one results in
 the following list:
 
 \begin{itemize}
@@ -832,7 +836,7 @@ the following list:
 \item Adding a parameter with a default value to a function signature.
 \end{itemize}
 
-We can monitor for changes like these and suggest that those are
+Autobump can monitor changes like these and suggest that those are
 indicative of a feature addition. Provided that no breaking changes
 are found, but some of these are, then it would be appropriate to bump
 the minor version number. This is a valid intepretation of the Semver
@@ -850,8 +854,8 @@ feature.
 While Autobump is guaranteed to disagree with authors in some of the
 cases where a feature was added because it had no bearing on the API,
 this does not devalue its usefulness. The main point of semantic
-versioning is to guard against breaking changes, which we can reliably
-do just by looking at the API.
+versioning is to guard against breaking changes, which can be reliably
+done just by looking at the API.
 
 \section{Feature set and usage}
 
@@ -860,15 +864,15 @@ do just by looking at the API.
 Autobump is a a tool which given two revisions in a version
 controlled project reliably determines what the version of the later
 revision should be\footnote{In some contexts, ``version'' and
-``revision'' may be identical. In this dissertation, we refer to the
+``revision'' may be identical. This dissertation refers to the
 semantic version of a release as ``version'', and the commit
 identifier in a VCS as ``revision''}.
 
-Although technically Autobump could be used with any project, we are
-focused at libraries, frameworks and otherwise projects whose main
-usefulness comes from the ability to be integrated in client
-applications by exposing an API. It is with those types of projects
-that semantic versioning is most practical.
+Although technically Autobump could be used with any project, this
+dissertation focuses on libraries, frameworks and otherwise projects
+whose main usefulness comes from the ability to be integrated in
+client applications by exposing an API. It is with those types of
+projects that semantic versioning is most practical.
 
 Because identifying the version delta requires first identifying a
 list of changes to the public API, a secondary function of Autobump is
@@ -883,7 +887,7 @@ Developers can run it to find out if they have unintentionally broken
 backwards compatibility with a recent commit.
 
 Unlike other previous tools that accomplish more or less the same
-thing, we have attempted to generalise what changes to the API look
+thing, Autobump has attempted to generalise what changes to the API look
 like across different languages. As such, Autobump has a common
 framework that makes adding support for additional languages less
 expensive than developing a new tool from scratch.
@@ -891,9 +895,9 @@ expensive than developing a new tool from scratch.
 \chapter{Implementation}
 \label{Implementation}
 
-In this chapter, we look at how Autobump works internally in terms of
-its architecture and how it exposes its functionality to the end
-user. Furthermore, we focus on how implementation details differ for
+This chapter looks at how Autobump works internally in terms of its
+architecture, as well as how it exposes its functionality to the end
+user. Furthermore, it focuses on how implementation details differ for
 the different target languages.
 
 \section{Architecture}
@@ -963,7 +967,7 @@ options.
 working directory, which has a section \codeinline{[Component]} with a
 setting of the form \codeinline{[option=...]} nested inside. This matches
 the informal standard INI format for configuration files. The reason
-we prefer this format is that Python comes with the module
+this format is preferred is that Python comes with the module
 \pythoninline{configparser} for reading those types of files out of
 the box.
 \item A default value, hardcoded in the configuration module itself.
@@ -975,10 +979,10 @@ the box.
 \label{CAPIR}
 
 Before proceeding with the issue of representing APIs, it is important
-to note that for the purposes of this project we are not interested in
+to note that for the purposes of this project there is no interest in
 any internal APIs software packages might use -- they should not
 influence external applications that depend on the packages in question.
-We are interested only in the public APIs which are meant for external
+There is interest only in the public APIs which are meant for external
 use, as changing these indicates an incrementation of the semantic version.
 
 % TODO: public only in java
@@ -1008,16 +1012,17 @@ regardless of language is solved for some contexts by
 WSDL\cite{WSDL}, SWIG\cite{SWIG} or Apache Thrift\cite{Thrift}. All of
 these are meant for a specific purpose, usually interoperability between
 different technologies. While adapting one of these to use in Autobump
-was certainly possible, we opted to use our own model instead for
+was certainly possible, this project opted to use its own model instead for
 several reasons.
 
 \begin{itemize}
 \item Barely any features are needed except for API representation.
 Using an established IDL may be considered overkill.
 \item Using an established IDL would mean either importing an external
-library as a dependency, or writing our own, and both are undesirable.
-\item Should extensions be needed, it would be trivial to extend our
-own model compared to a third-party one.
+library as a dependency, or writing a new one just for this
+dissertation, and both are undesirable.
+\item Should extensions be needed, it would be trivial to extend an
+ad-hoc model compared to a third-party one.
 \item Autobump's representation of APIs is internal -- the user should
 never care about it, so the choice of IDL can ignore any user
 experience issues.
@@ -1025,9 +1030,9 @@ experience issues.
 
 The representation that Autobump uses (fig. \ref{RepresentationUML})
 consists of several entities that are common across public APIs
-exposed by different languages. From now on, we will refer to this
-model as \textbf{CAPIR} (standing for ``common API representation'') for the
-sake of brevity.
+exposed by different languages. From now on, this model will be
+referred to as \textbf{CAPIR} (standing for ``common API
+representation'') for the sake of brevity.
 
 \pythoninline{Entity} is a base class representing an entity of
 interest found in source code. All deriving classes are guaranteed to
@@ -1105,9 +1110,10 @@ class Discombobulator(object):
 \section{Handlers for programming languages}
 \label{LanguageHandlers}
 
-In this section we discuss the overall idea behind how we go about
-implementing support for multiple programming languages in the same
-tool, and then move on to the specifics for each supported language.
+This section discusses the overall idea behind how this project goes
+about implementing support for multiple programming languages in the
+same tool using the ideas described in section \ref{EstimatingSemver},
+and then moves on to the specifics for each supported language.
 
 The conversion of source code into CAPIR is delegated to separate
 modules that expose a single function to the rest of the program:
@@ -1170,15 +1176,15 @@ difference between using introspection and the AST.
 \subsection{Type systems}
 \label{TypeSystems}
 
-In \ref{BreakingChanges} we found that changing the type of a public
+Section \ref{BreakingChanges} showed that changing the type of a public
 entity to a non-compatible one should be considered a breaking change.
 However, what it means for two types to be compatible varies. Python,
 Java and Clojure were chosen as candidate target languages for this
 tool partly because of their different type systems.
 
 In CAPIR, the only thing required of a \pythoninline{Type} is to be able to
-identify whether it is compatible or not with another type. We are not
-interested in whether or not they are the same type, or what those
+identify whether it is compatible or not with another type. It does
+not matter whether or not they are the same type, or what those
 types actually are\footnote{The point is that what the types actually
 are is irrelevant to determining the next semantic version. It may be
 of interest only to Autobump's secondary function, that is generating
@@ -1200,7 +1206,7 @@ with the widely spread Python 2. Adoption has been sluggish, but at
 the time of writing virtually all libraries that matter fully support
 Python 3 along with 2, or are exclusive to Python 3. Seeing as how
 Python 2 is deprecated and will not receive any further development,
-we only concern ourselves with Python 3 in this project. Moreover,
+this project is concerned solely with Python 3. Moreover,
 some interesting features of the language that matter for Autobump
 (like type hinting) are only available in Python 3.
 
@@ -1228,8 +1234,8 @@ Python, as a dynamic language, can modify the structure of objects at
 runtime by using functions such as \pythoninline{setattr}. This makes
 it possible for a library to construct its functionality at runtime
 instead of defining outright. This is fairly unlikely to happen in the
-real-world libraries that Autobump would be useful for, so we just
-discount that possibility.
+real-world libraries that Autobump would be useful for, so that possibility
+is discounted.
 
 \subsubsection{Types}
 
@@ -1262,18 +1268,18 @@ of an object to determine whether the program fails or not, this makes
 the task of figuring out how the types of parameters have changed more
 difficult. It would be unnecessary and even misleading to attempt to
 look up usage of a function inside the project itself, for example in
-tests. We may find that all parameters passed into the function are
-instances of a particular class, but client code absolutely could pass
-in objects of a different type that happen to have the same properties
-and methods as needed by the function.
+tests. Even though it may be found that all parameters passed into the
+function are instances of a particular class, client code absolutely
+could pass in objects of a different type that happen to have the same
+properties and methods as needed by the function.
 
 % TODO: What about types of entities? Need to implement AST scanning
 % as well
 
 A better choice is to consider two sets $S_a$ and $S_b$ -- the sets of
 all properties and methods requested from the object in the two
-versions we want to compare, $S_a$ being the earlier version chronologically.
-If $S_a \supseteq S_b$, then we can safely claim that there was no
+versions to compare, $S_a$ being the earlier version chronologically.
+If $S_a \supseteq S_b$, then it can be safely claimed that there was no
 breaking change as far as the type of the object is concerned. After
 all, if client code was passing an object successfully into the
 earlier version of the function, then it should continue to do so
@@ -1303,7 +1309,7 @@ def func(obj):
 \end{halfmini}
 
 In this case, because \pythoninline{method2} is no longer expected in
-Variant B, $S_a \supset S_b$ and we safely claim that there is no
+Variant B, $S_a \supset S_b$ and it is safe to claim that there is no
 breaking change. If it were the other way around, i.e. Variant A came
 after Variant B, then that is not guaranteed. Client code previously
 passing in objects that implement \pythoninline{method1} was not obliged to
@@ -1336,13 +1342,14 @@ versions of the same code, not validating invocations.
 
 In Python 3.5 and 3.6, which are the only versions of Python with
 support for type hinting at the time of writing, there is a small
-oversight. When given code, the only to check the type hints is to
-actually evaluate the code and check the metadata of the relevant
-objects. This is undesirable in the case of Autobump where we want to
-use the AST instead. A third-party fork of Python's built in
-\codeinline{ast} module exists, named \codeinline{typed_ast}\cite{TypedAST}.
-It gives access to type hinting information as part of AST itself.
-It's expected that this fork will get merged back into mainline Python
+oversight. When given code, the only way to see what the type hints
+are is to actually evaluate the code and check the metadata of the
+relevant objects.
+This is undesirable in the case of Autobump where the AST ought to be
+used instead. A third-party fork of Python's built in \codeinline{ast}
+module exists, named \codeinline{typed_ast}\cite{TypedAST}. It gives
+access to type hinting information as part of AST itself. It's
+expected that this fork will get merged back into mainline Python
 eventually, but for the time being Autobump uses it as an external
 library.
 
@@ -1351,7 +1358,7 @@ is type hinting information for a function or field it's actual usage
 in the AST is ignored regardless of whether \codeinline{Python/Use
 Structural Typing} is enabled. Given the obvious incompatibility of
 having one version be parsed with structural typing, and another one
-having a type hint, we always pessimistically assume that the two are
+having a type hint, Autobump always pessimistically assumes that the two are
 not going to be compatible. If both versions have type hints, they are
 compared using Python's native facilities.
 % TODO: no they're not
@@ -1472,13 +1479,13 @@ public class MyClass {
 declared in the same package as this source file. However, it's not
 guaranteed that the parser will have visited those in advance. We
 cannot adequately build CAPIR of a type just by looking at the
-reference type \javainline{OtherClass}, because we can't qualify it
+reference type \javainline{OtherClass}, because it can't be qualified
 before having visited all other files. If it is indeed defined in the
-same package, we also have the opportunity to check whether its
+same package, there is the opportunity to check whether its
 descendants include \javainline{YetAnotherClass} and identify whether
-this particular change is going to be breaking. Note that even if we
-were aware that \javainline{OtherClass} was declared in the same
-package and we could fully qualify it on the first pass, it is still
+this particular change is going to be breaking. Note that even if the handler
+was aware that \javainline{OtherClass} was declared in the same
+package and it could be fully qualified on the first pass, it is still
 possible that \javainline{YetAnotherClass} hasn't been visited and the
 relationship between the two is unknown.
 
@@ -1573,7 +1580,7 @@ later on in the comparison.
 
 Having to compile the project first and then run these tools
 introduced substantial complexity to the handler. It would be naïve to
-hardcode any commands that compile the project. Instead, we should
+hardcode any commands that compile the project. Instead, it is better to
 delegate to the build system that comes with the project to properly
 handle things like dependencies and \codeinline{CLASSPATH} issues.
 \codeinline{java_ast} requires that a build command and a build root are
@@ -1594,7 +1601,7 @@ The native handler produces much more accurate results, but is also
 much slower -- it necessitates compiling the project, twice. There's
 value in using the AST handler for self-contained libraries where it
 would give identical results to the native one. Alternatively, if all
-we are interested in is the new version number and not the changelog,
+the user is interested in is the new version number and not the changelog,
 running the AST handler once can be a shortcut. If it reports a major
 bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
@@ -1606,7 +1613,7 @@ not, then \codeinline{java_native} can be run to make sure.
 Clojure is interpreted, general-purpose variant of the Lisp
 programming language, with an emphasis on functional programming. It
 has several properties that make it noticeably different from the
-previous two languages we considered:
+previous two languages considered:
 
 \begin{itemize}
 \item While not purely functional, it heavily emphasises programming
@@ -1631,7 +1638,7 @@ The Clojure handler follows a model very similar to \codeinline{java_native}
 using some Python middleware. The bulk of the work done in Clojure is
 just mapping a program to its public API. As was with Java and XML,
 the most convenient structures to generate with Clojure are
-S-expressions, so we use those as an intermediary before the
+S-expressions, so those are used as an intermediary before the
 middleware can translate that into Autobump's internal CAPIR. The
 handler takes advantage of the language's homoiconicity and powerful
 reflection capabilities, which makes it easy to inspect programs using
@@ -1639,14 +1646,14 @@ the language itself.
 
 Early versions of the Clojure handler simply took advantage of
 homoiconicity and directly mapped the AST to CAPIR. However, that is
-not sufficient when external libraries are present and we need to type
-checking against them, or when optional static typing is being used.
+not sufficient when external libraries are present and types defined
+in them need to be type checked, or when optional static typing is being used.
 Superficially, because Clojure is dynamic and interpreted, it seems as
-if we were present with the same problem as with Python -- having to
+if there is the same problem as with Python -- having to
 rely on just the AST, because evaluating code and then trying to do
 introspection risks executing side effects. It is not so. The Clojure
 handler can use a mixture of both approaches with no penalties,
-because it is functional and we can disregard the risk of side effects.
+because it is functional and the risk of side effects can be disregarded.
 
 % TODO: here we discuss.... ???
 
@@ -1658,7 +1665,7 @@ their internal representation. Clojure provides us with the
 \clojureinline{read-string} function that reads in the string
 representation of a form and returns it as a proper Lisp object.
 Combining this with the \clojureinline{slurp} function that returns
-the contents of a file as a string, we can build a function that
+the contents of a file as a string, a function can be built that
 given a file name, returns the Clojure program stored inside as a list
 of forms (other lists):
 
@@ -1673,9 +1680,9 @@ of forms (other lists):
 \end{tabular}
 \end{center}
 
-From there, we can filter out forms of interest and describe the part
-of the API they expose using an S-expression. We can nest the
-S-expressions together, forming a tree identical in structure to
+From there, forms of interest can be filtered out to describe the part
+of the API they expose using an S-expression. The S-expressions can be
+nested together, forming a tree identical in structure to
 CAPIR.
 
 \begin{center}
@@ -1778,7 +1785,7 @@ AST to directly, even when using facilities like
 
 \subsubsection{Using both AST and reflection}
 
-We have compounded several reasons why relying on the AST alone is not
+Several reasons have compounded why relying on the AST alone is not
 preferrable, especially when evaluating the code doesn't impose any
 penalties except for making the handler slightly slower:
 
@@ -1786,11 +1793,11 @@ penalties except for making the handler slightly slower:
 \item It's impossible to get the types of fields without evaluating
 their values.
 \item It's unreasonably difficult to guard against all sorts of macro
-trickery, and we cannot claim for certain what a form does without
+trickery, and it cannot be claimed for certain what a form does without
 evaluating it.
-\item On the same note, we cannot properly handle optional static
-typing, because it relies on macro trickery.
-\item We cannot check types against external libraries. If the type
+\item On the same note, optional static typing cannot be properly
+handled because it relies on macro trickery.
+\item Type checks cannot be run against external libraries. If the type
 hint of a parameter was changed, there's no way to verify whether the
 new one is compatible with the old one.
 \end{itemize}
@@ -1903,8 +1910,9 @@ addition after several patches would cause a feature addition to be
 the most notable change. Note that nothing can top a breaking change.
 Had Autobump only concerned itself with bumping the version number,
 the algorithm could stop at finding a breaking change. However,
-because we want to generate a changelog as well, we carry on looking
-for changes even though the version number itself is clear at this point.
+because a changelog needs to be generated as well, the algorithm
+carries on looking for changes even though the version number itself
+is clear at this point.
 
 \section{User interface}
 
@@ -1913,10 +1921,11 @@ for changes even though the version number itself is clear at this point.
 \chapter{Testing}
 \label{Testing}
 
-In this chapter, we look at how we demonstrate that Autobump indeed
+This chapter looks at how it can be demonstrated that Autobump indeed
 works and what testing techniques were used throughout development.
-Testing is central to Autobump's development and was done from very
-early on.
+Autobump, because of the nature of what it does, has an exteremely
+large range of valid inputs. For that reason testing was central to
+Autobump's development and was done from very early on.
 
 \section{Unit testing}
 
@@ -1946,14 +1955,14 @@ produced by Autobump in advance of calling the handler by cloning and
 checking out some revision of a repository.
 % TODO: What if it's not Git?
 
-To test this function, we need to mock the presense of a directory
+To test this function, the presense of a directory needs to be mocked,
 containing some fixture instead of an actual repository. This is best
 done with Python's built-in \pythoninline{tempfile} module which can create
 temporary files and directories, not necessarily physically on the
 disk. The fixtures are found in the tests themselves and are written
 to temporary files as part of the set up process. By holding onto the
-handle obtained by calling functions from \codeinline{tempfile} , we can
-ensure that everything is cleaned up during the tear down phase of
+handle obtained by calling functions from \codeinline{tempfile}, it can
+be ensured that everything is cleaned up during the tear down phase of
 testing.
 
 A fixture consists of a list of tuples, each tuple representing the
@@ -1980,15 +1989,15 @@ and parse those files. The notable exception is the Python handler,
 which is the only one written entirely in Python. For that reason we
 can take a shortcut when writing tests for it. Instead of calling the
 entrypoint \pythoninline{codebase_to_units} which scans a location for
-relevant files and only then converts them to CAPIR units, we can
-directly call \pythoninline{_source_to_unit} which is an
-implementation-specific function found only in the Python handler.
-It takes in Python source code as a string and returns a unit. Even
-though this is technically white box testing, we still treat this
-function as if it were the entrypoint to the module. This has two
-advantages: it greatly speeds up the tests because there's no need
-to create temporary files and directories, and it simplifies the
-fixtures -- they can be the source code of a single file with no metadata.
+relevant files and only then converts them to CAPIR units,
+\pythoninline{_source_to_unit} can be called directly. That is an
+implementation-specific function found only in the Python handler. It
+takes in Python source code as a string and returns a unit. Even
+though this is technically white box testing, this function is still
+treated as if it were the entrypoint to the module. This has two
+advantages: it greatly speeds up the tests because there's no need to
+create temporary files and directories, and it simplifies the fixtures
+-- they can be the source code of a single file with no metadata.
 
 \section{Acceptance testing}
 
@@ -2001,7 +2010,7 @@ error-prone. For that reason it was crucial to develop acceptance, or
 end-to-end, tests that can quickly show that Autobump works correctly
 when applied to a full-blown repository.
 
-We can consider the entirety of Autobump as a single entity, with the
+The entirety of Autobump can be considered as a single entity, with the
 input being a repository\footnote{There are of course additional
 inputs, like what handler to use or which revision to compare.
 However, those are trivial to mock.} and the output the proposed
@@ -2066,15 +2075,12 @@ automatically running multiple acceptance tests.
 \chapter{Evaluation}
 \label{Evaluation}
 
-In this chapter, we try to use Autobump with real-world libraries
-written in the different target languages. We look at whether Autobump
-automatically produces similar or identical version numbers compared
-to the ones assigned manually by the developers and interpret our findings.
-Looking at this data, we discuss whether the assumptions Autobump
-makes about the target languages are valid, and whether it's approach
-of looking at only the public API is beneficial. We also discuss
-whether the authors and users of those libraries would have benefited
-if they had used a tool such as Autobump.
+This chapter applies Autobump retroactively to real-world libraries
+written in the different target languages. It compares the version
+numbers output of Autobump to what the developers of these libraries
+assigned manually and interprets the findings. Looking at the data, it
+is discussed whether the authors and users of those libraries would
+have benefited had they used a tool such as Autobump.
 
 % TODO: take into account popularity, because number of users, because
 % increased pressure on authors
