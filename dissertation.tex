@@ -1903,10 +1903,8 @@ between the two variants. It itself is fairly straightforward and
 defined recursively:
 
 \begin{algorithm}
-\caption{CAPIR Comparison}
+\caption{CAPIR Entity Comparison}
 \begin{algorithmic}[1]
-% TODO: Better name instead of 'comparisons'
-% TODO: Member instead of attribute
 \Procedure{Compare}{A, B}
 \State $assert(type(A)$ is $type(B))$
 \State $comparators \gets \text{map of the form }(member \rightarrow function)$
@@ -1934,9 +1932,9 @@ $compare(A[member], B[member])$
 
 In short, the algorithm compares two entities by examining their list
 of attributes and runs specific comparator functions on known
-bottom-level members -- such as types and signatures. After that is
-done, it checks for members that are missing from either variant and
-recurses into members that are present in the intersection of both entities.
+bottom-level members. After that is done, it checks for members that
+are missing from either variant and recurses into members that are
+present in the intersection of both entities.
 
 Note that this procedure technically compares entities, not trees. To
 kick off the comparison of two trees it's necessary to wrap both in a
@@ -1953,9 +1951,121 @@ the algorithm could stop at finding a breaking change. However,
 because we want to generate a changelog as well, we carry on looking
 for changes even though the version number itself is clear at this point.
 
+A map of the form $member \rightarrow function$ is purposefully used
+instead of invoking the comparators directly. It shows the general
+principle of comparing members of CAPIR entities, even if eventually
+CAPIR is modified or extended and the comparators change. The only
+comparators used so far ar for type checking (on the member $type$)
+and signature checking (on the member $signatures$).
+
 \section{User interface}
 
+Autobump is a command-line application. Direct instructions to it are
+provided by passing in options.
+
+The anticipated most frequent manual use case is comparing the last
+released version and the current commit that is meant for release.
+That way the user can see what the version of that new release should
+be. In this case, the only thing required of the user is to pass in
+the language handler. The output consists of a single line, indicating
+the new version.
+
+\begin{figure}[H]
+\centering
+\caption{Most frequent manual use case}
+% TODO: git history of most frequent use case
+\begin{Bverbatim}
+> git tag | tail -n1
+1.2.0
+> autobump python
+1.3.0
+>
+\end{Bverbatim}
+\end{figure}
+
+Alternatively, a changelog can be generated in addition to just
+providing the version number. The option \codeinline{--changelog
+[filename]} saves the changelog to a file, and
+\codeinline{--changelog-stdout} just prints it. The very last line of
+output is still guaranteed to be new version number, so it can be
+easily extracted using tools like \codeinline{tail}.
+
+\begin{figure}[H]
+\centering
+\caption{Changelog generation}
+\begin{Bverbatim}
+> autobump python --changelog-stdout
+moduleA.some_function: Entity was introduced.
+moduleB.other_function: Parameter(s) with default value was added.
+1.3.0
+>
+\end{Bverbatim}
+\end{figure}
+
+To alter the default revisions to compare, the options
+\codeinline{--from} and \codeinline{--to} can be used. They accept a
+valid identifier as recognised by the underlying version control
+system, e.g. a commit hash or a tag name. Changing the range can be
+used to check for previous mistakes or when changing the release
+history. It is also used for running Autobump in evaluation mode,
+where it is automatically run multiple times against chronologically
+adjacent revisions, as discussed in chapter \ref{Evaluation}.
+% TODO: wtf is "changing the release history"?
+
+\begin{figure}[H]
+\centering
+\caption{Changelog generation}
+\begin{Bverbatim}
+> autobump python --from 1.0.0 --to 1.1.0
+1.1.0
+>
+\end{Bverbatim}
+\end{figure}
+
+Autobump is also able to provide debugging information in case the
+user suspects that something is not working quite right. The level of
+information can be controlled and by default Autobump doesn't provide
+any except for warnings. The following options control the level of
+information, in order of application (i.e. options further down the
+list trump everything above).
+
+\begin{enumerate}[(i)]
+\item No option: only warnings are shown.
+\item \codeinline{--info}: provides general information about Autobump
+is doing, as well as warnings.
+\item \codeinline{--debug}: provides very detailed information about
+the current execution path, as well as warnings.
+\item \codeinline{--silence}: absolutely ignores any debugging
+information.
+\end{enumerate}
+
+All debugging information is printed to \codeinline{stderr} so as not
+to interfere with the regular output of the program. This was very
+important during development, as the debugging information could
+easily be piped to a separate file for later analysis.
+
+Errors are always shown and cannot be silenced. That is desirable,
+because Autobump treats all errors as fatal and immediately terminates
+when one is encountered. The return code of the program is set to
+non-zero to indicate that it failed.
+
+\begin{figure}[H]
+\centering
+\caption{Fatal error in Autobump}
+\begin{Bverbatim}
+> autobump
+autobump: Invalid handler specified!
+> echo \$?
+1
+>
+\end{Bverbatim}
+\end{figure}
+
+A full rundown of all options is given in appendix \ref{RundownOptions}.
+
 \subsection{Integration with other development tools}
+
+% TODO: fill this in
 
 \chapter{Testing}
 \label{Testing}
@@ -2299,6 +2409,7 @@ officially. \\
 \begin{appendices}
 
 \chapter{Running Autobump in practice}
+\label{AutobumpInPractice}
 
 Autobump requires at least Python 3.5. Other than that, it has no
 dependencies. A typical Python setup involving a virtual environment
@@ -2317,6 +2428,9 @@ specified as \codeinline{LINTER}) against all source code.
 \end{itemize}
 
 \section{Usage}
+
+\section{Rundown of options}
+\label{RundownOptions}
 
 \section{Rundown of configurables}
 \label{RundownConfigurables}
