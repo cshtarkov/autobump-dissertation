@@ -2076,12 +2076,172 @@ of looking at only the public API is beneficial. We also discuss
 whether the authors and users of those libraries would have benefited
 if they had used a tool such as Autobump.
 
-% TODO: take into account popularity, because number of users, because
-% increased pressure on authors
+\section{Running Autobump against existing libraries}
+% TODO: rename this section if doing a large-scale Python study
 
-% TODO: number of downloads is not an optimal version, artifact
-% dependency is somewhat better - but still doesn't include
-% applications only libraries
+Retroactively running Autobump against a specific library was done
+much in the same way as running an acceptance test. In testing, a
+repository is recreated in the filesystem from a set of patches, with
+each commit tagged as some version. During evaluation, no repository
+is recreated but an existing one is used and only chronologically
+adjacent tags are compared, not necessarily adjacent commits. These
+similarities allowed for a large part of the testing mechanism to be
+incorporated into Autobump itself. By passing the option
+\codeinline{-e} or \codeinline{--evaluate} when invoking the program,
+it will take the revisions specified by \codeinline{--from} and
+\codeinline{--to} as a range instead of them being an ealier and a
+latter commit. In essence, running an acceptance test is evaluating an
+artificially constructed repository.
+% TODO: what if --to is before --from?
+
+Autobump expects that the tag names correspond to versions, and it
+attempts to extract the semantic version. For example, the tag
+\codeinline{gson-release-2.8} gets recognised as version
+\codeinline{2.8.0}. If the two chronologically adjacent tags are
+\codeinline{gson-release-2.8} and \codeinline{gson-release-2.9}, the
+tool compares the two, figures out that the earlier one is
+\codeinline{2.8.0} and issues a warning if the latter one is not
+\codeinline{2.9.0}.
+
+While running in evaluation mode, Autobump prints to
+\codeinline{stdout} all the pairs it compares. If the option
+\codeinline{--changelog-stdout} is passed as well, a changelog is
+inserted in the output for each pair. The output itself is a simple
+text format that allows for quick filtering and other text
+manipulations:
+
+\begin{center}
+\begin{BVerbatim}
+!EVAL Start diffing 0.4.0 and 0.4.1
+docopt.Argument.match: Type was changed to an incompatible type
+docopt.Command.match: Type was changed to an incompatible type
+!EVAL End   diffing 0.4.0 and 0.4.1
+!EVAL MISMATCH: 0.4.0 -- 0.4.1 should have been 0.4.0 -- 0.5.0
+\end{BVerbatim}
+\end{center}
+
+This allows to measure the portion of mismatches, and whether Autobump
+suggested a major version bump when the authors didn't. In combination
+with metadata from the repository itself, the change in those metrics
+over time can be shown.
+
+Ten libraries in total across all languages were evaluated. They were
+chosen based on factors like popularity, size and to what degree their
+authors claim they adhere to semantic versioning. Prior to any
+empirical data, it can be speculated how those factors could impact
+the projects' actual adherence to semantic versioning.
+
+We measure popularity differently for the different languages, because
+different statistics are available from the respective central
+repositories. The Python Package Index (PyPI) \ref{PyPI} only measures
+the total number of downloads of a particular package. This is not
+ideal, because it is impossible to distinguish whether it is a direct
+or indirect dependency of other projects. For example, the package
+\codeinline{six} which provides Python 2 and 3 compatibility
+utilities, is the third-most popular package on PyPI at the time of
+writing with 54 million downloads, but it is unlikely that many end
+users are actually using it directly. Most uses are probably coming
+from other libraries on PyPI that are compatible with both Python 2
+and 3.
+
+On the other hand, Maven, which is the central repository for Java and
+Clojure projects, does not provide downloads counts but the number of
+dependant artifacts also found on Maven. This is a better statistic,
+but still not ideal because it does not indicate the number of
+applications that rely on a library which are not published on Maven
+themselves.
+
+Popularity, albeit a crude measurement, is proportional to the number
+of users a library has. Depending on the nature of the library and the
+development culture around it, a larger number of users can imply more
+pressure on authors to better apply versioning schemes or at the very
+least, provide detailed changelogs.
+
+The relationship between library size and the number of accidental
+breaking changes can be easily speculated upon: if no automated
+tooling is used, the larger the library, the larger the risk of
+accidentally introducing a breaking change because of an oversight.
+This dissertation uses lines of code (LOC) in the most recent revision
+of the library to indicate size. A more accurate measurement would be
+the number of CAPIR entities, but LOC is good enough to indicate the
+size relative to other projects of the same language. Of course it
+would be less fruitful to compare against projects in a different
+language -- for example, Python libraries on average tend to be much
+smaller than Java libraries.
+
+Claimed adherence to semantic versioning is found by looking at
+project \codeinline{README} and \codeinline{CONTRIBUTING} files, or
+other developer communication, such as mailing lists. Adherence is not
+binary, but gradual -- this dissertation makes the distinction between
+officially following Semver, apparently following Semver but never
+saying that outright (i.e. the version numbers very much seem like
+Semver), and anything inbetween. No projects were chosen that don't
+even seem like they follow Semver, because no meaningful results can
+be derived from evaluating those.
+
+Tables \ref{PythonProjectsForEvaluation},
+\ref{JavaProjectsForEvaluation} and \ref{ClojureProjectsForEvaluation}
+outline the chosen projects. Subsequent sections discuss
+each library and give a summary of general findings for the different
+languages. Of course the sample size is very small and it would be
+wrong to extrapolate for entire ecosystems.
+
+\subsection{Python}
+
+\begin{table}[H]
+\label{PythonProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Downloads} & \textbf{Semantically versioned} \\
+\codeinline{requests} & 4500 LOC & 53 million & Yes, officially. \\
+\codeinline{simplejson} & 2000 LOC & 182 million & Seems like it, but not officially. \\
+\codeinline{docopt} & 600 LOC & 9 million & Seems like it, but not
+officially. \\
+\codeinline{hashids} & 300 LOC & 154 000 & \codeinline{README} claims
+that ``[they] try to follow Semver, but check the changelog''.
+\end{tabular}
+\caption{Python projects chosen for evaluation}
+\end{table}
+
+\subsection{Java}
+
+\begin{table}[H]
+\label{JavaProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\codeinline{guava} & 150 000 LOC & 10700 & A contributor remarks ``we
+actually do use semantic versioning with
+Guava''\footnote{https://github.com/google/guava/issues/1682}. \\
+\codeinline{mockito} & 11000 LOC & 8415 & \codeinline{CONTRIBUTING}
+claims that ``semantic versioning is rigorously maintained'', but is
+then implied that this applies only for after major version
+\codeinline{2}. \\
+\codeinline{gson} & 8000 LOC & 3400 & Seems like it, not officially.
+\end{tabular}
+\caption{Java projects chosen for evaluation}
+\end{table}
+
+\subsection{Clojure}
+
+\begin{table}[H]
+\label{ClojureProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\codeinline{cheshire} & 1200 LOC & 961 & Seems like it, not
+officially. \\
+\codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially.
+% \\
+% TODO: another Clojure library
+\end{tabular}
+\caption{Clojure projects chosen for evaluation}
+\end{table}
+
+\subsection{Summary}
+
+% TODO: histogram of number of releases, number of breaking
+% TODO: cumulative mismatches/breaking changes over time
 
 \chapter{Conclusion}
 \label{Conclusion}
