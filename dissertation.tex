@@ -1895,8 +1895,9 @@ obtain the CAPIR of code as it was at some revision:
 
 \begin{center}
 \begin{tabular}{c}
+% TODO: real composition
 \begin{python}
-capir_at_commit = compose(codebase_to_units, get_commit)
+capir_at_commit = codebase_to_units . get_commit
 \end{python}
 \end{tabular}
 \end{center}
@@ -1948,6 +1949,20 @@ kick off the comparison of two trees it's necessary to wrap both in a
 CAPIR unit, so that the first level of recursion actually looks at the
 top-level units in both codebases.
 
+Autobump's core objective, suggesting the new version number, is
+essentially formulated functionally in the main program as follows:
+
+\begin{center}
+\begin{tabular}{c}
+% TODO: real composition
+\begin{python}
+capir_at_commit = codebase_to_units . get_commit
+change = compare(capir_at_commit(previous), capir_at_commit(current))
+new_version = old_version.bump(change)
+\end{python}
+\end{tabular}
+\end{center}
+
 $report$ is a simple function that takes care of adding a change to
 the changelog and checking whether the latest reported change is more
 notable than the most notable so far. For example, reporting a feature
@@ -1964,6 +1979,8 @@ principle of comparing members of CAPIR entities, even if eventually
 CAPIR is modified or extended and the comparators change. The only
 comparators used so far ar for type checking (on the member $type$)
 and signature checking (on the member $signatures$).
+
+% TODO: talk about individual comparators
 
 \section{User interface}
 
@@ -2108,7 +2125,6 @@ The entrypoint of every language handler is the function
 location of that codebase on disk. Typically that directory would be
 produced by Autobump in advance of calling the handler by cloning and
 checking out some revision of a repository.
-% TODO: What if it's not Git?
 
 To test this function, we need to mock the presense of a directory
 containing some fixture instead of an actual repository. This is best
@@ -2179,9 +2195,8 @@ history of a mock project that changes its API over time. Specific
 commits would be tagged with version numbers, representing the version
 number that Autobump is expected to produce when comparing that
 revision to the previously tagged one. This approach was quickly
-ruled, because it makes editing the progression of the project
+ruled out, because it makes editing the progression of the project
 unnecessarily difficult.
-% TODO: Why?
 \item Reconstruct a Git repository containing the history of a project
 by using an acceptance test framework like \textit{Robot
 Framework}\cite{Robot}. Frameworks like these generally let you
@@ -2189,7 +2204,6 @@ specify pre and postconditions either in freeform or
 \textit{given-when-then} form, so an example test may look something
 like this:
 
-% TODO: should this be verbatim?
 \begin{center}
 \begin{BVerbatim}
 Given a public method in a class
