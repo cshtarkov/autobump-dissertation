@@ -1427,14 +1427,11 @@ actually a string.
 \subsection{Java}
 \label{JavaHandlers}
 
-% TODO: What is Java?
 Java is a compiled, statically-typed language which makes it very
 different from Python. Nevertheless, the two approaches -- AST
 and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
 Autobump that actually has two separate handlers.
-
-% TODO: explain how arrays are handled
 
 \subsubsection{Using the abstract syntax tree}
 
@@ -1646,6 +1643,16 @@ running the AST handler once can be a shortcut. If it reports a major
 bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
 not, then \codeinline{java_native} can be run to make sure.
+
+\subsubsection{Handling arrays}
+
+When comparing types, Java takes into account dimensions as well. It
+is not sufficient that the types themselves are compatible, but also
+that the dimensions are equal. For example, if the type $A$ is deemed
+compatible with $B$, it is not the case that $A[]$ is compatible with
+$B$. Both handlers satisfy this by keeping track of dimension in their
+CAPIR type representations and modifying the
+\codeinline{is_compatible} function accordingly.
 
 \subsection{Clojure}
 \label{Clojure}
