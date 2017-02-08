@@ -967,7 +967,7 @@ options.
 \item A configuration file \codeinline{autobump.ini} present in the
 working directory, which has a section \codeinline{[Component]} with a
 setting of the form \codeinline{[option=...]} nested inside. This matches
-the informal standard INI format for configuration files. The reason
+the informal standard \codeinline{INI} format for configuration files. The reason
 this format is preferred is that Python comes with the module
 \pythoninline{configparser} for reading those types of files out of
 the box.
@@ -981,12 +981,15 @@ current configuration.
 
 Additionally, the configuration module provides standard Python
 mechanisms for overriding configuration programmatically -- a context
-manager and a function decorator. Those can be useful if using Autobump
-as a library from an external application. For example, Autobump's own
-unit tests override configuration options to make their success or
-failure not dependent on Autobump's current configuration.
+manager and a function decorator, as shown in figures
+\ref{ConfigOverrideCM} and \ref{ConfigOverrideD}. Those can be useful
+if using Autobump as a library from an external application. For
+example, Autobump's own unit tests override configuration options to
+make their success or failure not dependent on Autobump's current
+configuration.
 
 \begin{figure}[H]
+\label{ConfigOverrideCM}
 \centering
 \caption{Overriding with a context manager}
 \begin{tabular}{c}
@@ -1000,6 +1003,7 @@ with config_overrides({"category": {"option": "value"}}):
 \end{figure}
 
 \begin{figure}[H]
+\label{ConfigOverrideD}
 \centering
 \caption{Overriding with a function decorator}
 \begin{tabular}{c}
@@ -1102,13 +1106,13 @@ and treats those as \pythoninline{Function}s as well.
 
 Every function has one or more \pythoninline{Signature}s which in turn
 are lists of \pythoninline{Parameter}s. Parameters have a type and can
-have a default value. Note that the \pythonline{Function}s themselves
+have a default value. Note that the \pythoninline{Function}s themselves
 don't have return values; instead they can be put as part of the
 signature if necessary.
 
 % TODO: shoehorning languages into CAPIR, drawbacks for changelog generation
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/dot/repr}
 \caption{Class diagram -- Autobump's public API representation (CAPIR)}
@@ -2006,13 +2010,13 @@ the new version.
 \centering
 \caption{Most frequent manual use case}
 % TODO: git history of most frequent use case
-\begin{Bverbatim}
+\begin{BVerbatim}
 > git tag | tail -n1
 1.2.0
 > autobump python
 1.3.0
 >
-\end{Bverbatim}
+\end{BVerbatim}
 \end{figure}
 
 Alternatively, a changelog can be generated in addition to just
@@ -2025,13 +2029,13 @@ easily extracted using tools like \codeinline{tail}.
 \begin{figure}[H]
 \centering
 \caption{Changelog generation}
-\begin{Bverbatim}
+\begin{BVerbatim}
 > autobump python --changelog-stdout
 moduleA.some_function: Entity was introduced.
 moduleB.other_function: Parameter(s) with default value was added.
 1.3.0
 >
-\end{Bverbatim}
+\end{BVerbatim}
 \end{figure}
 
 To alter the default revisions to compare, the options
@@ -2047,11 +2051,11 @@ adjacent revisions, as discussed in chapter \ref{Evaluation}.
 \begin{figure}[H]
 \centering
 \caption{Changelog generation}
-\begin{Bverbatim}
+\begin{BVerbatim}
 > autobump python --from 1.0.0 --to 1.1.0
 1.1.0
 >
-\end{Bverbatim}
+\end{BVerbatim}
 \end{figure}
 
 Autobump is also able to provide debugging information in case the
@@ -2084,13 +2088,13 @@ non-zero to indicate that it failed.
 \begin{figure}[H]
 \centering
 \caption{Fatal error in Autobump}
-\begin{Bverbatim}
+\begin{BVerbatim}
 > autobump
 autobump: Invalid handler specified!
 > echo \$?
 1
 >
-\end{Bverbatim}
+\end{BVerbatim}
 \end{figure}
 
 A full rundown of all options is given in appendix \ref{RundownOptions}.
@@ -2401,7 +2405,7 @@ the projects' actual adherence to semantic versioning.
 
 Popularity is measured differently for the different languages, because
 different statistics are available from the respective central
-repositories. The Python Package Index (PyPI) \ref{PyPI} only measures
+repositories. The Python Package Index (PyPI) \cite{PyPI} only measures
 the total number of downloads of a particular package. This is not
 ideal, because it is impossible to distinguish whether it is a direct
 or indirect dependency of other projects. For example, the package
@@ -2459,14 +2463,17 @@ wrong to extrapolate for entire ecosystems.
 \begin{table}[H]
 \label{PythonProjectsForEvaluation}
 \centering
-\begin{tabular}{|l|l|l||l|l|}
+\begin{tabular}{|l|l|l|p{10cm}|}
+\hline
 \textbf{Project} & \textbf{Size} & \textbf{Downloads} & \textbf{Semantically versioned} \\
+\hline
 \codeinline{requests} & 4500 LOC & 53 million & Yes, officially. \\
 \codeinline{simplejson} & 2000 LOC & 182 million & Seems like it, but not officially. \\
 \codeinline{docopt} & 600 LOC & 9 million & Seems like it, but not
 officially. \\
 \codeinline{hashids} & 300 LOC & 154 000 & \codeinline{README} claims
-that ``[they] try to follow Semver, but check the changelog''.
+that ``[they] try to follow Semver, but check the changelog''. \\
+\hline
 \end{tabular}
 \caption{Python projects chosen for evaluation}
 \end{table}
@@ -2476,8 +2483,10 @@ that ``[they] try to follow Semver, but check the changelog''.
 \begin{table}[H]
 \label{JavaProjectsForEvaluation}
 \centering
-\begin{tabular}{|l|l|l||l|l|}
+\begin{tabular}{|l|l|l|p{10cm}|}
+\hline
 \textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\hline
 \codeinline{guava} & 150 000 LOC & 10700 & A contributor remarks ``we
 actually do use semantic versioning with
 Guava''\footnote{https://github.com/google/guava/issues/1682}. \\
@@ -2485,7 +2494,8 @@ Guava''\footnote{https://github.com/google/guava/issues/1682}. \\
 claims that ``semantic versioning is rigorously maintained'', but is
 then implied that this applies only for after major version
 \codeinline{2}. \\
-\codeinline{gson} & 8000 LOC & 3400 & Seems like it, not officially.
+\codeinline{gson} & 8000 LOC & 3400 & Seems like it, not officially. \\
+\hline
 \end{tabular}
 \caption{Java projects chosen for evaluation}
 \end{table}
@@ -2495,11 +2505,14 @@ then implied that this applies only for after major version
 \begin{table}[H]
 \label{ClojureProjectsForEvaluation}
 \centering
-\begin{tabular}{|l|l|l||l|l|}
+\begin{tabular}{|l|l|l|p{10cm}|}
+\hline
 \textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\hline
 \codeinline{cheshire} & 1200 LOC & 961 & Seems like it, not
 officially. \\
-\codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially.
+\codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially. \\
+\hline
 % \\
 % TODO: another Clojure library
 \end{tabular}
@@ -2556,7 +2569,7 @@ for tests) and fails the target if there are formatting issues
 tests suite, the acceptance test suite or both respectively
 \item \codeinline{.coverage.unit, .coverage.acceptance, .coverage}:
 run the appropriate tests and generate \textit{Coverage.py}
-\ref{Coverage} test coverage data
+\cite{Coverage} test coverage data
 \item \codeinline{libexec}: compiles non-Python code, e.g. the Java handler
 \item \codeinline{dist}: creates a distribution package, suitable for
 publishing or local installation
