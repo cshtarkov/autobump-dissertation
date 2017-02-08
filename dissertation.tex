@@ -2072,6 +2072,90 @@ is properly set up before running Autobump. In normal operation, the
 or by setting the environment variable, but that is not an option when
 automatically running multiple acceptance tests.
 
+\begin{figure}[H]
+\label{SampleAcceptanceTest}
+\caption{Example acceptance test for the Python handler}
+\begin{minipage}[t]{0.7\textwidth}
+\begin{python}
+handler = "python"
+
+def setUp(repo):
+    pass
+
+def tearDown(repo):
+    pass
+
+commit_history = [
+
+    ("1.0.0",
+     "Initial commit",
+     """
+     diff --git a/module_a.py b/module_a.py
+     new file mode 100644
+     index 0000000..ab92b1d
+     --- /dev/null
+     +++ b/module_a.py
+     @@ -0,0 +1,2 @@
+     +def some_function():
+     +    pass
+     --
+     """),
+
+    ("1.1.0",
+     "Add parameter with default value to function",
+     """
+     diff --git a/module_a.py b/module_a.py
+     index ab92b1d..f700cc9 100644
+     --- a/module_a.py
+     +++ b/module_a.py
+     @@ -1,2 +1,2 @@
+     -def some_function():
+     +def some_function(a=True):
+     pass
+     --
+     """),
+
+    ("2.0.0",
+     "Remove parameter to function",
+     """
+     diff --git a/module_a.py b/module_a.py
+     index ab92b1d..f700cc9 100644
+     --- a/module_a.py
+     +++ b/module_a.py
+     @@ -1,2 +1,2 @@
+     -def some_function(a):
+     +def some_function():
+     pass
+     --
+     """)
+]
+\end{python}
+\end{minipage}
+\begin{minipage}[t]{0.3\textwidth}
+\noindent A symbol called exactly \pythoninline{handler} needs to be
+set specifying the handler to use as a string. This is effectively the
+same as setting the command-line option.
+\\
+\noindent Python lacks any special requirements because it does not use a build
+system, so those functions can either be left empty or even left undefined.
+\\
+\noindent The scenario this acceptance test describes begins with a
+single module which has a single empty function that does nothing and
+accepts no parameters.
+\\
+\noindent Then, an optional parameter is added to the function
+signature. At this point both the previous signature (with no
+parameters) and the current one can be used, so that constitutes a
+feature additing and the version number is bumped to
+\codeinline{1.1.0} accordingly.
+\\
+\noindent In the last diff, the optional parameter is removed. Client
+code calling the function and passing that parameter is expected to
+fail, so that constitutes a breaking change and the version is bumped
+to \codeinline{2.0.0}.
+\end{minipage}
+\end{figure}
+
 \chapter{Evaluation}
 \label{Evaluation}
 
