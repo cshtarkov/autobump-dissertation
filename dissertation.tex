@@ -452,6 +452,7 @@ Goes into the techniques used to show that Autobump indeed works
 as advertised.
 
 \noindent Chapter \ref{Evaluation} - \textbf{Evaluation} \\
+% TODO: does it though?
 Evaluates Autobump's multi-language design and ``replays'' the history
 of different libraries across the target languages to find out whether
 a tool like Autobump would have been beneficial in their development.
@@ -973,7 +974,44 @@ the box.
 \item A default value, hardcoded in the configuration module itself.
 \end{enumerate}
 
-% TODO: talk about fetching values, decorators, context managers
+To make Autobump configuration sets truly portable (and to assist with
+debugging), the command-line option \codeinline{--export-config} is
+provided which prints a configuration file corresponding to Autobump's
+current configuration.
+
+Additionally, the configuration module provides standard Python
+mechanisms for overriding configuration programmatically -- a context
+manager and a function decorator. Those can be useful if using Autobump
+as a library from an external application. For example, Autobump's own
+unit tests override configuration options to make their success or
+failure not dependent on Autobump's current configuration.
+
+\begin{figure}[H]
+\centering
+\caption{Overriding with a context manager}
+\begin{tabular}{c}
+\begin{python}
+from autobump.config import get, config_overrides
+
+with config_overrides({"category": {"option": "value"}}):
+    get("category", "option") == "value"
+\end{python}
+\end{tabular}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\caption{Overriding with a function decorator}
+\begin{tabular}{c}
+\begin{python}
+from autobump.config import get, config_override
+
+@config_override("category", "option", "value")
+def this_test_requires_a_particular_option_to_be_set():
+    get("category", "option") == "value"
+\end{python}
+\end{tabular}
+\end{figure}
 
 \section{Common representation for APIs}
 \label{CAPIR}
@@ -1035,10 +1073,9 @@ referred to as \textbf{CAPIR} (standing for ``common API
 representation'') for the sake of brevity.
 
 \pythoninline{Entity} is a base class representing an entity of
-interest found in source code. All deriving classes are guaranteed to
-implement equality comparison to other entities (via
-\pythoninline{__eq__} and \pythoninline{__ne__}).
-% TODO: what are eq and ne?
+interest found in source code. Python does not enforce
+object-orientation so this class is not crucial. It is only present to
+complete the taxonomy.
 
 \pythoninline{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
@@ -1050,14 +1087,26 @@ techniques found in different languages -- translation units, modules,
 classes, interfaces, mixins, traits etc. In fact, Autobump uses a
 single top-level Unit to represent an entire codebase.
 
-\pythoninline{Field}s and \pythoninline{Function}s are found in units. Fields have
-a type and denote the setting of a variable or a constant. Functions
-represent callable pieces of code -- functions, methods, routines, or
-whatever the source language calls them.
+\pythoninline{Field}s and \pythoninline{Function}s are found in units.
+Fields have a type and typically denote the setting of a variable or a
+constant. Functions represent callable pieces of code -- functions,
+methods, routines, or whatever the source language calls them. The
+names given to these two entities are not ideal, because it reality
+they can be used for more general concepts. For example, Clojure
+records (described in detail in appendix \ref{ClojurePrimer}) are
+intuitively seen as \pythoninline{Unit}s because they indicate a
+grouping of entities. However, Clojure is a functional programming
+language and they are internally represented with just a few
+functions. In this case CAPIR follows the language's representation
+and treats those as \pythoninline{Function}s as well.
 
-Every function has one or more \pythoninline{Signature}s which in turn are
-lists of \pythoninline{Parameter}s. Parameters have a type and can have a
-default value.
+Every function has one or more \pythoninline{Signature}s which in turn
+are lists of \pythoninline{Parameter}s. Parameters have a type and can
+have a default value. Note that the \pythonline{Function}s themselves
+don't have return values; instead they can be put as part of the
+signature if necessary.
+
+% TODO: shoehorning languages into CAPIR, drawbacks for changelog generation
 
 \begin{figure}
 \centering
@@ -1065,8 +1114,6 @@ default value.
 \caption{Class diagram -- Autobump's public API representation (CAPIR)}
 \label{RepresentationUML}
 \end{figure}
-
-% TODO: Expand on fields and parameters.
 
 \clearpage
 As an example of what CAPIR looks like in practice, fig.
@@ -1387,14 +1434,11 @@ actually a string.
 \subsection{Java}
 \label{JavaHandlers}
 
-% TODO: What is Java?
 Java is a compiled, statically-typed language which makes it very
 different from Python. Nevertheless, the two approaches -- AST
 and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
 Autobump that actually has two separate handlers.
-
-% TODO: explain how arrays are handled
 
 \subsubsection{Using the abstract syntax tree}
 
@@ -1606,6 +1650,16 @@ running the AST handler once can be a shortcut. If it reports a major
 bump, then there's no reason to run the native one. After all, the AST
 handler can detect a subset of changes compared to the native one. If
 not, then \codeinline{java_native} can be run to make sure.
+
+\subsubsection{Handling arrays}
+
+When comparing types, Java takes into account dimensions as well. It
+is not sufficient that the types themselves are compatible, but also
+that the dimensions are equal. For example, if the type $A$ is deemed
+compatible with $B$, it is not the case that $A[]$ is compatible with
+$B$. Both handlers satisfy this by keeping track of dimension in their
+CAPIR type representations and modifying the
+\codeinline{is_compatible} function accordingly.
 
 \subsection{Clojure}
 \label{Clojure}
@@ -1848,8 +1902,9 @@ obtain the CAPIR of code as it was at some revision:
 
 \begin{center}
 \begin{tabular}{c}
+% TODO: real composition
 \begin{python}
-capir_at_commit = compose(codebase_to_units, get_commit)
+capir_at_commit = codebase_to_units . get_commit
 \end{python}
 \end{tabular}
 \end{center}
@@ -1863,10 +1918,8 @@ between the two variants. It itself is fairly straightforward and
 defined recursively:
 
 \begin{algorithm}
-\caption{CAPIR Comparison}
+\caption{CAPIR Entity Comparison}
 \begin{algorithmic}[1]
-% TODO: Better name instead of 'comparisons'
-% TODO: Member instead of attribute
 \Procedure{Compare}{A, B}
 \State $assert(type(A)$ is $type(B))$
 \State $comparators \gets \text{map of the form }(member \rightarrow function)$
@@ -1894,14 +1947,28 @@ $compare(A[member], B[member])$
 
 In short, the algorithm compares two entities by examining their list
 of attributes and runs specific comparator functions on known
-bottom-level members -- such as types and signatures. After that is
-done, it checks for members that are missing from either variant and
-recurses into members that are present in the intersection of both entities.
+bottom-level members. After that is done, it checks for members that
+are missing from either variant and recurses into members that are
+present in the intersection of both entities.
 
 Note that this procedure technically compares entities, not trees. To
 kick off the comparison of two trees it's necessary to wrap both in a
 CAPIR unit, so that the first level of recursion actually looks at the
 top-level units in both codebases.
+
+Autobump's core objective, suggesting the new version number, is
+essentially formulated functionally in the main program as follows:
+
+\begin{center}
+\begin{tabular}{c}
+% TODO: real composition
+\begin{python}
+capir_at_commit = codebase_to_units . get_commit
+change = compare(capir_at_commit(previous), capir_at_commit(current))
+new_version = old_version.bump(change)
+\end{python}
+\end{tabular}
+\end{center}
 
 $report$ is a simple function that takes care of adding a change to
 the changelog and checking whether the latest reported change is more
@@ -1914,9 +1981,123 @@ because a changelog needs to be generated as well, the algorithm
 carries on looking for changes even though the version number itself
 is clear at this point.
 
+A map of the form $member \rightarrow function$ is purposefully used
+instead of invoking the comparators directly. It shows the general
+principle of comparing members of CAPIR entities, even if eventually
+CAPIR is modified or extended and the comparators change. The only
+comparators used so far ar for type checking (on the member $type$)
+and signature checking (on the member $signatures$).
+
+% TODO: talk about individual comparators
+
 \section{User interface}
 
+Autobump is a command-line application. Direct instructions to it are
+provided by passing in options.
+
+The anticipated most frequent manual use case is comparing the last
+released version and the current commit that is meant for release.
+That way the user can see what the version of that new release should
+be. In this case, the only thing required of the user is to pass in
+the language handler. The output consists of a single line, indicating
+the new version.
+
+\begin{figure}[H]
+\centering
+\caption{Most frequent manual use case}
+% TODO: git history of most frequent use case
+\begin{Bverbatim}
+> git tag | tail -n1
+1.2.0
+> autobump python
+1.3.0
+>
+\end{Bverbatim}
+\end{figure}
+
+Alternatively, a changelog can be generated in addition to just
+providing the version number. The option \codeinline{--changelog
+[filename]} saves the changelog to a file, and
+\codeinline{--changelog-stdout} just prints it. The very last line of
+output is still guaranteed to be new version number, so it can be
+easily extracted using tools like \codeinline{tail}.
+
+\begin{figure}[H]
+\centering
+\caption{Changelog generation}
+\begin{Bverbatim}
+> autobump python --changelog-stdout
+moduleA.some_function: Entity was introduced.
+moduleB.other_function: Parameter(s) with default value was added.
+1.3.0
+>
+\end{Bverbatim}
+\end{figure}
+
+To alter the default revisions to compare, the options
+\codeinline{--from} and \codeinline{--to} can be used. They accept a
+valid identifier as recognised by the underlying version control
+system, e.g. a commit hash or a tag name. Changing the range can be
+used to check for previous mistakes or when changing the release
+history. It is also used for running Autobump in evaluation mode,
+where it is automatically run multiple times against chronologically
+adjacent revisions, as discussed in chapter \ref{Evaluation}.
+% TODO: wtf is "changing the release history"?
+
+\begin{figure}[H]
+\centering
+\caption{Changelog generation}
+\begin{Bverbatim}
+> autobump python --from 1.0.0 --to 1.1.0
+1.1.0
+>
+\end{Bverbatim}
+\end{figure}
+
+Autobump is also able to provide debugging information in case the
+user suspects that something is not working quite right. The level of
+information can be controlled and by default Autobump doesn't provide
+any except for warnings. The following options control the level of
+information, in order of application (i.e. options further down the
+list trump everything above).
+
+\begin{enumerate}[(i)]
+\item No option: only warnings are shown.
+\item \codeinline{--info}: provides general information about Autobump
+is doing, as well as warnings.
+\item \codeinline{--debug}: provides very detailed information about
+the current execution path, as well as warnings.
+\item \codeinline{--silence}: absolutely ignores any debugging
+information.
+\end{enumerate}
+
+All debugging information is printed to \codeinline{stderr} so as not
+to interfere with the regular output of the program. This was very
+important during development, as the debugging information could
+easily be piped to a separate file for later analysis.
+
+Errors are always shown and cannot be silenced. That is desirable,
+because Autobump treats all errors as fatal and immediately terminates
+when one is encountered. The return code of the program is set to
+non-zero to indicate that it failed.
+
+\begin{figure}[H]
+\centering
+\caption{Fatal error in Autobump}
+\begin{Bverbatim}
+> autobump
+autobump: Invalid handler specified!
+> echo \$?
+1
+>
+\end{Bverbatim}
+\end{figure}
+
+A full rundown of all options is given in appendix \ref{RundownOptions}.
+
 \subsection{Integration with other development tools}
+
+% TODO: fill this in
 
 \chapter{Testing}
 \label{Testing}
@@ -1953,7 +2134,6 @@ The entrypoint of every language handler is the function
 location of that codebase on disk. Typically that directory would be
 produced by Autobump in advance of calling the handler by cloning and
 checking out some revision of a repository.
-% TODO: What if it's not Git?
 
 To test this function, the presense of a directory needs to be mocked,
 containing some fixture instead of an actual repository. This is best
@@ -2024,9 +2204,8 @@ history of a mock project that changes its API over time. Specific
 commits would be tagged with version numbers, representing the version
 number that Autobump is expected to produce when comparing that
 revision to the previously tagged one. This approach was quickly
-ruled, because it makes editing the progression of the project
+ruled out, because it makes editing the progression of the project
 unnecessarily difficult.
-% TODO: Why?
 \item Reconstruct a Git repository containing the history of a project
 by using an acceptance test framework like \textit{Robot
 Framework}\cite{Robot}. Frameworks like these generally let you
@@ -2034,7 +2213,6 @@ specify pre and postconditions either in freeform or
 \textit{given-when-then} form, so an example test may look something
 like this:
 
-% TODO: should this be verbatim?
 \begin{center}
 \begin{BVerbatim}
 Given a public method in a class
@@ -2166,12 +2344,172 @@ assigned manually and interprets the findings. Looking at the data, it
 is discussed whether the authors and users of those libraries would
 have benefited had they used a tool such as Autobump.
 
-% TODO: take into account popularity, because number of users, because
-% increased pressure on authors
+\section{Running Autobump against existing libraries}
+% TODO: rename this section if doing a large-scale Python study
 
-% TODO: number of downloads is not an optimal version, artifact
-% dependency is somewhat better - but still doesn't include
-% applications only libraries
+Retroactively running Autobump against a specific library was done
+much in the same way as running an acceptance test. In testing, a
+repository is recreated in the filesystem from a set of patches, with
+each commit tagged as some version. During evaluation, no repository
+is recreated but an existing one is used and only chronologically
+adjacent tags are compared, not necessarily adjacent commits. These
+similarities allowed for a large part of the testing mechanism to be
+incorporated into Autobump itself. By passing the option
+\codeinline{-e} or \codeinline{--evaluate} when invoking the program,
+it will take the revisions specified by \codeinline{--from} and
+\codeinline{--to} as a range instead of them being an ealier and a
+latter commit. In essence, running an acceptance test is evaluating an
+artificially constructed repository.
+% TODO: what if --to is before --from?
+
+Autobump expects that the tag names correspond to versions, and it
+attempts to extract the semantic version. For example, the tag
+\codeinline{gson-release-2.8} gets recognised as version
+\codeinline{2.8.0}. If the two chronologically adjacent tags are
+\codeinline{gson-release-2.8} and \codeinline{gson-release-2.9}, the
+tool compares the two, figures out that the earlier one is
+\codeinline{2.8.0} and issues a warning if the latter one is not
+\codeinline{2.9.0}.
+
+While running in evaluation mode, Autobump prints to
+\codeinline{stdout} all the pairs it compares. If the option
+\codeinline{--changelog-stdout} is passed as well, a changelog is
+inserted in the output for each pair. The output itself is a simple
+text format that allows for quick filtering and other text
+manipulations:
+
+\begin{center}
+\begin{BVerbatim}
+!EVAL Start diffing 0.4.0 and 0.4.1
+docopt.Argument.match: Type was changed to an incompatible type
+docopt.Command.match: Type was changed to an incompatible type
+!EVAL End   diffing 0.4.0 and 0.4.1
+!EVAL MISMATCH: 0.4.0 -- 0.4.1 should have been 0.4.0 -- 0.5.0
+\end{BVerbatim}
+\end{center}
+
+This allows to measure the portion of mismatches, and whether Autobump
+suggested a major version bump when the authors didn't. In combination
+with metadata from the repository itself, the change in those metrics
+over time can be shown.
+
+Ten libraries in total across all languages were evaluated. They were
+chosen based on factors like popularity, size and to what degree their
+authors claim they adhere to semantic versioning. Prior to any
+empirical data, it can be speculated how those factors could impact
+the projects' actual adherence to semantic versioning.
+
+We measure popularity differently for the different languages, because
+different statistics are available from the respective central
+repositories. The Python Package Index (PyPI) \ref{PyPI} only measures
+the total number of downloads of a particular package. This is not
+ideal, because it is impossible to distinguish whether it is a direct
+or indirect dependency of other projects. For example, the package
+\codeinline{six} which provides Python 2 and 3 compatibility
+utilities, is the third-most popular package on PyPI at the time of
+writing with 54 million downloads, but it is unlikely that many end
+users are actually using it directly. Most uses are probably coming
+from other libraries on PyPI that are compatible with both Python 2
+and 3.
+
+On the other hand, Maven, which is the central repository for Java and
+Clojure projects, does not provide downloads counts but the number of
+dependant artifacts also found on Maven. This is a better statistic,
+but still not ideal because it does not indicate the number of
+applications that rely on a library which are not published on Maven
+themselves.
+
+Popularity, albeit a crude measurement, is proportional to the number
+of users a library has. Depending on the nature of the library and the
+development culture around it, a larger number of users can imply more
+pressure on authors to better apply versioning schemes or at the very
+least, provide detailed changelogs.
+
+The relationship between library size and the number of accidental
+breaking changes can be easily speculated upon: if no automated
+tooling is used, the larger the library, the larger the risk of
+accidentally introducing a breaking change because of an oversight.
+This dissertation uses lines of code (LOC) in the most recent revision
+of the library to indicate size. A more accurate measurement would be
+the number of CAPIR entities, but LOC is good enough to indicate the
+size relative to other projects of the same language. Of course it
+would be less fruitful to compare against projects in a different
+language -- for example, Python libraries on average tend to be much
+smaller than Java libraries.
+
+Claimed adherence to semantic versioning is found by looking at
+project \codeinline{README} and \codeinline{CONTRIBUTING} files, or
+other developer communication, such as mailing lists. Adherence is not
+binary, but gradual -- this dissertation makes the distinction between
+officially following Semver, apparently following Semver but never
+saying that outright (i.e. the version numbers very much seem like
+Semver), and anything inbetween. No projects were chosen that don't
+even seem like they follow Semver, because no meaningful results can
+be derived from evaluating those.
+
+Tables \ref{PythonProjectsForEvaluation},
+\ref{JavaProjectsForEvaluation} and \ref{ClojureProjectsForEvaluation}
+outline the chosen projects. Subsequent sections discuss
+each library and give a summary of general findings for the different
+languages. Of course the sample size is very small and it would be
+wrong to extrapolate for entire ecosystems.
+
+\subsection{Python}
+
+\begin{table}[H]
+\label{PythonProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Downloads} & \textbf{Semantically versioned} \\
+\codeinline{requests} & 4500 LOC & 53 million & Yes, officially. \\
+\codeinline{simplejson} & 2000 LOC & 182 million & Seems like it, but not officially. \\
+\codeinline{docopt} & 600 LOC & 9 million & Seems like it, but not
+officially. \\
+\codeinline{hashids} & 300 LOC & 154 000 & \codeinline{README} claims
+that ``[they] try to follow Semver, but check the changelog''.
+\end{tabular}
+\caption{Python projects chosen for evaluation}
+\end{table}
+
+\subsection{Java}
+
+\begin{table}[H]
+\label{JavaProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\codeinline{guava} & 150 000 LOC & 10700 & A contributor remarks ``we
+actually do use semantic versioning with
+Guava''\footnote{https://github.com/google/guava/issues/1682}. \\
+\codeinline{mockito} & 11000 LOC & 8415 & \codeinline{CONTRIBUTING}
+claims that ``semantic versioning is rigorously maintained'', but is
+then implied that this applies only for after major version
+\codeinline{2}. \\
+\codeinline{gson} & 8000 LOC & 3400 & Seems like it, not officially.
+\end{tabular}
+\caption{Java projects chosen for evaluation}
+\end{table}
+
+\subsection{Clojure}
+
+\begin{table}[H]
+\label{ClojureProjectsForEvaluation}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\codeinline{cheshire} & 1200 LOC & 961 & Seems like it, not
+officially. \\
+\codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially.
+% \\
+% TODO: another Clojure library
+\end{tabular}
+\caption{Clojure projects chosen for evaluation}
+\end{table}
+
+\subsection{Summary}
+
+% TODO: histogram of number of releases, number of breaking
+% TODO: cumulative mismatches/breaking changes over time
 
 \chapter{Conclusion}
 \label{Conclusion}
@@ -2182,30 +2520,48 @@ have benefited had they used a tool such as Autobump.
 \begin{appendices}
 
 \chapter{Running Autobump in practice}
+\label{AutobumpInPractice}
 
-Autobump requires at least Python 3.5. Other than that, it has no
-dependencies. A typical Python setup involving a virtual environment
-is not necessary.
+Autobump requires at least Python 3.5. The easiest way to run it is to
+install the published version from PyPI by running \codeinline{pip
+install autobump}. This is going to pull in all necessary dependencies
+and check whether the version of Python is appropriate. Autobump
+should then be available under the executable in \codeinline{PATH}
+named \codeinline{autobump}.
 
-\section{Building}
+Alternatively, Autobump can be used from within a virtual environment
+that has all dependencies preinstalled (see
+\codeinline{requirements.txt}) by setting the \codeinline{PYTHONPATH}
+environment variable appropriately. An executable won't be available
+because \codeinline{setuptools} takes care of creating it when making
+the distribution package, but Autobump can be called as a module by
+running \codeinline{python -m autobump}. This approach is not recommended.
 
-As it is written in Python, Autobump does not have a build step. The
-\codeinline{Makefile} found in the repository has the following targets:
-
-\begin{itemize}
-\item \codeinline{make test} runs the test suite.
-\item \codeinline{make lint} runs the linter \codeinline{flake8} (or the one
-specified as \codeinline{LINTER}) against all source code.
-\item \codeinline{make all} or \codeinline{make} runs all of the above.
-\end{itemize}
-
-\section{Usage}
+\section{Rundown of options}
+\label{RundownOptions}
 
 \section{Rundown of configurables}
 \label{RundownConfigurables}
 
-\chapter{Project layout}
-% TODO: fill in
+\section{Task management}
+
+Autobump's source code comes with a regular \textit{GNU Make} Makefile
+that is used for task management. The different targets are:
+
+% TODO: fullstops after items
+\begin{itemize}
+\item \codeinline{lint}: runs a linter against all source code (except
+for tests) and fails the target if there are formatting issues
+\item \codeinline{unit_test, acceptance_test, test}: run the unit
+tests suite, the acceptance test suite or both respectively
+\item \codeinline{.coverage.unit, .coverage.acceptance, .coverage}:
+run the appropriate tests and generate \textit{Coverage.py}
+\ref{Coverage} test coverage data
+\item \codeinline{libexec}: compiles non-Python code, e.g. the Java handler
+\item \codeinline{dist}: creates a distribution package, suitable for
+publishing or local installation
+\item \codeinline{install}: installs the distribution package locally
+\end{itemize}
 
 \chapter{Primer on Clojure}
 \label{ClojurePrimer}
@@ -2371,6 +2727,8 @@ in the current one, similarly to Java's \javainline{import} statement.
 \end{clojure}
 \end{tabular}
 \end{center}
+
+% TODO: records, protocols
 
 \subsubsection{Optional static typing}
 
