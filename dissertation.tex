@@ -1068,10 +1068,9 @@ model as \textbf{CAPIR} (standing for ``common API representation'') for the
 sake of brevity.
 
 \pythoninline{Entity} is a base class representing an entity of
-interest found in source code. All deriving classes are guaranteed to
-implement equality comparison to other entities (via
-\pythoninline{__eq__} and \pythoninline{__ne__}).
-% TODO: what are eq and ne?
+interest found in source code. Python does not enforce
+object-orientation so this class is not crucial. It is only present to
+complete the taxonomy.
 
 \pythoninline{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
@@ -1083,14 +1082,26 @@ techniques found in different languages -- translation units, modules,
 classes, interfaces, mixins, traits etc. In fact, Autobump uses a
 single top-level Unit to represent an entire codebase.
 
-\pythoninline{Field}s and \pythoninline{Function}s are found in units. Fields have
-a type and denote the setting of a variable or a constant. Functions
-represent callable pieces of code -- functions, methods, routines, or
-whatever the source language calls them.
+\pythoninline{Field}s and \pythoninline{Function}s are found in units.
+Fields have a type and typically denote the setting of a variable or a
+constant. Functions represent callable pieces of code -- functions,
+methods, routines, or whatever the source language calls them. The
+names given to these two entities are not ideal, because it reality
+they can be used for more general concepts. For example, Clojure
+records (described in detail in appendix \ref{ClojurePrimer}) are
+intuitively seen as \pythoninline{Unit}s because they indicate a
+grouping of entities. However, Clojure is a functional programming
+language and they are internally represented with just a few
+functions. In this case CAPIR follows the language's representation
+and treats those as \pythoninline{Function}s as well.
 
-Every function has one or more \pythoninline{Signature}s which in turn are
-lists of \pythoninline{Parameter}s. Parameters have a type and can have a
-default value.
+Every function has one or more \pythoninline{Signature}s which in turn
+are lists of \pythoninline{Parameter}s. Parameters have a type and can
+have a default value. Note that the \pythonline{Function}s themselves
+don't have return values; instead they can be put as part of the
+signature if necessary.
+
+% TODO: shoehorning languages into CAPIR, drawbacks for changelog generation
 
 \begin{figure}
 \centering
@@ -1098,8 +1109,6 @@ default value.
 \caption{Class diagram -- Autobump's public API representation (CAPIR)}
 \label{RepresentationUML}
 \end{figure}
-
-% TODO: Expand on fields and parameters.
 
 \clearpage
 As an example of what CAPIR looks like in practice, fig.
@@ -2479,6 +2488,8 @@ in the current one, similarly to Java's \javainline{import} statement.
 \end{clojure}
 \end{tabular}
 \end{center}
+
+% TODO: records, protocols
 
 \subsubsection{Optional static typing}
 
