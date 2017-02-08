@@ -221,3 +221,6 @@
   acumulative mismatches, gradient !
 
   time intervals between releases
+* Next time <2017-02-14 Tue>
+
+  Stylistic question: URL to something, does it go in bibliography or footnote?
