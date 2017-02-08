@@ -450,6 +450,7 @@ Goes into the techniques used to show that Autobump indeed works
 as advertised.
 
 \noindent Chapter \ref{Evaluation} - \textbf{Evaluation} \\
+% TODO: does it though?
 Evaluates Autobump's multi-language design and ``replays'' the history
 of different libraries across the target languages to find out whether
 a tool like Autobump would have been beneficial in their development.
@@ -969,7 +970,44 @@ the box.
 \item A default value, hardcoded in the configuration module itself.
 \end{enumerate}
 
-% TODO: talk about fetching values, decorators, context managers
+To make Autobump configuration sets truly portable (and to assist with
+debugging), the command-line option \codeinline{--export-config} is
+provided which prints a configuration file corresponding to Autobump's
+current configuration.
+
+Additionally, the configuration module provides standard Python
+mechanisms for overriding configuration programmatically -- a context
+manager and a function decorator. Those can be useful if using Autobump
+as a library from an external application. For example, Autobump's own
+unit tests override configuration options to make their success or
+failure not dependent on Autobump's current configuration.
+
+\begin{figure}[H]
+\centering
+\caption{Overriding with a context manager}
+\begin{tabular}{c}
+\begin{python}
+from autobump.config import get, config_overrides
+
+with config_overrides({"category": {"option": "value"}}):
+    get("category", "option") == "value"
+\end{python}
+\end{tabular}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\caption{Overriding with a function decorator}
+\begin{tabular}{c}
+\begin{python}
+from autobump.config import get, config_override
+
+@config_override("category", "option", "value")
+def this_test_requires_a_particular_option_to_be_set():
+    get("category", "option") == "value"
+\end{python}
+\end{tabular}
+\end{figure}
 
 \section{Common representation for APIs}
 \label{CAPIR}
