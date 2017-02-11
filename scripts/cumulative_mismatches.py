@@ -73,8 +73,8 @@ breaking = [breaking for (_, breaking) in dates_mismatches.values()]
 plt.clf()
 plt.xlabel("Release date")
 plt.ylabel("Cumulative number of mismatches")
-total_plt = plt.scatter(dates, total, s=5, label="Total", color=COLORS["blue"])
-breaking_plt = plt.scatter(dates, breaking, s=5, label="Just breaking", color=COLORS["red"])
+total_plt = plt.scatter(dates, total, s=25, label="Total", color=COLORS["blue"])
+breaking_plt = plt.scatter(dates, breaking, s=25, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
 plt.savefig("cumulative_mismatches.png")
 
