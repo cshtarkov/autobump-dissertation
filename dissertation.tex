@@ -2355,7 +2355,7 @@ and the differences in the findings for the individual languages are
 discussed.
 
 In the second round, a large-scale, mostly automated evaluation was
-performed on 500 Python projects. Overall trends are discussed, as
+performed on 632 Python projects. Overall trends are discussed, as
 well as a comparison with the findings from the manual evaluation of
 Python projects.
 
@@ -2556,7 +2556,31 @@ officially. \\
 
 \section{Automated evaluation}
 
-% TODO: fill in
+In addition to the previous round, a large scale evaluation was done
+on 632 Python projects. It was completely automated, with scripts
+responsible for each step -- from suggesting projects, to gathering
+metrics.
+
+The number 632 is not arbitrary. To gather Python projects with
+varying popularity, the websites \textit{http://pypi-ranking.info} and
+\textit{http://pypi.org} were scraped (see \ref{ScraperScript}). The
+first one was used to get a listing of all published projects in
+decreasing order of popularity and check for Python 3 compatibility,
+and the second one was used to visit the official page of each project
+and search via a regular expression for a GitHub\footnote{Earlier
+iterations of the scraper script tried to use a more general regular
+expression, but that proved to be very erroneous, so it was limited to
+the most popular hosting for repositories.} repository. As projects
+get less popular, their support for Python 3 decreases rapidly, as
+they have not seen a release in some time. After reaching a zero
+(number of downloads) the ones that support it get extremely sparse,
+so the scraping was cut off soon after that point. That is not to say
+that there are only 632 Python projects that support Python 3 and have
+a download count larger than zero -- these are only the ones for which
+a GitHub link was found reliably on the module's PyPI page.
+% TODO: rewrit this!!!!!!!
+
+% TODO: methodology
 
 \chapter{Conclusion}
 \label{Conclusion}
