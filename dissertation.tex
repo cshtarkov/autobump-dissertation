@@ -2348,6 +2348,17 @@ assigned manually and interprets the findings. Looking at the data, it
 is discussed whether the authors and users of those libraries would
 have benefited had they used a tool such as Autobump.
 
+Two rounds of evaluation were performed. In the first round, Autobump
+was manually ran against the history of ten projects across the
+three languages. The reasons for the mismatches are examined manually
+and the differences in the findings for the individual languages are
+discussed.
+
+In the second round, a large-scale, mostly automated evaluation was
+performed on 500 Python projects. Overall trends are discussed, as
+well as a comparison with the findings from the manual evaluation of
+Python projects.
+
 \section{Running Autobump against existing libraries}
 % TODO: rename this section if doing a large-scale Python study
 
@@ -2452,12 +2463,30 @@ Semver), and anything inbetween. No projects were chosen that don't
 even seem like they follow Semver, because no meaningful results can
 be derived from evaluating those.
 
+\section{Manual evaluation}
+
 Tables \ref{PythonProjectsForEvaluation},
 \ref{JavaProjectsForEvaluation} and \ref{ClojureProjectsForEvaluation}
-outline the chosen projects. Subsequent sections discuss
-each library and give a summary of general findings for the different
-languages. Of course the sample size is very small and it would be
-wrong to extrapolate for entire ecosystems.
+outline the chosen projects for the first, manual, round of
+evaluation. Subsequent sections discuss each library and give a
+summary of general findings for the different languages.
+
+The sample size in this round is very small and cannot be used to
+extrapolate overarching themes. However, because it is reasonably
+small manual inspection of the mismatches can be done, which in turn
+allows for examining the mindset and motivations of developers.
+% TODO: mindset and motivations?
+
+The process of evaluation was also important for identifying
+previously unknown errors in Autobump's behaviour, which were covered
+by neither unit nor acceptance tests. Manual inspection of the
+mismatches allowed for those bugs to be corrected. The following
+results were obtained only after correcting Autobump's behaviour, so
+all mismatches are because of a genuine disagreement between what the
+developers claim and what semantic versioning (or at least Autobump's
+interpretation of it) claims. Note that only mismatches are examined
+-- versions where the two parties agree are not looked at, because it
+is fairly unlikely that both are wrong.
 
 \subsection{Python}
 
@@ -2524,6 +2553,10 @@ officially. \\
 
 % TODO: histogram of number of releases, number of breaking
 % TODO: cumulative mismatches/breaking changes over time
+
+\section{Automated evaluation}
+
+% TODO: fill in
 
 \chapter{Conclusion}
 \label{Conclusion}
