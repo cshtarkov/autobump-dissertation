@@ -34,22 +34,28 @@ def get_modules_at_page(page):
     tree = lxml.html.fromstring(content)
 
     def py3_compatible(module):
-        _, attributes = module
+        _, attributes, _ = module
         return len(attributes.getchildren()) > 0
 
     def has_github_repo(module):
-        _, repo = module
+        _, repo, _ = module
         return repo is not None
 
     def subst_github_repo(module):
-        name, _ = module
-        return name, get_module_github(name)
+        name, _, count = module
+        return name, get_module_github(name), count
 
-    return filter(has_github_repo,
-                  map(subst_github_repo,
-                      filter(py3_compatible,
-                             zip(tree.xpath('//span[@class="list_title"]/text()'),
-                                 tree.xpath('//td[@class="attributes"]')))))
+    def popularity_to_int(module):
+        name, repo, count = module
+        return name, repo, int(count.replace(",", ""))
+
+    return map(popularity_to_int,
+               filter(has_github_repo,
+                      map(subst_github_repo,
+                          filter(py3_compatible,
+                                 zip(tree.xpath('//span[@class="list_title"]/text()'),
+                                     tree.xpath('//td[@class="attributes"]'),
+                                     tree.xpath('//td[@class="count"]/span/text()'))))))
 
 
 def get_modules_lower_bound(lower_bound):
@@ -67,5 +73,5 @@ def get_modules_lower_bound(lower_bound):
 if __name__ == "__main__":
     assert len(sys.argv) == 2, "Not enough arguments!"
     lower_bound = int(sys.argv[1])
-    for repo in map(lambda m: m[1], get_modules_lower_bound(lower_bound)):
-        print(repo)
+    for name, repo, popularity in get_modules_lower_bound(lower_bound):
+        print(name, repo, popularity)

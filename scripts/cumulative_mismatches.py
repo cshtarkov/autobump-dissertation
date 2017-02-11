@@ -10,6 +10,14 @@ from collections import OrderedDict
 from datetime import datetime
 from autobump.common import Semver
 
+COLORS = {
+    "blue": "#5da5da",
+    "red": "#f15854",
+    "green": "#60bd68",
+    "gray": "#4d4d4d",
+    "purple": "#b276b2"
+}
+
 # Parse mismatches
 assert len(sys.argv) == 3, "Not enough arguments"
 mismatches_file = sys.argv[1]
@@ -47,13 +55,16 @@ assert len(dates_mismatches) > 0
 # Measure time between releases
 dates = list(dates_mismatches.keys())
 diffs = list()
+all_versions = list()
 for date_a, date_b in zip(dates, dates[1:]):
     date_diff = (date_b - date_a).days
     total_diff = dates_mismatches[date_b][0] - dates_mismatches[date_a][0]
     breaking_diff = dates_mismatches[date_b][1] - dates_mismatches[date_a][1]
     if breaking_diff > 0:
         diffs.append(date_diff)
+    all_versions.append(date_diff)
 diffs = sorted(diffs)
+all_versions = sorted(all_versions)
 
 # Plot cumulative mismatches
 total = [total for (total, _) in dates_mismatches.values()]
@@ -62,15 +73,19 @@ breaking = [breaking for (_, breaking) in dates_mismatches.values()]
 plt.clf()
 plt.xlabel("Release date")
 plt.ylabel("Cumulative number of mismatches")
-total_plt = plt.scatter(dates, total, s=5, label="Total")
-breaking_plt = plt.scatter(dates, breaking, s=5, label="Just breaking")
+total_plt = plt.scatter(dates, total, s=5, label="Total", color=COLORS["blue"])
+breaking_plt = plt.scatter(dates, breaking, s=5, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
 plt.savefig("cumulative_mismatches.png")
 
 # Plot histogram of time intervals
 plt.clf()
 plt.xlabel("Time interval (in days)")
-plt.ylabel("Breaking changes introduced")
-plt.hist(diffs, bins=np.logspace(0, 3, 10))
+plt.ylabel("Released versions")
+plt.hist((all_versions, diffs),
+         bins=np.logspace(0, 3, 10),
+         color=[COLORS["blue"], COLORS["red"]],
+         label=["All", "Unnoted breaking change(s)"])
 plt.gca().set_xscale("log")
+plt.legend()
 plt.savefig("introduced_changes.png")
