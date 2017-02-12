@@ -2741,11 +2741,127 @@ one (see fig. \ref{SimplejsonHistogram}).
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/simplejson_introduced_changes}
+\includegraphics[width=0.5\textwidth,height=0.25\textheight]{images/evaluation/simplejson_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval (\textit{simplejson})}
 \label{SimplejsonHistogram}
 \end{figure}
+
+\subsubsection{docopt}
+
+\textit{docopt} is ``Pythonic argument parser'' for creating
+command-line user interfaces. It is different from all other evaluated
+projects because at the time of writing it does not yet have a
+\codeinline{1.0.0} release. The API is not stable according to Semver,
+so this project was mainly used to evaluate Autobump's handling of
+projects with major version \codeinline{0}.
+
+Only one mismatch is found when not using structural typing. A
+function called \codeinline{parse_args} was renamed to
+\codeinline{parse_argv} in version \codeinline{0.4.2}. Autobump
+claimed that the version shoud have been \codeinline{0.5.0} because
+that change was seen as breaking, but suppressed to only a minor bump
+because the API is not yet stable.
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 11 \\
+Mismatches & 1 \\
+Proportion of mismatches & 9\% \\
+\end{tabular}
+\caption{\textit{docopt} statistics (w/o structural typing)}
+\label{DocoptNonStructural}
+\end{table}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 11 \\
+Mismatches & 2 \\
+Proportion of mismatches & 18\% \\
+\end{tabular}
+\caption{\textit{docopt} statistics (w/ structural typing)}
+\label{DocoptStructural}
+\end{table}
+\end{minipage}
+
+The one additional change found with structural typing enabled is
+because of an additional method \codeinline{remove} being called on a
+parameter. The surrounding usage implies that the argument is a list
+and it is reasonable to expect that it would provide a
+\codeinline{remove} method. Similarly to some cases in
+\textit{requests}, Autobump is being overzealous.
+
+\subsubsection{hashids}
+
+\textit{hashids} is a very small (one class with four methods) library
+for generating unique string identifiers from integers. It is a fairly
+recent projects, so all 10 released versions support Python 3 and were
+evaluated. 4 out of them have major version \codeinline{0} similarly
+to \textit{docopt}, whereas the 5\textsuperscript{th} one is
+\codeinline{1.0.0}. This is useful to check whether Autobump handles
+the boundary between unstable and stable API sensibly.
+
+Similarly to \textit{simplejson} there is no difference in the
+mismatches with structural typing enabled and disabled.
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 10 \\
+Mismatches & 4 \\
+Mismatches (breaking) & 1 \\
+Proportion of mismatches & 40\% \\
+Proportion of mismatches (breaking) & 10\% \\
+\end{tabular}
+\caption{\textit{hashids} statistics (w/o structural typing)}
+\label{HashidsNonStructural}
+\end{table}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 10 \\
+Mismatches & 4 \\
+Mismatches (breaking) & 1 \\
+Proportion of mismatches & 40\% \\
+Proportion of mismatches (breaking) & 10\% \\
+\end{tabular}
+\caption{\textit{hashids} statistics (w/ structural typing)}
+\label{HashidsStructural}
+\end{table}
+\end{minipage}
+
+One of the mismatches stems from a simple mistake -- a version was
+omitted. In the release history \codeinline{0.8.3} follows
+\codeinline{0.8.1}. Autobump correctly suggests that
+\codeinline{0.8.2} should have been the appropriate number.
+
+Version \codeinline{0.8.4} is the last version with an unstable API,
+the following one being \codeinline{1.0.0}. At that point Autobump
+suggests that it should have been \codeinline{0.9.0}, reluctant to
+bump the major version making the API official. This is valid
+behaviour and this is definitely a case when Autobump's suggestion can
+be discarded because it is up to the authors to decide when to publish
+an API.
+
+The other non-breaking mismatch comes from a performance optimization
+done in \codeinline{1.2.0} where Autobump suggests it should have been
+\codeinline{1.1.1}, a patch change. This is an identical situation to
+ones found in the previous libraries.
+
+The only unnoted breaking change is renaming the methods
+\codeinline{encrypt} and \codeinline{decrypt} to \codeinline{encode}
+and \codeinline{decode} respectively. Those methods provide the core
+functionality of the library, yet the authors deemed that (rather
+dangerously) a patch change.
 
 \subsection{Java}
 
