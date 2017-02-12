@@ -906,6 +906,7 @@ expensive than developing a new tool from scratch.
 
 \chapter{Implementation}
 \label{Implementation}
+% TODO: do I explain handling 0.* version numbers?
 
 This chapter looks at how Autobump works internally in terms of its
 architecture, as well as how it exposes its functionality to the end
@@ -1256,6 +1257,7 @@ In the following sections on the individual language handlers, we
 discuss how the three languages determine compatibility of types.
 
 \subsection{Python}
+% TODO: use CPython, but should work with anything
 
 Python is a general-purpose, dynamically typed, interpreted language.
 That makes it an interesting target and a good first choice,
@@ -2668,6 +2670,81 @@ version bumps are in the triple digits.
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval (\textit{requests})}
 \label{RequestsHistogram}
+\end{figure}
+
+\subsubsection{simplejson}
+
+\textit{simplejson} is a JSON parsing library which has the highest
+number of downloads on PyPI across all projects. It is also bundled
+with a standard CPython installation as part of the standard library.
+Version \codeinline{3.0.0} is the lower bound for evaluation as that
+is first one that supports Python 3. The upper bound is
+\codeinline{3.10.0}, the latest one at the time of writing.
+
+The reported number of mismatches with and without structural typing
+is identical (tables \ref{SimplejsonNonStructural} and
+\ref{SimplejsonStructural}). Evidently the method set used on a
+parameter changes, either the authors consider some aspect of that
+worthy of a version bump, or it happened to coincide with another
+change that warrants the same bump. Given that only 39 versions were
+evaluated, it is not unreasonable to say that the latter is possible.
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 39 \\
+Mismatches & 6 \\
+Mismatches (breaking) & 1 \\
+Proportion of mismatches & 15\% \\
+Proportion of mismatches (breaking) & 2\%
+\end{tabular}
+\caption{\textit{simplejson} statistics (w/o structural typing)}
+\label{SimplejsonNonStructural}
+\end{table}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 39 \\
+Mismatches & 6 \\
+Mismatches (breaking) & 1 \\
+Proportion of mismatches & 15\% \\
+Proportion of mismatches (breaking) & 2\%
+\end{tabular}
+\caption{\textit{simplejson} statistics (w/ structural typing)}
+\label{SimplejsonStructural}
+\end{table}
+\end{minipage}
+
+The sole unnoted breaking change is at the patch from
+\codeinline{3.0.9} to \codeinline{3.1.0}. One exceptions and two
+functions were moved from one module to another. That is noted in the
+changelog, but evidently the authors did not consider it significant
+enough to warrant a major version bump. However, \textit{simplejson}
+never officially claims that it follows semantic versioning.
+
+The remaining 5 mismatches are very similar to what was observed with
+\textit{requests}. Very small additive changes to the API of some
+functions was deemed a patch change, when Semver claims it should be a
+feature, and improvements that don't impact the API bumped the minor
+version (which is a valid interpretation).
+
+Compared to \textit{requests}, the time between releases does not seem
+to impact breaking changes (noted or unnoted) at all. Comparable
+numbers of versions have been released at different intervals, but
+only a single one resulted in an unidentified breaking change.
+Moreover, that version was released only a few days after the previous
+one (see fig. \ref{SimplejsonHistogram}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/simplejson_introduced_changes}
+\caption{Histogram of total versions vs. breaking mismatches in a time
+interval (\textit{simplejson})}
+\label{SimplejsonHistogram}
 \end{figure}
 
 \subsection{Java}
