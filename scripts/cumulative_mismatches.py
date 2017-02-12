@@ -79,7 +79,8 @@ plt.ylabel("Cumulative number of mismatches")
 total_plt = plt.scatter(dates, total, s=25, label="Total", color=COLORS["blue"])
 breaking_plt = plt.scatter(dates, breaking, s=25, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
-plt.savefig("cumulative_mismatches.png")
+plt.gcf().autofmt_xdate()
+plt.savefig("cumulative_mismatches.pdf")
 
 # Plot histogram of time intervals
 plt.clf()
@@ -91,4 +92,4 @@ plt.hist((all_versions, diffs),
          label=["All", "Unnoted breaking change(s)"])
 plt.gca().set_xscale("log")
 plt.legend()
-plt.savefig("introduced_changes.png")
+plt.savefig("introduced_changes.pdf")
