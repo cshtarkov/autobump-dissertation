@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Run like this:
 # cumulative_mismatches.py <(mismatches.sh file) <(tags_with_dates.sh | grep desired_version -B30000)
