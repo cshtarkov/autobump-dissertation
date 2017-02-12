@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 #
+# Generates graphs from Autobump's evaluation log
+# by using some scripts as data sources.
+#
 # Run like this:
 # cumulative_mismatches.py <(mismatches.sh file) <(tags_with_dates.sh | grep desired_version -B30000)
 #

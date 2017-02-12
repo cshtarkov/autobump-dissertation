@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# Scrapes at least the first N projects that support
+# Python 3 from pypi-ranking.info and pypi.org.
+# The output is in the form (reponame, url, popularity).
+#
 import re
 import sys
 import requests

@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Generates evaluation log for every repository in the
+# current directory. The log gets put in the file "mismatches.txt"
+# in the same directory as the repository.
+#
 for repo in `echo */`; do
     cd $repo
     FIRST_TAG=`git tag --sort version:refname | head -n1`

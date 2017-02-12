@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+#
+# Generates repository statistics in the form
+# (all_compared_versions, mismatch_count, breaking_count)
+#
 import sys
 from subprocess import Popen, PIPE
 from autobump.common import Semver
