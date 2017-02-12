@@ -2194,6 +2194,7 @@ create temporary files and directories, and it simplifies the fixtures
 -- they can be the source code of a single file with no metadata.
 
 \section{Acceptance testing}
+% TODO: 1.0.0 -> 2.0.0 should have been, but 1.0.1 -> 1.0.2 is fine
 
 Even if the unit tests all pass and reasonably cover edge cases for
 the individial modules, Autobump itself can still misbehave and
@@ -2356,7 +2357,8 @@ written in the different target languages. It compares the version
 numbers output of Autobump to what the developers of these libraries
 assigned manually and interprets the findings. Looking at the data, it
 is discussed whether the authors and users of those libraries would
-have benefited had they used a tool such as Autobump.
+have benefited had they used a tool such as Autobump. Additionally,
+some of Autobump's design decisions are put to the test.
 
 Two rounds of evaluation were performed. In the first round, Autobump
 was manually ran against the history of ten projects across the
@@ -2498,6 +2500,8 @@ interpretation of it) claims. Note that only mismatches are examined
 -- versions where the two parties agree are not looked at, because it
 is fairly unlikely that both are wrong.
 
+% Which version of Autobump was used?
+
 \subsection{Python}
 
 \begin{table}[H]
@@ -2517,6 +2521,153 @@ that ``[they] try to follow Semver, but check the changelog''. \\
 \end{tabular}
 \caption{Python projects chosen for evaluation}
 \end{table}
+
+When evaluating Python projects, not all released versions were taken
+into account. Even though only projects with Python 3 support were
+selected, some of them are old enough that they have versions from
+before they added support. If that is the case, it is noted and the
+version and mismatch counts and ratios are adusted appropriately.
+
+Although the Python language does have information hiding mechanisms,
+they are relatively weak and seem like more of an afterthought.
+Autobump does take into account Python's official policy of
+considering symbol names prefixed with an underscore private and
+ignores them. However, this project found that this policy is not
+universally applied in the Python ecosystem. Almost all examined
+libraries contained code that is obviously not meant for public use
+but is nevertheless publically accessible. Strictly speaking this is
+allowed by Semver -- it does allow the public API to be ``public'' by
+documentation and intention, not only language mechanisms. To reduce
+the number of false positives, custom configuration files were created
+for each project that ignore certain files and directories that are
+obviously not meant to be part of the public API. Initial attempts at
+evaluating Python libraries did not do this and legitimate data was
+being drowned out by changes to these private-by-convention entities.
+% TODO; config files
+
+Given that structural typing is a configurable option for the Python
+handler, each project was evaluated twice -- with the option disabled
+and then enabled.
+
+\subsubsection{requests}
+
+% TODO: put links to libraries, footnote or bibliography?
+\textit{requests} is a large-ish (for Python standards) library for
+making HTTP requests that officially claims to follow Semver, as
+specified in their contributing guidelines. The evaluation range was
+from version \codeinline{1.0.0} to \codeinline{2.13.0}, which was the
+most recent version at the time of writing. The lower bound happens to
+be both when Semver claims that the API is first published, and when
+Python 3 support was added.
+
+Tables \ref{RequestsNonStructural} and \ref{RequestsStructural} show
+the number and ratios of mismatches with structural typing disabled
+and enabled respectively. In both cases the proportion of total
+mismatches hovers around 30\%, but the proportion of versions that
+according to Autobump should have been breaking increases dramatically
+when structural typing is enabled. Examining those patches where
+breaking changes are found by Autobump with structural typing enabled,
+it can be seen that calling new methods on function parameters is not
+an infrequent occurrence. It is ambiguous whether those should really
+be regarded as breaking changes -- in all of these cases reading the
+code manually reveals that it's not unreasonable that the new methods
+are available since the intention in using a parameter is clear.
+However, technically, it could be that client code is passing objects
+that implement the previously needed methods and not the new ones.
+That would work fine with the previous version but would break with
+the new one. It is not necessarily a mistake that project authors
+didn't consider those cases to be a breaking change.
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\label{RequestsNonStructural}
+\centering
+\begin{tabular}{|lr|}
+All versions & 43 \\
+Mismatches & 13 \\
+Mismatches (breaking) & 5 \\
+Proportion of mismatches & 30\% \\
+Proportion of mismatches (breaking) & 11\%
+\end{tabular}
+\caption{\textit{requests} statistics (w/o structural typing)}
+\end{table}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\label{RequestsStructural}
+\centering
+\begin{tabular}{|lr|}
+All versions & 43 \\
+Mismatches & 15 \\
+Mismatches (breaking) & 11 \\
+Proportion of mismatches & 34\% \\
+Proportion of mismatches (breaking) & 25\%
+\end{tabular}
+\caption{\textit{requests} statistics (w/ structural typing)}
+\end{table}
+\end{minipage}
+
+The 5 mismatches where Autobump claims a breaking change with
+structural typing disabled are all due to author mistakes. For
+example, in the patch from \codeinline{1.1.0} to \codeinline{1.2.0},
+which should have been feature additions only, a single property of an
+exception class was removed along with some legitimate feature
+additions. This change is literally one line of code, but is
+indisputably breaking. The other 4 are also because of minor
+modifications that are nevertheless breaking -- removing a function or constant.
+
+It is important to note that not a single mismatch, breaking or not,
+was found for the file \codeinline{api.py}. This file is the main
+entrypoint for the library and methods defined it are expected to be
+the most frequently used.
+
+Mismatches that were not breaking are generally very similar to the 5
+that were. Adding a single new parameter with a default value to a
+function, or one or two new methods in a class is frequently
+designated as a patch change by the authors, while Autobump claims it
+is a feature addition. Strictly speaking Autobump is correct in those
+cases as Semver claims that ``minor version Y [...] MUST be
+incremented if new, backwards compatible functionality is introduced
+to the public API''. Not adhering to this rule is not as bad as
+introducing breaking changes without bumping the major version, but is
+still a deviation from semantic versioning.
+
+In a minority of cases Autobump proposes a patch change when the
+authors have claimed a feature addition. Examining those cases
+manually it can be seen that all of them are because of genuine
+feature additions or improvements that do not impact the public API,
+for example optimizing a piece of code. Semver specifies that ``[the
+minor version] MAY be incremented if substantial new functionality or
+improvements are introduced within the private code''. In that case
+both the authors' and Autobump's suggestions are correct.
+
+An interesting trend emerges when the release dates of different
+versions are plotted against the number of mismatches accumulated thus
+far (fig. \ref{RequestsCumulativeMismatches}). It seems that releases
+that are done soon after the previous one are much less likely to
+introduce an unnoted breaking change as opposed to releases that have
+a larger time interval between them. This is better illustrated by a
+histogram showing the total number of versions released in a time
+interval (measured in days) compared to the ones which should have
+been marked as breaking (fig. \ref{RequestsHistogram}). The time
+intervals that are responsible for the majority of omitted major
+version bumps are in the triple digits.
+
+\begin{figure}[]
+\label{RequestsCumulativeMismatches}
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/requests_cumulative_mismatches}
+\caption{Cumulative mismatches over time (\textit{requests})}
+\end{figure}
+
+\begin{figure}[]
+\label{RequestsHistogram}
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/requests_introduced_changes}
+\caption{Histogram of total versions vs. breaking mismatches in a time
+interval (\textit{requests})}
+\end{figure}
 
 \subsection{Java}
 
