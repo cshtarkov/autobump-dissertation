@@ -124,6 +124,7 @@ showstringspaces=false
 % Body
 
 % TODO: inconsistent british/american spelling
+% TODO: label after caption!
 
 \begin{document}
 \title{Automatically proposing next semantic version of a project by \\
@@ -2505,7 +2506,6 @@ is fairly unlikely that both are wrong.
 \subsection{Python}
 
 \begin{table}[H]
-\label{PythonProjectsForEvaluation}
 \centering
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
@@ -2520,6 +2520,7 @@ that ``[they] try to follow Semver, but check the changelog''. \\
 \hline
 \end{tabular}
 \caption{Python projects chosen for evaluation}
+\label{PythonProjectsForEvaluation}
 \end{table}
 
 When evaluating Python projects, not all released versions were taken
@@ -2581,7 +2582,6 @@ didn't consider those cases to be a breaking change.
 \noindent
 \begin{minipage}[t]{0.5\textwidth}
 \begin{table}[H]
-\label{RequestsNonStructural}
 \centering
 \begin{tabular}{|lr|}
 All versions & 43 \\
@@ -2591,11 +2591,11 @@ Proportion of mismatches & 30\% \\
 Proportion of mismatches (breaking) & 11\%
 \end{tabular}
 \caption{\textit{requests} statistics (w/o structural typing)}
+\label{RequestsNonStructural}
 \end{table}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{table}[H]
-\label{RequestsStructural}
 \centering
 \begin{tabular}{|lr|}
 All versions & 43 \\
@@ -2605,6 +2605,7 @@ Proportion of mismatches & 34\% \\
 Proportion of mismatches (breaking) & 25\%
 \end{tabular}
 \caption{\textit{requests} statistics (w/ structural typing)}
+\label{RequestsStructural}
 \end{table}
 \end{minipage}
 
@@ -2655,18 +2656,18 @@ intervals that are responsible for the majority of omitted major
 version bumps are in the triple digits.
 
 \begin{figure}[]
-\label{RequestsCumulativeMismatches}
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/requests_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{requests})}
+\label{RequestsCumulativeMismatches}
 \end{figure}
 
 \begin{figure}[]
-\label{RequestsHistogram}
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/requests_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval (\textit{requests})}
+\label{RequestsHistogram}
 \end{figure}
 
 \subsection{Java}
