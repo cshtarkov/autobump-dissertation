@@ -221,6 +221,15 @@
   acumulative mismatches, gradient !
 
   time intervals between releases
-* Next time <2017-02-14 Tue>
+* Done Python eval, wrote it up <2017-02-14 Tue>
 
   Stylistic question: URL to something, does it go in bibliography or footnote?
+
+  1. Wrote some scripts to generate statistics and produce charts (/show charts/)
+  2. Wrote up methodology and Python
+  3. Wrote web scraper, got 632 projects, large scale definitely possible
+
+  For next time, write up Java and Clojure
+  Discuss what threshold for breaking is
+  Stablizing over time?
+  Kind of running out of space, 46 pages
