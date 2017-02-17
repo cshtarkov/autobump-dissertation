@@ -2904,6 +2904,119 @@ officially. \\
 \caption{Clojure projects chosen for evaluation}
 \end{table}
 
+\subsubsection{cheshire}
+
+\textit{cheshire} is a ``fast JSON encoder and decoder''. It is a
+relatively mature Clojure project, being at major version
+\codeinline{5} at the time of writing and being one of the most
+popular Clojure libraries. Although type hinting is optional, it is
+used for almost every function in the library.
+
+The very first pair of versions was ignored during evaluation, because
+the first version \codeinline{1.1.0} has misconfigured paths and the
+namespaces it defines are inaccessible, not even when working from a
+manually created REPL.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 38 \\
+Dropped versions & 1 \\
+Mismatches & 19 \\
+Mismatches (breaking) & 7 \\
+Proportion of mismatches & 51\% \\
+Proportion of mismatches (breaking) & 18\% \\
+\end{tabular}
+\caption{\textit{cheshire} statistics}
+\label{CheshireStats}
+\end{table}
+
+There seems to be a clear indication that the project has stabilised
+over time (fig. \ref{CheshireCumulativeMismatches}), seeing frequent,
+unnoted in the version number, breaking changes for the first 2 years
+of development, and then not for the next 4 years. It's noteworthy
+that this stabilisation happened only at major version \codeinline{5}
+and that the frequency of releases has gone down since then. There
+were 3.96 releases per 100 days in that 2-year interval, compared to
+only 1.70 for the entirety of the project's history.
+
+Breaking mismatches are evenly divided between two causes:
+
+\begin{enumerate}[(i)]
+\item Refactoring one function into several other, similarly-named
+functions. All of these changes bump the minor version number, even
+though the original function is removed. For example, version
+\codeinline{2.1.0} refactors \clojureinline{factory} into
+\clojureinline{make-json-factory} and
+\clojureinline{make-smile-factory}.
+\item Introducing type hints where they were previously none, or
+changing them to an incompatible type.
+\end{enumerate}
+
+This project also shows a large number of non-breaking mismatches,
+accounting for about 30\%. The vast majority of those are because of
+one or two small (public) functions being introduced and only bumping
+the patch version number. Only two (\codeinline{5.7.0} and
+\codeinline{5.5.1}) are because of making legitimate improvements that
+don't impact the API.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/cheshire_cumulative_mismatches}
+\caption{Cumulative mismatches over time (\textit{cheshire})}
+\label{CheshireCumulativeMismatches}
+\end{figure}
+
+\subsubsection{nippy}
+
+\textit{nippy} is a ``high-performance serialization library''. It has
+70 tagged releases, but nearly half of them carry a label after the
+version number. For example version \codeinline{v2.5.0} has 6 variants
+-- the final one, two release candidates and three betas. Only the
+actual final version is compared to its successor in evaluation, which
+brings down the number of releases to 32.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|lr|}
+All versions & 32 \\
+Mismatches & 14 \\
+Mismatches (breaking) & 6 \\
+Proportion of mismatches & 43\% \\
+Proportion of mismatches (breaking) & 18\% \\
+\end{tabular}
+\caption{\textit{nippy} statistics}
+\label{NippyStats}
+\end{table}
+
+\textit{nippy} shows a trend of stabilisation similar to
+\textit{cheshire} (fig. \ref{NippyCumulativeMismatches}). For a period
+of about 2 years between versions \codeinline{1.2.0} and
+\codeinline{2.7.0} there is a large number unnoted breaking changes,
+which then plateaus. The frequency of releases in that interval is
+also larger than the one for the entirety of the project: 5.60 per 100
+days, compared to only 3.74 per 100 days.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/nippy_cumulative_mismatches}
+\caption{Cumulative mismatches over time (\textit{nippy})}
+\label{NippyCumulativeMismatches}
+\end{figure}
+
+All 6 breaking mismatches see at most 2 entities being removed or
+renamed. In one case renaming happens not because of refactoring, but
+because of a typo: \codeinline{2.6.1} corrects the function
+\clojureinline{freezeable?} to \clojureinline{freezable?} which was
+introduced in the previous version \codeinline{2.6.0}. Fixing a typo
+was considered a patch-level change by the authors, even though that
+typo was at that point part of the public API.
+
+The distribution and reasoning behind non-breaking mismatches is
+nearly identical to what was observed in \textit{cheshire} -- nearly
+all such changes are because of a small number of public functions
+being introduced and not bumping the minor version number.
+
 \subsection{Summary}
 
 % TODO: histogram of number of releases, number of breaking
