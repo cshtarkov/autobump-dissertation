@@ -7,6 +7,7 @@
 # cumulative_mismatches.py <(mismatches.sh file) <(tags_with_dates.sh | grep desired_version -B30000)
 #
 import sys
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
@@ -80,6 +81,11 @@ total_plt = plt.scatter(dates, total, s=25, label="Total", color=COLORS["blue"])
 breaking_plt = plt.scatter(dates, breaking, s=25, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
 plt.gcf().autofmt_xdate()
+plt.yticks(range(min(total), math.ceil(max(total))+1, 2))
+# plt.annotate(xy=(datetime(2013, 4, 12), 7), s="v5.1.0",
+#              textcoords="offset pixels", xytext=(50,-40),
+#              arrowprops=dict(facecolor="black", shrink=0.03, width=2, headwidth=12),
+#              verticalalignment="bottom", horizontalalignment="right")
 plt.savefig("cumulative_mismatches.pdf")
 
 # Plot histogram of time intervals
