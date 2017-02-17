@@ -3093,22 +3093,22 @@ metrics.
 
 The number 632 is not arbitrary. To gather Python projects with
 varying popularity, the websites \textit{http://pypi-ranking.info} and
-\textit{http://pypi.org} were scraped (see \ref{ScraperScript}). The
-first one was used to get a listing of all published projects in
-decreasing order of popularity and check for Python 3 compatibility,
-and the second one was used to visit the official page of each project
-and search via a regular expression for a GitHub\footnote{Earlier
-iterations of the scraper script tried to use a more general regular
-expression, but that proved to be very erroneous, so it was limited to
-the most popular hosting for repositories.} repository. As projects
-get less popular, their support for Python 3 decreases rapidly, as
-they have not seen a release in some time. After reaching a zero
-(number of downloads) the ones that support it get extremely sparse,
-so the scraping was cut off soon after that point. That is not to say
-that there are only 632 Python projects that support Python 3 and have
-a download count larger than zero -- these are only the ones for which
-a GitHub link was found reliably on the module's PyPI page.
-% TODO: rewrit this!!!!!!!
+\textit{http://pypi.org} were scraped (see listing
+\ref{ScraperScript}). The first one was used to get a listing of all
+published projects in decreasing order of popularity and check for
+Python 3 compatibility, and the second one was used to visit the
+official page of each project and search via a regular expression for
+a GitHub\footnote{Earlier iterations of the scraper script tried to
+use a more general regular expression, but that proved to be very
+erroneous, so it was limited to the most popular hosting for
+repositories.} repository. As projects get less popular, their support
+for Python 3 decreases rapidly, as they have not seen a release in
+some time. After reaching zero (number of downloads) the ones that
+support it get extremely sparse, so the scraping was cut off soon
+after that point. That is not to say that there are only 632 Python
+projects that support Python 3 and have a download count larger than
+zero -- these are only the ones for which a GitHub link was found
+reliably on the module's PyPI page.
 
 % TODO: methodology
 
