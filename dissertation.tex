@@ -142,24 +142,14 @@ frameworks, where changes can greatly affect applications built on top
 of them. \\ Different policies exist dictating how to assign version
 numbers, one of the most popular being \textit{Semantic
 Versioning}, where the version gives
-information about how exactly the software package has changed. This
-allows for better estimation whether a new version of a library or a
-framework would result in incompatibilities.
+information about how exactly the software package has changed.
 \\\\
 Regardless of
 policy, assigning version numbers is typically done manually and
-leaves room for human mistakes or deviations from the established
+leaves room for human mistakes or deviations from an established
 scheme. This project proposes the tool \textit{Autobump} that automatically
-inspects changes to a codebase and proposes the next version number
-according to semantic versioning. This reduces friction when releasing
-packages, and encourages more frequent, even fully automated,
-releases.
-\\\\
-While similar previous work does exist, an additional requirement is
-imposed in that the tool ought to work across different languages.
-Finally, this dissertation evaluates how feasible that approach is and
-compare how well projects in different languages already adhere to
-semantic versioning.
+inspects changes to a codebase and suggests the next version number
+according to semantic versioning.
 \end{abstract}
 
 \renewcommand{\abstractname}{Acknowledgements}
@@ -168,7 +158,7 @@ I would like to thank my project supervisor -- Dr. Tim Storer -- for
 proposing the original idea behind this project and for his continuous
 support throughout the academic year.
 
-Furthermore, I would like to show appreciation for my fellow students
+\noindent Furthermore, I would like to show appreciation for my fellow students
 Pavel Dikov, Alex Leet, Hamza Tanveer and David Benicek for the
 exchange of ideas that went on during our weekly project supervision
 meetings.
