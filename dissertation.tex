@@ -2947,6 +2947,37 @@ then implied that this applies only for after major version
 \caption{Java projects chosen for evaluation}
 \end{table}
 
+Evaluation of Java projects using the native handler proved to be difficult.
+Two out the three selected projects happened to have quite a long
+history during which they have changed their build system several
+times. This makes it impossible to specify a single build command and
+evaluate the entire repository in one run. Instead, evaluations had to
+be done one range at a time, and then the results merged together.
+
+Furthermore, early versions of some projects (most notably Guava)
+require ancient versions of Java. Given the impracticality of
+maintaining several versions of the JDK, along with respective
+versions of build systems and so on, those versions were just skipped
+when using the native handler.
+
+A final hurdle was that compiling complex Java projects like these
+ones is slow -- when running the \codeinline{java_native} handler it
+was noticeably an order of magnitude slower than \codeinline{java_ast}.
+
+\subsubsection{guava}
+
+\textit{Guava} \cite{Guava} is a set of core libraries that extend the
+Java standard library. It is one of the most widely used Java
+projects.
+
+\subsubsection{mockito}
+
+\textit{Mockito} \cite{Mockito} is a mocking library. It is one of few
+libraries that outright say they follow Semver, although that only
+applies after version \codeinline{2.0.0}.
+
+\subsubsection{gson}
+
 \subsection{Clojure}
 
 \begin{table}[H]
@@ -3086,10 +3117,12 @@ being introduced and not bumping the minor version number.
 
 \section{Automated evaluation}
 
-In addition to the previous round, a large scale evaluation was done
-on 632 Python projects. It was completely automated, with scripts
-responsible for each step -- from suggesting projects, to gathering
-metrics.
+In addition to the previous round, a large scale evaluation was
+attempted on 632 Python projects. It was almost completely automated,
+with scripts responsible for each step -- from suggesting projects, to
+gathering metrics.
+
+\subsection{Methodology}
 
 The number 632 is not arbitrary. To gather Python projects with
 varying popularity, the websites \textit{http://pypi-ranking.info} and
@@ -3110,7 +3143,132 @@ projects that support Python 3 and have a download count larger than
 zero -- these are only the ones for which a GitHub link was found
 reliably on the module's PyPI page.
 
-% TODO: methodology
+Note that not all of these projects are guaranteed to be libraries;
+there is no good way to filter out end user applications. Instead, we
+just assume the modules the project defines can be imported and used
+by other applications (this is technically true for all Python
+projects). Although Autobump itself is an end-user application and not
+a library, it still adheres to Python naming conventions to
+distinguish public from private code. If all projects do the same then
+there will be no difference whether they are applications or
+libraries.
+
+After the list of repositories was obtained, each one was cloned in a
+separate directory (listing \ref{CloneScript}). Of 632 repositories,
+605 were cloned successfully, the rest failing because they were
+private or removed.
+
+A generic configuration file (\ref{GenericConfigFile}) was constructed
+that ignores frequently encountered directories and files such as
+\codeinline{tests} and \codeinline{setup.py}. After that, all projects
+were evaluated from their very first release to the very last, all
+using the same configuration file.
+
+There is an obvious problem with Python 3 compatibility -- although
+PyPI can rightfully claim that a project supports Python 3 and it ends
+up in this list of 632 repositories, it is not guaranteed that all
+versions support Python 3. There is no good automatic way of
+determining the first version that does so. Initially, a heuristic was
+used. When the Python handler encounters a file it cannot parse, it
+either warns the user or outright fails with an error depending on how
+it is configured. The generic configuration file directs Autobump to
+steamroll through the entire projects only warning about unparseable
+files. Unparseable files most likely indicate Python 2 code, so the
+first version that doesn't raise such a warning is taken to be the
+first version as far as evaluation is concerned.
+
+However, this approach led to too many versions, sometimes entire
+projects, being dropped. It is not uncommon for projects to have both
+Python 2 and Python 3 code in their repository. Instead, while
+unparseable files are still omitted, Autobump still considers others.
+This potentially leads to introducing false negatives, but the impact
+of that on the final data ought to be smaller than dropping too many
+versions -- library code written in Python 2 is frequently compatible
+with 3 without any modifications. User-facing parts of the projects
+using a \pythoninline{print} statements without parantheses are more
+likely to fail.
+
+\subsection{Results}
+
+Out of the 605 successfully cloned projects, only 403 were
+successfully evaluated. The remaining were discounted because they had
+less than 2 released versions\footnote{This means less than 2 tags in
+the repository. It is entirely possible that the project has releases
+which are not tagged, but the script can't find that out.}, so no
+adjacent pairs of versions could be compared.
+
+To get some context about the state of the projects prior to any
+evaluation, figure \ref{DistributionAllVersions} shows the
+distribution of the number of released versions. It is clear that
+nearly all projects have less than 50 versions, with the majority
+having less than 10.
+
+\begin{figure}[]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_all_versions}
+\caption{Distribution of the number of releases}
+\label{DistributionAllVersions}
+\end{figure}
+
+Moreover, looking at the largest major version ever found in the projects
+(figure \ref{DistributionLargestMajor}) we can see that the data has a
+disproportionate number of projects that have never seen a
+\textit{1.0.0} release.
+
+\begin{figure}[]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_major_versions}
+\caption{Distribution of largest major versions}
+\label{DistributionLargestMajor}
+\end{figure}
+
+Having this information in mind, three data sets were constructed to
+avoid skewing the statistical results because of outliers: one
+comprising all 403 projects, a second one containing only projects
+which reach version \textit{1.0.0} and a third one with projects that
+have at least 10 released versions. This partioning is shown on fig.
+\ref{Datasets}, while table \ref{DatasetStatistics} present some
+statistics for each data set.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.3\textheight]{images/evaluation/datasets}
+\caption{Data sets}
+\label{Datasets}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+& \textbf{All projects} & \textbf{Published API} & \textbf{At least 10 releases} \\
+\hline
+Total projects & 403 & 172 & 185 \\
+\hline
+Smallest number of releases & 2 & 2 & 10 \\
+\hline
+Largest number of releases & 203 & 203 & 203 \\
+\hline
+Min. \% of all mismatches & 0\% & 0\% & 0\% \\
+\hline
+Max. \% of all mismatches & 88.8\% & 88.8\% & 88.2\% \\
+\hline
+Projects with the minimal number of total mismatches & 42 & 13 & 1 \\
+\hline
+Min. \% of breaking mismatches & 0\% & 0\% & 0\% \\
+\hline
+Max. \% of breaking mismatches & 75\% & 75\% & 70.6\% \\
+\hline
+Projects with the minimal number of breaking mismatches & 284 & 53 & 98 \\
+\hline
+\textbf{Avg. \% of all mismatches} & 40\% & 46.3\% & 44.7\% \\
+\hline
+\textbf{Avg. \% of breaking mismatches} & 6.8\% & 15.9\% & 9.3\% \\
+\hline
+\end{tabular}
+\caption{Statistics for each data set}
+\label{DatasetStatistics}
+\end{table}
 
 \chapter{Conclusion}
 \label{Conclusion}
