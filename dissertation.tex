@@ -407,6 +407,10 @@ Chapter \ref{Evaluation} looks at concrete examples of when
 library developers fail to identify breaking changes by bumping the
 major version number and evaluate whether the above reasons apply.
 
+\subsubsection{Criticism}
+
+% TODO: https://gist.github.com/jashkenas/cbd2b088e20279ae2c8e
+
 \section{Aim}
 
 It has been identified that the reluctance or inconsistency of
@@ -1759,17 +1763,15 @@ CAPIR.
 \begin{center}
 \begin{tabular}{c}
 \begin{clojure}
-(defn describe-file
+(defn describe-unit
   "Describe the public API of a file as an S-expression."
   [file-name]
   (let* [forms         (read-source file-name)
          fields-defs   (filter public-field-def? forms)
-         ...
          function-defs (filter public-fn-def? forms)]
-    (list 'file
+    (list 'unit
           (get-ns forms)
           (map describe-field fields-defs)
-          ...
           (map describe-function function-defs))))
 \end{clojure}
 \end{tabular}
@@ -1873,10 +1875,45 @@ hint of a parameter was changed, there's no way to verify whether the
 new one is compatible with the old one.
 \end{itemize}
 
-% TODO: how we can modify describe-files
-% TODO: now hooking into environment
-% ... it is a typical Clojure workflow that a REPL is started and
-% blabla is examined...
+The vast majority of Clojure projects use the build system Leiningen
+\cite{Leiningen}. A typical development workflow that it exposes (as
+do other similar build systems) is starting a REPL that evaluates all
+files in the project and makes the namespaces and functions available
+for manual probing. This feature is usually not used directly, but
+further abstracted into some integrated development environment, e.g.
+CIDER \cite{CIDER}.
+
+The Clojure handler can be modified in such a way that it keeps its
+\clojureinline{describe-...} architecture, but sources its data from
+the runtime instead of the AST. This necessitates running it in the
+same environment as the project itself, which is identical to what a
+REPL offers. For this reason, the Clojure executable that Autobump
+invokes can be configured to be one such that it presents this
+environment for execution. A convenient solution that is specific for
+Leiningen is the plugin \codeinline{lein-exec} \cite{LeinExec}, which
+allows running scripts as if they were piped into a REPL.
+
+The accuracy of functions such as \codeinline{public-fn-def?} can now
+be greatly improved by simply invoking Clojure built-ins instead of
+interpreting macro invokations:
+
+\begin{halfmini}{Using AST}
+\begin{clojure}
+(defn public-fn-def? [lst]
+  (and (not (:private (meta (second lst))))
+       (= (first lst) "def")))
+\end{clojure}
+\end{halfmini}
+\begin{halfmini}{Using reflection}
+\begin{clojure}
+(defn public-fn-def? [v]
+  (fn? v))
+\end{clojure}
+\end{halfmini}
+
+Note that is not necessary to check that the definition is private
+when using reflection; it would not be present when examining the
+namespace anyway.
 
 \section{Handlers for version control systems}
 \label{VCSHandlers}
