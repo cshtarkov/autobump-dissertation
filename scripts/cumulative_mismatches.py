@@ -99,3 +99,10 @@ plt.hist((all_versions, diffs),
 plt.gca().set_xscale("log")
 plt.legend()
 plt.savefig("introduced_changes.pdf")
+
+# Calculate frequency of releases in some intervals
+# total_freq = len(dates) / float(((dates[-1] - dates[0]).days)) * 100
+# print("Total frequency: ", total_freq)
+# dates_between = list(filter(lambda d: d >= datetime(2012, 1, 1), filter(lambda d: d <= datetime(2013, 1, 1), dates)))
+# dates_between_freq = len(dates_between) / float(((dates_between[-1] - dates_between[0]).days)) * 100
+# print("dates_between frequency: ", dates_between_freq)
