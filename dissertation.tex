@@ -534,8 +534,8 @@ fail to identify that the version should be bumped.
 Another way is by employing an additional tool called
 \textit{cracks} \cite{Cracks}. According to the official description
 ``this module can automatically detect breaking changes by running the
-test suite of your last-release against the current codebase. This
-shouldn't fail''. This is generally a good approach -- by definition
+test suite of your last-release against the current codebase.''
+This is generally a good approach -- ideally
 the test suite of the previous version should pass if the new one is
 not meant to be a major release. However, it raises some issues.
 
@@ -557,14 +557,13 @@ the authors still want to use semantic versioning.
 \section{GitVersion}
 
 \textit{GitVersion} \cite{GitVersion} ``looks at your Git history and
-works out the semantic version of the commit being built''.  By
-knowing in advance what workflow contributors to the repository are
-using, it can determine what component of the version number ought to
-be bumped.
-Previous versions of GitVersion have implicit knowledge of
-the workflows \textit{GitFlow} \cite{GitFlow} and
-\textit{GitHubFlow} \cite{GitHubFlow}, but the current one (3.0) at the
-time of writing can be configured to work with more custom workflows.
+works out the semantic version of the commit being built.'' By knowing
+in advance what workflow contributors to the repository are using, it
+can determine what component of the version number ought to be bumped.
+Previous versions of GitVersion have implicit knowledge of the
+workflows \textit{GitFlow} \cite{GitFlow} and \textit{GitHubFlow}
+\cite{GitHubFlow}, but the current one (\textit{3.0}) at the time of
+writing can be configured to work with more custom workflows.
 
 Consider an example usage of GitVersion on a history of commits.
 
@@ -664,14 +663,14 @@ It then goes on to generate an HTML report of the differences, to act
 as a supplement to the changelog. It not only looks at the API itself,
 but also inspects and notes differences in accompanying documentation
 strings. Those may indicate a change in the behaviour of some functionality,
-even if it's interface remains the same.
+even if its interface remains the same.
 
-JDiff is intended to be used in conjuction with the build system Ant,
-where an \textit{old} and a \textit{new} project have to be defined so
-that JDiff knows what to compare. It requires that the project is
-compiled (twice) and that its dependencies are available in Java's
-\codeinline{CLASSPATH}, because it uses the Java reflection API which
-allows for compiled code to loaded and inspected at runtime.
+JDiff is intended to be used in conjuction with the build system Ant
+\cite{Ant}, where an \textit{old} and a \textit{new} project have to
+be defined so that JDiff knows what to compare. It requires that the
+project is compiled (twice) and that its dependencies are available in
+Java's \codeinline{CLASSPATH}, because it uses the Java reflection API
+which allows for compiled code to be loaded and inspected at runtime.
 
 At the time of writing, the tool seems to be somewhat outdated with
 the last release being JDiff \textit{1.1.1} from November 2008.
@@ -682,7 +681,8 @@ the last release being JDiff \textit{1.1.1} from November 2008.
 assign a version number, but instead only lists changes and warns
 about loss of backward compatibility. It was used in the study of the
 Maven repository \cite{SemverMaven} to determine compatibility between
-different versions of published Jar files. It also relies on reflection.
+different versions of published Jar files, which are bundles of
+compiled code. It also relies on reflection.
 
 It can act as a plugin for the Maven build system and break builds
 when incompatible changes are introduced unintentionally.
@@ -695,30 +695,29 @@ last release being  \textit{0.6} from September 2005.
 \subsection{japicmp}
 
 \textit{japicmp} \cite{Japicmp} measures compatibility between
-provided Jar files, which are bundles of compiled Java code. It can
-tie into the build system Maven and configure it so that it produces
-Jar files of two subsequent versions and breaks builds when
-incompatibilities are detected, just like Clirr does. Alternatively it
-can be used as a command-line application to find out differences
-between any two given Jar files.
+provided Jar files. It can tie into the build system Maven and
+configure it so that it produces Jar files of two subsequent versions
+and breaks builds when incompatibilities are detected, just like Clirr
+does. Alternatively it can be used as a command-line application to
+find out differences between any two given Jar files.
 
 Unlike the other two Java utilities, this one does not use the Java
 reflection API. Instead it relies on the external library
 \textit{javaassist} \cite{JavaAssist} which allows for bytecode
-manipulation at the of loading external classes \cite{BytecodeManip}.
-This is used to circumvent the requirement that all dependencies of
-the project are in the \codeinline{CLASSPATH}. However, the
-implication is that differences arising from types defined in external
-code cannot be identified. Consider for example replacing the type of
-a parameter in an otherwise unchanged method to a superclass of its
-original type -- all previous client code is guaranteed to compile
-fine, because of Java's inheritance rules, but there's no way that
-Japicmp would be aware of this.
+manipulation at the point of loading external classes
+\cite{BytecodeManip}. This is used to circumvent the requirement that
+all dependencies of the project are in the \codeinline{CLASSPATH}.
+However, the implication is that differences arising from types
+defined in external code cannot be identified. Consider for example
+replacing the type of a parameter in an otherwise unchanged method to
+a superclass of its original type -- all previous client code is
+guaranteed to compile fine, because of Java's inheritance rules, but
+there's no way that Japicmp would be aware of this.
 
 \chapter{Requirements}
 \label{Requirements}
 
-This chapter foramlises the approach that the tool for this project,
+This chapter formalises the approach that the tool for this project,
 Autobump, should use to propose version numbers, and formulates the
 set of features that should be expected. It also goes into some brief
 discussion of non-functional requirements.
