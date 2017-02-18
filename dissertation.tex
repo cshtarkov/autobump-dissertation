@@ -8,6 +8,7 @@
 \usepackage{epigraph}
 \usepackage{enumerate}
 \usepackage{url}
+\usepackage{wrapfig}
 \usepackage{breakurl}
 \usepackage[breaklinks]{hyperref}
 \usepackage{fancyvrb}
@@ -52,7 +53,7 @@ basicstyle=\ttm,
 otherkeywords={self},
 keywordstyle=\ttb\color{keyword},
 emph={__init__,ThingDoer,accept_foo_bar,THING_QUOTA,do_thing,Discombobulator,discombobulate,
-Discombobulated,func,capir_at_commit,get_commit,codebase_to_units},
+Discombobulated,func},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -779,6 +780,7 @@ assignment of version numbers, and both of those changes are breaking
 
 \begin{table}[H]
 \centering
+\caption{List of changes that are considered breaking}
 \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
 \hline
 \textbf{Change}                                                                               & \textbf{Rationalisation}                                                 \\
@@ -794,7 +796,6 @@ Removing a parameter from a function signature, regardless of whether it had a d
 Removing the default value of a parameter.                                                    & Calls to that function may be relying on the now missing default value.  \\
 \hline
 \end{tabular}
-\caption{List of changes that are considered breaking}
 \end{table}
 
 When constructing this list, a small number of assumptions
@@ -823,14 +824,14 @@ program. \\
 
 The notion of type compatibility is defined as the type $T$ being able
 to replace $Y$ without violating the rules of the language -- e.g. the
-Liskov substitution principle\cite{Liskov} in a typical
+Liskov substitution principle \cite{Liskov} in a typical
 object-oriented language. Note that this notion is also compatible
 with dynamically typed languages where types can not be reasonably
 checked by taking $compatible$ to always be true.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
-(e.g. minimalistic ones such as Brainfuck\cite{Brainfuck}), but these
+(e.g. minimalistic ones such as Brainfuck \cite{Brainfuck}), but these
 are also languages where a tool like Autobump would be utterly
 unuseful. There are also languages that partially conform. In those
 cases, as long as assumption \ref{SecondAssumption} is valid (i.e.
@@ -950,10 +951,10 @@ is added on top of that through the use of handlers, which are also
 written in Python when appropriate, or are written in another language
 and use Python as a middleware language to link back to Autobump.
 
-\begin{figure}
+\begin{figure}[t]
 \label{ArchitectureFig}
 \centering
-\includegraphics[width=\linewidth]{images/dot/architecture}
+\includegraphics[height=0.4\textheight]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
 
@@ -1090,7 +1091,7 @@ Choosing an appropriate representation was an important, and
 difficult, part of this project. The problem of representing an API
 regardless of language is solved for some contexts by
 \textit{interface descriptor languages} (IDLs), such as
-WSDL\cite{WSDL}, SWIG\cite{SWIG} or Apache Thrift\cite{Thrift}. All of
+WSDL \cite{WSDL}, SWIG \cite{SWIG} or Apache Thrift \cite{Thrift}. All of
 these are meant for a specific purpose, usually interoperability between
 different technologies. While adapting one of these to use in Autobump
 was certainly possible, this project opted to use its own model instead for
@@ -1153,7 +1154,7 @@ signature if necessary.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/dot/repr}
+\includegraphics[height=0.3\textheight]{images/dot/repr}
 \caption{Class diagram -- Autobump's public API representation (CAPIR)}
 \label{RepresentationUML}
 \end{figure}
@@ -1438,7 +1439,7 @@ are is to actually evaluate the code and check the metadata of the
 relevant objects.
 This is undesirable in the case of Autobump where the AST ought to be
 used instead. A third-party fork of Python's built in \codeinline{ast}
-module exists, named \codeinline{typed_ast}\cite{TypedAST}. It gives
+module exists, named \codeinline{typed_ast} \cite{TypedAST}. It gives
 access to type hinting information as part of AST itself. It's
 expected that this fork will get merged back into mainline Python
 eventually, but for the time being Autobump uses it as an external
@@ -1489,7 +1490,7 @@ Autobump that actually has two separate handlers.
 \codeinline{java_ast} is written entirely in Python and
 values speed over corectness. It is a quick-and-dirty handler that
 visits all Java source files in the repository and generates their
-ASTs via the third-party package \codeinline{javalang}\cite{Javalang}.
+ASTs via the third-party package \codeinline{javalang} \cite{Javalang}.
 Transforming the AST into CAPIR is not quite as straightforward as it
 is in Python, because Java is statically typed.
 
@@ -1653,7 +1654,7 @@ public class SomeClass {
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.5\textheight]{images/dot/xmlcapir}
+\includegraphics[height=0.3\textheight]{images/dot/xmlcapir}
 \caption{CAPIR of Java source code produced from intermediary XML}
 \label{CAPIRXMLExample}
 \end{figure}
@@ -1923,8 +1924,9 @@ interpreting macro invokations:
 \begin{halfmini}{Using AST}
 \begin{clojure}
 (defn public-fn-def? [lst]
-  (and (not (:private (meta (second lst))))
-       (= (first lst) "def")))
+  (and
+    (not (:private (meta (second lst))))
+    (= (first lst) "def")))
 \end{clojure}
 \end{halfmini}
 \begin{halfmini}{Using reflection}
@@ -2062,7 +2064,7 @@ A map of the form $member \rightarrow function$ is purposefully used
 instead of invoking the comparators directly. It shows the general
 principle of comparing members of CAPIR entities, even if eventually
 CAPIR is modified or extended and the comparators change. The only
-comparators used so far ar for type checking (on the member $type$)
+comparators used so far are for type checking (on the member $type$)
 and signature checking (on the member $signatures$).
 
 % TODO: talk about individual comparators
@@ -2133,20 +2135,9 @@ adjacent revisions, as discussed in chapter \ref{Evaluation}.
 
 Autobump is also able to provide debugging information in case the
 user suspects that something is not working quite right. The level of
-information can be controlled and by default Autobump doesn't provide
-any except for warnings. The following options control the level of
-information, in order of application (i.e. options further down the
-list trump everything above).
-
-\begin{enumerate}[(i)]
-\item No option: only warnings are shown.
-\item \codeinline{--info}: provides general information about Autobump
-is doing, as well as warnings.
-\item \codeinline{--debug}: provides very detailed information about
-the current execution path, as well as warnings.
-\item \codeinline{--silence}: absolutely ignores any debugging
-information.
-\end{enumerate}
+information can be controlled using the options \codeinline{--info},
+\codeinline{--debug} and \codeinline{--silence}. By default Autobump
+doesn't provide any except for warnings.
 
 All debugging information is printed to \codeinline{stderr} so as not
 to interfere with the regular output of the program. This was very
@@ -2158,21 +2149,7 @@ because Autobump treats all errors as fatal and immediately terminates
 when one is encountered. The return code of the program is set to
 non-zero to indicate that it failed.
 
-\begin{figure}[H]
-\centering
-\caption{Fatal error in Autobump}
-\begin{BVerbatim}
-> autobump cpp
-autobump: Invalid handler specified!
-> echo $$?
-1
->
-\end{BVerbatim}
-\end{figure}
-
 A full rundown of all options is given in appendix \ref{RundownOptions}.
-
-\subsection{Integration with other development tools}
 
 % TODO: fill this in
 
@@ -2226,6 +2203,7 @@ A fixture consists of a list of tuples, each tuple representing the
 path to a file and its content. A minimal Clojure fixture looks like
 this:
 
+\begin{figure}[H]
 \begin{center}
 \begin{tabular}{c}
 \begin{python}
@@ -2238,7 +2216,9 @@ sources = [
 ]
 \end{python}
 \end{tabular}
+\caption{Clojure test fixture}
 \end{center}
+\end{figure}
 
 Having the fixture actually present in the filesystem is necessary
 because the handlers rely on external utilities, which need to load
@@ -2273,8 +2253,8 @@ input being a repository\footnote{There are of course additional
 inputs, like what handler to use or which revision to compare.
 However, those are trivial to mock.} and the output the proposed
 version number. Having a repository as an input is non-trivial.
-
 Three approaches were considered.
+
 \begin{enumerate}[(i)]
 \item Maintain a Git \textit{submodule}, a kind of nested repository,
 inside Autobump's own repository. The submodule would contain the
@@ -2286,7 +2266,7 @@ ruled out, because it makes editing the progression of the project
 unnecessarily difficult.
 \item Reconstruct a Git repository containing the history of a project
 by using an acceptance test framework like \textit{Robot
-Framework}\cite{Robot}. Frameworks like these generally let you
+Framework} \cite{Robot}. Frameworks like these generally let you
 specify pre and postconditions either in freeform or
 \textit{given-when-then} form, so an example test may look something
 like this:
@@ -2328,89 +2308,93 @@ is properly set up before running Autobump. In normal operation, the
 or by setting the environment variable, but that is not an option when
 automatically running multiple acceptance tests.
 
-\begin{figure}[H]
-\label{SampleAcceptanceTest}
-\caption{Example acceptance test for the Python handler}
-\begin{minipage}[t]{0.7\textwidth}
-\begin{python}
-handler = "python"
+Appendix \ref{ExampleAcceptanceTest} shows an example of a minimal
+sensible acceptance test.
 
-def setUp(repo):
-    pass
+% TODO: move this to appendix
+% \begin{figure}[H]
+% \label{SampleAcceptanceTest}
+% \caption{Example acceptance test for the Python handler}
+% \begin{minipage}[t]{0.7\textwidth}
+% \begin{python}
+% handler = "python"
 
-def tearDown(repo):
-    pass
+% def setUp(repo):
+%     pass
 
-commit_history = [
+% def tearDown(repo):
+%     pass
 
-    ("1.0.0",
-     "Initial commit",
-     """
-     diff --git a/module_a.py b/module_a.py
-     new file mode 100644
-     index 0000000..ab92b1d
-     --- /dev/null
-     +++ b/module_a.py
-     @@ -0,0 +1,2 @@
-     +def some_function():
-     +    pass
-     --
-     """),
+% commit_history = [
 
-    ("1.1.0",
-     "Add parameter with default value to function",
-     """
-     diff --git a/module_a.py b/module_a.py
-     index ab92b1d..f700cc9 100644
-     --- a/module_a.py
-     +++ b/module_a.py
-     @@ -1,2 +1,2 @@
-     -def some_function():
-     +def some_function(a=True):
-     pass
-     --
-     """),
+%     ("1.0.0",
+%      "Initial commit",
+%      """
+%      diff --git a/module_a.py b/module_a.py
+%      new file mode 100644
+%      index 0000000..ab92b1d
+%      --- /dev/null
+%      +++ b/module_a.py
+%      @@ -0,0 +1,2 @@
+%      +def some_function():
+%      +    pass
+%      --
+%      """),
 
-    ("2.0.0",
-     "Remove parameter to function",
-     """
-     diff --git a/module_a.py b/module_a.py
-     index ab92b1d..f700cc9 100644
-     --- a/module_a.py
-     +++ b/module_a.py
-     @@ -1,2 +1,2 @@
-     -def some_function(a):
-     +def some_function():
-     pass
-     --
-     """)
-]
-\end{python}
-\end{minipage}
-\begin{minipage}[t]{0.3\textwidth}
-\noindent A symbol called exactly \pythoninline{handler} needs to be
-set specifying the handler to use as a string. This is effectively the
-same as setting the command-line option.
-\\
-\noindent Python lacks any special requirements because it does not use a build
-system, so those functions can either be left empty or even left undefined.
-\\
-\noindent The scenario this acceptance test describes begins with a
-single module which has a single empty function that does nothing and
-accepts no parameters.
-\\
-\noindent Then, an optional parameter is added to the function
-signature. At this point both the previous signature (with no
-parameters) and the current one can be used, so that constitutes a
-feature additing and the version number is bumped to
-\codeinline{1.1.0} accordingly.
-\\
-\noindent In the last diff, the optional parameter is removed. Client
-code calling the function and passing that parameter is expected to
-fail, so that constitutes a breaking change and the version is bumped
-to \codeinline{2.0.0}.
-\end{minipage}
-\end{figure}
+%     ("1.1.0",
+%      "Add parameter with default value to function",
+%      """
+%      diff --git a/module_a.py b/module_a.py
+%      index ab92b1d..f700cc9 100644
+%      --- a/module_a.py
+%      +++ b/module_a.py
+%      @@ -1,2 +1,2 @@
+%      -def some_function():
+%      +def some_function(a=True):
+%      pass
+%      --
+%      """),
+
+%     ("2.0.0",
+%      "Remove parameter to function",
+%      """
+%      diff --git a/module_a.py b/module_a.py
+%      index ab92b1d..f700cc9 100644
+%      --- a/module_a.py
+%      +++ b/module_a.py
+%      @@ -1,2 +1,2 @@
+%      -def some_function(a):
+%      +def some_function():
+%      pass
+%      --
+%      """)
+% ]
+% \end{python}
+% \end{minipage}
+% \begin{minipage}[t]{0.3\textwidth}
+% \noindent A symbol called exactly \pythoninline{handler} needs to be
+% set specifying the handler to use as a string. This is effectively the
+% same as setting the command-line option.
+% \\
+% \noindent Python lacks any special requirements because it does not use a build
+% system, so those functions can either be left empty or even left undefined.
+% \\
+% \noindent The scenario this acceptance test describes begins with a
+% single module which has a single empty function that does nothing and
+% accepts no parameters.
+% \\
+% \noindent Then, an optional parameter is added to the function
+% signature. At this point both the previous signature (with no
+% parameters) and the current one can be used, so that constitutes a
+% feature additing and the version number is bumped to
+% \codeinline{1.1.0} accordingly.
+% \\
+% \noindent In the last diff, the optional parameter is removed. Client
+% code calling the function and passing that parameter is expected to
+% fail, so that constitutes a breaking change and the version is bumped
+% to \codeinline{2.0.0}.
+% \end{minipage}
+% \end{figure}
 
 \chapter{Evaluation}
 \label{Evaluation}
@@ -2571,6 +2555,8 @@ is fairly unlikely that both are wrong.
 
 \begin{table}[H]
 \centering
+\caption{Python projects chosen for evaluation}
+\label{PythonProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
 \textbf{Project} & \textbf{Size} & \textbf{Downloads} & \textbf{Semantically versioned} \\
@@ -2583,8 +2569,6 @@ officially. \\
 that ``[they] try to follow Semver, but check the changelog''. \\
 \hline
 \end{tabular}
-\caption{Python projects chosen for evaluation}
-\label{PythonProjectsForEvaluation}
 \end{table}
 
 When evaluating Python projects, not all released versions were taken
@@ -2735,6 +2719,7 @@ interval (\textit{requests})}
 \end{figure}
 
 \subsubsection{simplejson}
+% TODO: simplejson -> Simplejson in beginning of sentence, strip textits
 
 \textit{simplejson} is a JSON parsing library which has the highest
 number of downloads on PyPI across all projects. It is also bundled
@@ -2928,8 +2913,9 @@ dangerously) a patch change.
 \subsection{Java}
 
 \begin{table}[H]
-\label{JavaProjectsForEvaluation}
 \centering
+\caption{Java projects chosen for evaluation}
+\label{JavaProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
 \textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
@@ -2944,7 +2930,6 @@ then implied that this applies only for after major version
 \codeinline{gson} & 8000 LOC & 3400 & Seems like it, not officially. \\
 \hline
 \end{tabular}
-\caption{Java projects chosen for evaluation}
 \end{table}
 
 Evaluation of Java projects using the native handler proved to be difficult.
@@ -2981,8 +2966,9 @@ applies after version \codeinline{2.0.0}.
 \subsection{Clojure}
 
 \begin{table}[H]
-\label{ClojureProjectsForEvaluation}
 \centering
+\caption{Clojure projects chosen for evaluation}
+\label{ClojureProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
 \textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
@@ -2994,7 +2980,6 @@ officially. \\
 % \\
 % TODO: another Clojure library
 \end{tabular}
-\caption{Clojure projects chosen for evaluation}
 \end{table}
 
 \subsubsection{cheshire}
@@ -3010,8 +2995,10 @@ the first version \codeinline{1.1.0} has misconfigured paths and the
 namespaces it defines are inaccessible, not even when working from a
 manually created REPL.
 
-\begin{table}[H]
+\begin{wraptable}{r}{0.45\textwidth}
 \centering
+\caption{\textit{cheshire} statistics}
+\label{CheshireStats}
 \begin{tabular}{|lr|}
 All versions & 38 \\
 Dropped versions & 1 \\
@@ -3020,9 +3007,7 @@ Mismatches (breaking) & 7 \\
 Proportion of mismatches & 51\% \\
 Proportion of mismatches (breaking) & 18\% \\
 \end{tabular}
-\caption{\textit{cheshire} statistics}
-\label{CheshireStats}
-\end{table}
+\end{wraptable}
 
 There seems to be a clear indication that the project has stabilised
 over time (fig. \ref{CheshireCumulativeMismatches}), seeing frequent,
@@ -3069,8 +3054,10 @@ version number. For example version \codeinline{v2.5.0} has 6 variants
 actual final version is compared to its successor in evaluation, which
 brings down the number of releases to 32.
 
-\begin{table}[]
+\begin{wraptable}{r}{0.45\textwidth}
 \centering
+\caption{\textit{nippy} statistics}
+\label{NippyStats}
 \begin{tabular}{|lr|}
 All versions & 32 \\
 Mismatches & 14 \\
@@ -3078,9 +3065,7 @@ Mismatches (breaking) & 6 \\
 Proportion of mismatches & 43\% \\
 Proportion of mismatches (breaking) & 18\% \\
 \end{tabular}
-\caption{\textit{nippy} statistics}
-\label{NippyStats}
-\end{table}
+\end{wraptable}
 
 \textit{nippy} shows a trend of stabilisation similar to
 \textit{cheshire} (fig. \ref{NippyCumulativeMismatches}). For a period
@@ -3090,7 +3075,7 @@ which then plateaus. The frequency of releases in that interval is
 also larger than the one for the entirety of the project: 5.60 per 100
 days, compared to only 3.74 per 100 days.
 
-\begin{figure}[H]
+\begin{figure}[]
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/nippy_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{nippy})}
@@ -3201,7 +3186,10 @@ To get some context about the state of the projects prior to any
 evaluation, figure \ref{DistributionAllVersions} shows the
 distribution of the number of released versions. It is clear that
 nearly all projects have less than 50 versions, with the majority
-having less than 10.
+having less than 10. Moreover, looking at the largest major version
+ever found in the projects (figure \ref{DistributionLargestMajor}) we
+can see that the data has a disproportionate number of projects that
+have never seen a \textit{1.0.0} release.
 
 \begin{figure}[]
 \centering
@@ -3209,11 +3197,6 @@ having less than 10.
 \caption{Distribution of the number of releases}
 \label{DistributionAllVersions}
 \end{figure}
-
-Moreover, looking at the largest major version ever found in the projects
-(figure \ref{DistributionLargestMajor}) we can see that the data has a
-disproportionate number of projects that have never seen a
-\textit{1.0.0} release.
 
 \begin{figure}[]
 \centering
@@ -3227,7 +3210,7 @@ avoid skewing the statistical results because of outliers: one
 comprising all 403 projects, a second one containing only projects
 which reach version \textit{1.0.0} and a third one with projects that
 have at least 10 released versions. This partioning is shown on fig.
-\ref{Datasets}, while table \ref{DatasetStatistics} present some
+\ref{Datasets}, while table \ref{DatasetStatistics} presents some
 statistics for each data set.
 
 \begin{figure}[H]
@@ -3277,6 +3260,8 @@ Projects with the minimal number of breaking mismatches & 284 & 53 & 98 \\
 % multiple languages
 
 % TODO: better automated versioning scheme
+
+% TODO: integration with dev tools
 
 \begin{appendices}
 
@@ -3338,7 +3323,7 @@ has a small set of immutable data structures that are reused
 throughout the standard and external libraries instead of defining
 ad-hoc ones (``It is better to have 100 functions operate on one data
 structure than to have 10 functions operate on 10 data
-structures.''\cite{ClojureRationale}).
+structures.'' \cite{ClojureRationale}).
 
 \subsubsection{Data structures}
 
