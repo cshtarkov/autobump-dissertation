@@ -10,6 +10,6 @@ for repo in `echo */`; do
     LAST_TAG=`git tag --sort version:refname | tail -n1`
     printf "\nEvaluating $repo from $FIRST_TAG to $LAST_TAG\n"
     cd ..
-    # autobump python -r $repo -f $FIRST_TAG -t $LAST_TAG -e -d -cstdout &> "$repo"mismatches.txt
+    autobump python -r $repo -f $FIRST_TAG -t $LAST_TAG -e -d -cstdout &> "$repo"mismatches.txt
     stats.py <(mismatches.sh "$repo"mismatches.txt) <(all_versions.sh "$repo"mismatches.txt) > "$repo"stats.txt
 done

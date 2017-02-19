@@ -6,6 +6,7 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from copy import deepcopy
 from matplotlib_venn import venn3
 
 COLORS = {
@@ -25,6 +26,7 @@ for repo in os.listdir("."):
             versions, mismatches, breaking, largest_major = map(int, stats.readline().split())
             if int(versions) < 2:
                 continue
+            print("Accepted ",repo)
             all_stats.append(list((repo, versions, mismatches, breaking, largest_major)))
     except:
         print("Missing stats file for", repo, file=sys.stderr)
@@ -83,11 +85,33 @@ def get_nums(st, dset):
 
 
 dset1 = all_stats
-dset2 = list(filter(lambda p: p[4] > 0, all_stats))
-dset3 = list(filter(lambda p: p[1] >= 10, all_stats))
+dset2 = deepcopy(list(filter(lambda p: p[4] > 0, all_stats)))
+dset3 = deepcopy(list(filter(lambda p: p[1] >= 10, all_stats)))
 get_nums(all_stats, "all_stats")
 get_nums(dset2, "major_1")
 get_nums(dset3, "versions_10")
+
+plt.clf()
+plt.boxplot([list(map(lambda p: p[5], dset1)),
+             list(map(lambda p: p[5], dset2)),
+             list(map(lambda p: p[5], dset3))],
+            vert=True,
+            labels=["All projects",
+                    "Published API",
+                    "At least 10 releases"])
+plt.yticks(np.arange(0, 101, 5))
+plt.savefig("boxplots_mismatches.pdf")
+plt.clf()
+plt.boxplot([list(map(lambda p: p[6], dset1)),
+             list(map(lambda p: p[6], dset2)),
+             list(map(lambda p: p[6], dset3))],
+            vert=True,
+            flierprops=dict(marker='o', markersize=1),
+            labels=["All projects",
+                    "Published API",
+                    "At least 10 releases"])
+plt.yticks(np.arange(0, 101, 5))
+plt.savefig("boxplots_breaking.pdf")
 
 plt.clf()
 plt.figure(figsize=(5,4))
