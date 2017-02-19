@@ -490,15 +490,13 @@ a tool like Autobump would have been beneficial in their development.
 
 \noindent Chapter \ref{Conclusion} -- \textbf{Conclusion} \\
 Summarizes what was accomplished by this project and proposes future work.
-\\
 
 \noindent Appendix \ref{AutobumpInPractice} -- \textbf{Running
-Autobump in practice} \\
-Gives practical tips on how to run Autobump in the real world.
-
-\noindent Appendix \ref{ClojurePrimer} -- \textbf{Primer on Clojure}
-\\
-Explains some of Clojure's features that relate to this project.
+Autobump in practice} \\\\
+\noindent Appendix \ref{ClojurePrimer} -- \textbf{Primer on Clojure} \\\\
+\noindent Appendix \ref{Listings} -- \textbf{Listings} \\\\
+\noindent Appendix \ref{AutomatedEvaluationData} -- \textbf{Automated
+evaluation data}
 
 \chapter{Previous work}
 \label{PreviousWork}
@@ -3102,6 +3100,8 @@ being introduced and not bumping the minor version number.
 % TODO: histogram of number of releases, number of breaking
 % TODO: cumulative mismatches/breaking changes over time
 
+% TODO: proportion of breaking vs non-breaking
+
 \section{Automated evaluation}
 
 In addition to the previous round, a large scale evaluation was
@@ -3151,6 +3151,15 @@ that ignores frequently encountered directories and files such as
 were evaluated from their very first release to the very last, all
 using the same configuration file.
 
+Just like the manual evaluation of Python projects, the automated was
+done twice -- with and without structural typing.
+
+\subsubsection{Limitations}
+
+Not having a project-specific configuration files and using a generic
+one for all projects is not ideal. It was fully expected that this
+would introduce some noise in the final data.
+
 There is an obvious problem with Python 3 compatibility -- although
 PyPI can rightfully claim that a project supports Python 3 and it ends
 up in this list of 632 repositories, it is not guaranteed that all
@@ -3172,8 +3181,11 @@ This potentially leads to introducing false negatives, but the impact
 of that on the final data ought to be smaller than dropping too many
 versions -- library code written in Python 2 is frequently compatible
 with 3 without any modifications. User-facing parts of the projects
-using a \pythoninline{print} statements without parantheses are more
-likely to fail.
+using \pythoninline{print} statements without parantheses are more
+likely to fail. Nevertheless, when examining the final results it
+should be taken into account that they are expected to be slightly
+skewed towards a lower number of mismatches because of source files
+being ignored.
 
 \subsection{Results}
 
@@ -3184,76 +3196,81 @@ the repository. It is entirely possible that the project has releases
 which are not tagged, but the script can't find that out.}, so no
 adjacent pairs of versions could be compared.
 
-To get some context about the state of the projects prior to any
-evaluation, figure \ref{DistributionAllVersions} shows the
-distribution of the number of released versions. It is clear that
-nearly all projects have less than 50 versions, with the majority
-having less than 10. Moreover, looking at the largest major version
-ever found in the projects (figure \ref{DistributionLargestMajor}) we
-can see that the data has a disproportionate number of projects that
-have never seen a \textit{1.0.0} release.
-
-\begin{figure}[]
-\centering
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_all_versions}
-\caption{Distribution of the number of releases}
-\label{DistributionAllVersions}
-\end{figure}
-
-\begin{figure}[]
-\centering
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_major_versions}
-\caption{Distribution of largest major versions}
-\label{DistributionLargestMajor}
-\end{figure}
+Prior to any evaluation, it was noted that nearly all projects have
+less than 50 releases, with the majority having less than 10 (fig.
+\ref{DistributionAllVersions}). Morevoer, looking at the largest major
+version that projects have seen it was found that there was a
+disproportionate number of projects that have never seen a
+\textit{1.0.0} release (fig. \ref{DistributionLargestMajor}).
 
 Having this information in mind, three data sets were constructed to
 avoid skewing the statistical results because of outliers: one
 comprising all 403 projects, a second one containing only projects
 which reach version \textit{1.0.0} and a third one with projects that
-have at least 10 released versions. This partioning is shown on fig.
-\ref{Datasets}, while table \ref{DatasetStatistics} presents some
-statistics for each data set.
+have at least 10 released versions. Note that some projects can fall
+in more than one category (fig. \ref{Datasets}). A fourth data set was
+considered, containing projects that had a higher degree of
+popularity, but ultimately not used because its contents heavily
+coincided with the one containing projects that have reached version
+\textit{1.0.0}.
 
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.3\textheight]{images/evaluation/datasets}
-\caption{Data sets}
-\label{Datasets}
-\end{figure}
+\subsubsection{Without structural typing}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-& \textbf{All projects} & \textbf{Published API} & \textbf{At least 10 releases} \\
-\hline
-Total projects & 403 & 172 & 185 \\
-\hline
-Smallest number of releases & 2 & 2 & 10 \\
-\hline
-Largest number of releases & 203 & 203 & 203 \\
-\hline
-Min. \% of all mismatches & 0\% & 0\% & 0\% \\
-\hline
-Max. \% of all mismatches & 88.8\% & 88.8\% & 88.2\% \\
-\hline
-Projects with the minimal number of total mismatches & 42 & 13 & 1 \\
-\hline
-Min. \% of breaking mismatches & 0\% & 0\% & 0\% \\
-\hline
-Max. \% of breaking mismatches & 75\% & 75\% & 70.6\% \\
-\hline
-Projects with the minimal number of breaking mismatches & 284 & 53 & 98 \\
-\hline
-\textbf{Avg. \% of all mismatches} & 40\% & 46.3\% & 44.7\% \\
-\hline
-\textbf{Avg. \% of breaking mismatches} & 6.8\% & 15.9\% & 9.3\% \\
-\hline
-\end{tabular}
-\caption{Statistics for each data set}
-\label{DatasetStatistics}
-\end{table}
+After generating statistics about the numbers of total and breaking
+mismatches in the different data sets (fig. \ref{BoxplotsMismatches}
+and \ref{BoxplotsBreaking}), several observations were made. The
+median percentage of total mismatches in projects with a published API
+(50\%) is only slightly higher than the median for projects with at
+least 10 releases (47\%), which is in turn only slightly higher than
+the median for all projects (44\%). Not only the median, but indeed
+the whole distribution of the percentage of mismatches steadily shifts
+downwards, which is more evident in figures
+\ref{DistributionPublishedAPI}, \ref{DistributionTenReleases} and
+\ref{DistributionAllProjects}.
+
+Moreover, looking at the median percentages of breaking mismatches
+(0\%, 12\% and 0\% respectively) it is clear that non-breaking
+mismatches are much more frequent than breaking. During the manual
+evaluation phase it was found that they mostly stem from making small
+backwards-compatible changes without bumping the minor version number,
+and from bumping the minor version when making improvements that don't
+affect the API. Given that the proportion of breaking versus
+non-breaking mismatches here is similar, it is possible that the
+reasons are also similar.
+
+The 0\% median breaking mismatches in two of the data sets is
+unsurprising, given that only 172 of the 403 projects have ever
+reached major vesion 1 and Autobump by design never bumps a project at
+major version 0 to 1. Separating the ones that have reached
+\textit{1.0.0} (or higher) in another data set is more representative
+of how Autobump behaves with projects that have a longer history.
+
+The 12\% median number of breaking mismatches is only slightly higher
+than what was found during the manual evaluation of Python projects
+with structural typing disabled -- 10\%\footnote{Considering only the
+three projects that have reached major version 1, i.e.
+discounting Docopts.}.
+
+\subsubsection{With structural typing}
+
+With structural typing enabled, somewhat suprisingly, there is a very
+small upward shift in the number of breaking mismatches (fig.
+\ref{StrBoxplotsMismatches} and \ref{StrBoxplotsBreaking}). All data
+sets seem to equally affected. This is contrary to what was observed
+in the first round, where for some projects structural typing almost
+doubled the number of breaking mismatches.
+
+\subsubsection{Summary}
+
+Overall, the results from the second round of evaluation show that the
+projects selected in the first round were indeed
+representative\footnote{As far as adherence to semantic versioning is
+concerned.} of the Python ecosystem as a whole. The notable exception
+is that structural typing actually has a much smaller impact than what
+the first round would suggest.
+% TODO: what about all mismatches, not just breaking?
+
+% TODO: how much of a problem mismatches are
 
 \chapter{Conclusion}
 \label{Conclusion}
@@ -3479,6 +3496,121 @@ in the current one, similarly to Java's \javainline{import} statement.
 % TODO: records, protocols
 
 \subsubsection{Optional static typing}
+
+\chapter{Listings}
+\label{Listings}
+
+\chapter{Automated evaluation data}
+\label{AutomatedEvaluationData}
+
+\section{Full listing of projects for automated evaluation}
+
+\section{Figures}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of the number of releases}
+\label{DistributionAllVersions}
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_all_versions}
+\end{figure}
+
+\begin{figure}[]
+\caption{Distribution of largest major versions}
+\label{DistributionLargestMajor}
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_major_versions}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Data sets}
+\label{Datasets}
+\includegraphics[height=0.4\textheight]{images/evaluation/datasets}
+\end{figure}
+
+\subsubsection{Without structural typing}
+
+\begin{figure}[]
+\centering
+\caption{Percentage of total mismatches across projects (w/o structural
+typing)}
+\label{BoxplotsMismatches}
+\includegraphics[height=0.4\textheight]{images/evaluation/boxplots_mismatches}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Percentages of breaking mismatches across projects (w/o
+structural typing)}
+\label{BoxplotsBreaking}
+\includegraphics[height=0.4\textheight]{images/evaluation/boxplots_breaking}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across projects with
+a published API (w/o structural typing)}
+\label{DistributionPublishedAPI}
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_major_version_1}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across projects with
+more than 10 releases (w/o structural typing)}
+\label{DistributionTenReleases}
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_more_than_10}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across all projects
+(w/o structural typing)}
+\label{DistributionAllProjects}
+\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_all_projects}
+\end{figure}
+
+\subsubsection{With structural typing}
+
+\begin{figure}[]
+\centering
+\caption{Percentage of total mismatches across projects (w/ structural
+typing)}
+\label{StrBoxplotsMismatches}
+\includegraphics[height=0.4\textheight]{images/evaluation/str_boxplots_mismatches}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Percentages of breaking mismatches across projects (w/
+structural typing)}
+\label{StrBoxplotsBreaking}
+\includegraphics[height=0.4\textheight]{images/evaluation/str_boxplots_breaking}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across projects with
+a published API (w/ structural typing)}
+\label{StrDistributionPublishedAPI}
+\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_major_version_1}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across projects with
+more than 10 releases (w/ structural typing)}
+\label{StrDistributionTenReleases}
+\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_more_than_10}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Distribution of percentage of mismatches across all projects
+(w/ structural typing)}
+\label{StrDistributionAllProjects}
+\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_all_projects}
+\end{figure}
 
 \end{appendices}
 
