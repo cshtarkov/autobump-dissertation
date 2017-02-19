@@ -12,4 +12,7 @@ for repo in `echo */`; do
     cd ..
     autobump python -r $repo -f $FIRST_TAG -t $LAST_TAG -e -d -cstdout &> "$repo"mismatches.txt
     stats.py <(mismatches.sh "$repo"mismatches.txt) <(all_versions.sh "$repo"mismatches.txt) > "$repo"stats.txt
+    cd $repo
+    cumulative_mismatches.py <(mismatches.sh mismatches.txt) <(tags_with_dates.sh) > intervals.txt
+    cd ..
 done

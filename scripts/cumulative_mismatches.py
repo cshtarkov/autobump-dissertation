@@ -69,6 +69,10 @@ for date_a, date_b in zip(dates, dates[1:]):
     all_versions.append(date_diff)
 diffs = sorted(diffs)
 all_versions = sorted(all_versions)
+for diff in diffs:
+    print("diff", diff)
+for all_version in all_versions:
+    print("all_version", all_version)
 
 # Plot cumulative mismatches
 total = [total for (total, _) in dates_mismatches.values()]

@@ -3251,6 +3251,13 @@ with structural typing disabled -- 10\%\footnote{Considering only the
 three projects that have reached major version 1, i.e.
 discounting Docopts.}.
 
+Across all projects, there is no clear indication that the length of
+time passed between two adjacent releases has bearing on whether a
+breaking change went unnoted (fig. \ref{HistogramAllProjects}). The
+highest observed ratio of breaking mismatches to all released versions
+is around the 100-day mark, but it does not dominate the other time
+intervals.
+
 \subsubsection{With structural typing}
 
 With structural typing enabled, somewhat suprisingly, there is a very
@@ -3260,6 +3267,10 @@ sets seem to equally affected. This is contrary to what was observed
 in the first round, where for some projects structural typing almost
 doubled the number of breaking mismatches.
 
+The proportions of breaking mismatches to all released versions in
+different time intervals are uniformly, slightly higher. (fig.
+\ref{StrHistogramAllProjects}).
+
 \subsubsection{Summary}
 
 Overall, the results from the second round of evaluation show that the
@@ -3268,6 +3279,12 @@ representative\footnote{As far as adherence to semantic versioning is
 concerned.} of the Python ecosystem as a whole. The notable exception
 is that structural typing actually has a much smaller impact than what
 the first round would suggest.
+
+Some projects, like Requests, suggested that the number of unnoted
+breaking changes may be proportional to the time interval that has
+elapsed since the last release. However, data gathered from a larger
+sample size shows that this is not the case.
+
 % TODO: what about all mismatches, not just breaking?
 
 % TODO: how much of a problem mismatches are
@@ -3281,6 +3298,8 @@ the first round would suggest.
 % TODO: better automated versioning scheme
 
 % TODO: integration with dev tools
+
+% TODO: evaluation: does LOC impact adherence?
 
 \begin{appendices}
 
@@ -4307,6 +4326,14 @@ more than 10 releases (w/o structural typing)}
 
 \begin{figure}[]
 \centering
+\caption{Histogram of total versions vs. breaking mismatches in a time
+interval for all projects (w/o structural typing)}
+\label{HistogramAllProjects}
+\includegraphics[height=0.4\textheight]{images/evaluation/ls_nonstr_introduced_changes}
+\end{figure}
+
+\begin{figure}[]
+\centering
 \caption{Percentage of total mismatches across projects (w/ structural
 typing)}
 \label{StrBoxplotsMismatches}
@@ -4343,6 +4370,14 @@ more than 10 releases (w/ structural typing)}
 (w/ structural typing)}
 \label{StrDistributionAllProjects}
 \includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_all_projects}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\caption{Histogram of total versions vs. breaking mismatches in a time
+interval for all projects (w/ structural typing)}
+\label{StrHistogramAllProjects}
+\includegraphics[height=0.4\textheight]{images/evaluation/ls_str_introduced_changes}
 \end{figure}
 
 \end{appendices}
