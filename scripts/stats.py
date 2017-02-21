@@ -23,8 +23,14 @@ with open(mismatches_file) as f:
             breaking_count += 1
 
 # Get all versions
+largest_major = 0
 all_versions = 0
 with open(all_versions_file) as f:
-    all_versions = len(f.readlines()) + 1
+    for version in f.readlines():
+        all_versions += 1
+        major = Semver.guess_from_string(version).major
+        if major > largest_major:
+            largest_major = major
+all_versions += 1
 
-print(all_versions, mismatch_count, breaking_count)
+print(all_versions, mismatch_count, breaking_count, largest_major)

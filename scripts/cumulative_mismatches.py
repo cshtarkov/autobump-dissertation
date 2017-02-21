@@ -7,6 +7,7 @@
 # cumulative_mismatches.py <(mismatches.sh file) <(tags_with_dates.sh | grep desired_version -B30000)
 #
 import sys
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
@@ -68,6 +69,10 @@ for date_a, date_b in zip(dates, dates[1:]):
     all_versions.append(date_diff)
 diffs = sorted(diffs)
 all_versions = sorted(all_versions)
+for diff in diffs:
+    print("diff", diff)
+for all_version in all_versions:
+    print("all_version", all_version)
 
 # Plot cumulative mismatches
 total = [total for (total, _) in dates_mismatches.values()]
@@ -80,6 +85,11 @@ total_plt = plt.scatter(dates, total, s=25, label="Total", color=COLORS["blue"])
 breaking_plt = plt.scatter(dates, breaking, s=25, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
 plt.gcf().autofmt_xdate()
+plt.yticks(range(min(total), math.ceil(max(total))+1, 2))
+# plt.annotate(xy=(datetime(2013, 4, 12), 7), s="v5.1.0",
+#              textcoords="offset pixels", xytext=(50,-40),
+#              arrowprops=dict(facecolor="black", shrink=0.03, width=2, headwidth=12),
+#              verticalalignment="bottom", horizontalalignment="right")
 plt.savefig("cumulative_mismatches.pdf")
 
 # Plot histogram of time intervals
@@ -93,3 +103,10 @@ plt.hist((all_versions, diffs),
 plt.gca().set_xscale("log")
 plt.legend()
 plt.savefig("introduced_changes.pdf")
+
+# Calculate frequency of releases in some intervals
+# total_freq = len(dates) / float(((dates[-1] - dates[0]).days)) * 100
+# print("Total frequency: ", total_freq)
+# dates_between = list(filter(lambda d: d >= datetime(2012, 1, 1), filter(lambda d: d <= datetime(2013, 1, 1), dates)))
+# dates_between_freq = len(dates_between) / float(((dates_between[-1] - dates_between[0]).days)) * 100
+# print("dates_between frequency: ", dates_between_freq)

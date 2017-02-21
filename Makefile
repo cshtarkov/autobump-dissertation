@@ -12,7 +12,7 @@ images: $(DOT_PDF_FILES)
 
 dissertation: images
 	cp -v dissertation.tex dissertation.tex.bsed
-	sed -i s'/\$$\$$/\$$/g' dissertation.tex
+# sed -i s'/\$$\$$/\$$/g' dissertation.tex
 	pdflatex dissertation
 	bibtex dissertation
 	pdflatex dissertation
