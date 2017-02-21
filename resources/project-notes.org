@@ -224,3 +224,15 @@
 * Next time <2017-02-14 Tue>
 
   Stylistic question: URL to something, does it go in bibliography or footnote?
+* Done automated evaluation <2017-02-21 Tue>
+
+  - Started with 632, 605 cloned, 403 have at least 2 versions
+  - A lot of projects have 1) less than 10 versions and 2) never reached version =1.0.0=
+  - Partioned into three data sets [[file+emacs:../images/evaluation/datasets.pdf][venn diagram]]
+  - Median breaking for stable projects is 12%, it was 10% in manual
+  - Turning on structural typing increases it slightly, but in manual it almost doubled it
+  - Barely any relation between time intervals and breaking mismatches [[file+emacs:../images/evaluation/ls_nonstr_introduced_changes.pdf][histogram]]
+
+  Other than that:
+  - wrote up those results
+  - left: right a summary, 1 clojure project, *java projects*, conclusion
