@@ -247,3 +247,8 @@
   Other than that:
   - wrote up those results
   - left: right a summary, 1 clojure project, *java projects*, conclusion
+
+  *ltc project title* is wrong!
+
+  less than 1.0.0, are breaking changes more frequent
+  do people publish the public api consciously?
