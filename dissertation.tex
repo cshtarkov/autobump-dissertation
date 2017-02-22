@@ -2599,10 +2599,10 @@ Given that structural typing is a configurable option for the Python
 handler, each project was evaluated twice -- with the option disabled
 and then enabled.
 
-\subsubsection{requests}
+\subsubsection{Requests}
 
 % TODO: put links to libraries, footnote or bibliography?
-\textit{requests} is a large-ish (for Python standards) library for
+\textit{Requests} is a large-ish (for Python standards) library for
 making HTTP requests that officially claims to follow Semver, as
 specified in their contributing guidelines. The evaluation range was
 from version \codeinline{1.0.0} to \codeinline{2.13.0}, which was the
@@ -2639,7 +2639,7 @@ Mismatches (breaking) & 5 \\
 Proportion of mismatches & 30\% \\
 Proportion of mismatches (breaking) & 11\%
 \end{tabular}
-\caption{\textit{requests} statistics (w/o structural typing)}
+\caption{\textit{Requests} statistics (w/o structural typing)}
 \label{RequestsNonStructural}
 \end{table}
 \end{minipage}
@@ -2653,7 +2653,7 @@ Mismatches (breaking) & 11 \\
 Proportion of mismatches & 34\% \\
 Proportion of mismatches (breaking) & 25\%
 \end{tabular}
-\caption{\textit{requests} statistics (w/ structural typing)}
+\caption{\textit{Requests} statistics (w/ structural typing)}
 \label{RequestsStructural}
 \end{table}
 \end{minipage}
@@ -2707,7 +2707,7 @@ version bumps are in the triple digits.
 \begin{figure}[]
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/requests_cumulative_mismatches}
-\caption{Cumulative mismatches over time (\textit{requests})}
+\caption{Cumulative mismatches over time (\textit{Requests})}
 \label{RequestsCumulativeMismatches}
 \end{figure}
 
@@ -2715,14 +2715,13 @@ version bumps are in the triple digits.
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/requests_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
-interval (\textit{requests})}
+interval (\textit{Requests})}
 \label{RequestsHistogram}
 \end{figure}
 
-\subsubsection{simplejson}
-% TODO: simplejson -> Simplejson in beginning of sentence, strip textits
+\subsubsection{Simplejson}
 
-\textit{simplejson} is a JSON parsing library which has the highest
+\textit{Simplejson} is a JSON parsing library which has the highest
 number of downloads on PyPI across all projects. It is also bundled
 with a standard CPython installation as part of the standard library.
 Version \codeinline{3.0.0} is the lower bound for evaluation as that
@@ -2748,7 +2747,7 @@ Mismatches (breaking) & 1 \\
 Proportion of mismatches & 15\% \\
 Proportion of mismatches (breaking) & 2\%
 \end{tabular}
-\caption{\textit{simplejson} statistics (w/o structural typing)}
+\caption{\textit{Simplejson} statistics (w/o structural typing)}
 \label{SimplejsonNonStructural}
 \end{table}
 \end{minipage}
@@ -2762,7 +2761,7 @@ Mismatches (breaking) & 1 \\
 Proportion of mismatches & 15\% \\
 Proportion of mismatches (breaking) & 2\%
 \end{tabular}
-\caption{\textit{simplejson} statistics (w/ structural typing)}
+\caption{\textit{Simplejson} statistics (w/ structural typing)}
 \label{SimplejsonStructural}
 \end{table}
 \end{minipage}
@@ -2771,16 +2770,16 @@ The sole unnoted breaking change is at the patch from
 \codeinline{3.0.9} to \codeinline{3.1.0}. One exceptions and two
 functions were moved from one module to another. That is noted in the
 changelog, but evidently the authors did not consider it significant
-enough to warrant a major version bump. However, \textit{simplejson}
+enough to warrant a major version bump. However, Simplejson
 never officially claims that it follows semantic versioning.
 
 The remaining 5 mismatches are very similar to what was observed with
-\textit{requests}. Very small additive changes to the API of some
-functions was deemed a patch change, when Semver claims it should be a
-feature, and improvements that don't impact the API bumped the minor
-version (which is a valid interpretation).
+Requests. Very small additive changes to the API of some functions was
+deemed a patch change, when Semver claims it should be a feature, and
+improvements that don't impact the API bumped the minor version (which
+is a valid interpretation).
 
-Compared to \textit{requests}, the time between releases does not seem
+Compared to Requests, the time between releases does not seem
 to impact breaking changes (noted or unnoted) at all. Comparable
 numbers of versions have been released at different intervals, but
 only a single one resulted in an unidentified breaking change.
@@ -2791,13 +2790,13 @@ one (see fig. \ref{SimplejsonHistogram}).
 \centering
 \includegraphics[width=0.5\textwidth,height=0.25\textheight]{images/evaluation/simplejson_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
-interval (\textit{simplejson})}
+interval (\textit{Simplejson})}
 \label{SimplejsonHistogram}
 \end{figure}
 
-\subsubsection{docopt}
+\subsubsection{Docopt}
 
-\textit{docopt} is ``Pythonic argument parser'' for creating
+\textit{Docopt} is ``Pythonic argument parser'' for creating
 command-line user interfaces. It is different from all other evaluated
 projects because at the time of writing it does not yet have a
 \codeinline{1.0.0} release. The API is not stable according to Semver,
@@ -2820,7 +2819,7 @@ All versions & 11 \\
 Mismatches & 1 \\
 Proportion of mismatches & 9\% \\
 \end{tabular}
-\caption{\textit{docopt} statistics (w/o structural typing)}
+\caption{\textit{Docopt} statistics (w/o structural typing)}
 \label{DocoptNonStructural}
 \end{table}
 \end{minipage}
@@ -2832,7 +2831,7 @@ All versions & 11 \\
 Mismatches & 2 \\
 Proportion of mismatches & 18\% \\
 \end{tabular}
-\caption{\textit{docopt} statistics (w/ structural typing)}
+\caption{\textit{Docopt} statistics (w/ structural typing)}
 \label{DocoptStructural}
 \end{table}
 \end{minipage}
@@ -2842,19 +2841,19 @@ because of an additional method \codeinline{remove} being called on a
 parameter. The surrounding usage implies that the argument is a list
 and it is reasonable to expect that it would provide a
 \codeinline{remove} method. Similarly to some cases in
-\textit{requests}, Autobump is being overzealous.
+Requests, Autobump is being overzealous.
 
-\subsubsection{hashids}
+\subsubsection{Hashids}
 
-\textit{hashids} is a very small (one class with four methods) library
+\textit{Hashids} is a very small (one class with four methods) library
 for generating unique string identifiers from integers. It is a fairly
 recent projects, so all 10 released versions support Python 3 and were
 evaluated. 4 out of them have major version \codeinline{0} similarly
-to \textit{docopt}, whereas the 5\textsuperscript{th} one is
+to Docopt, whereas the 5\textsuperscript{th} one is
 \codeinline{1.0.0}. This is useful to check whether Autobump handles
 the boundary between unstable and stable API sensibly.
 
-Similarly to \textit{simplejson} there is no difference in the
+Similarly to Simplejson there is no difference in the
 mismatches with structural typing enabled and disabled.
 
 \noindent
@@ -2868,7 +2867,7 @@ Mismatches (breaking) & 1 \\
 Proportion of mismatches & 40\% \\
 Proportion of mismatches (breaking) & 10\% \\
 \end{tabular}
-\caption{\textit{hashids} statistics (w/o structural typing)}
+\caption{\textit{Hashids} statistics (w/o structural typing)}
 \label{HashidsNonStructural}
 \end{table}
 \end{minipage}
@@ -2882,7 +2881,7 @@ Mismatches (breaking) & 1 \\
 Proportion of mismatches & 40\% \\
 Proportion of mismatches (breaking) & 10\% \\
 \end{tabular}
-\caption{\textit{hashids} statistics (w/ structural typing)}
+\caption{\textit{Hashids} statistics (w/ structural typing)}
 \label{HashidsStructural}
 \end{table}
 \end{minipage}
@@ -2950,7 +2949,7 @@ A final hurdle was that compiling complex Java projects like these
 ones is slow -- when running the \codeinline{java_native} handler it
 was noticeably an order of magnitude slower than \codeinline{java_ast}.
 
-\subsubsection{guava}
+\subsubsection{Guava}
 
 \textit{Guava} \cite{Guava} is a set of core libraries that extend the
 Java standard library. It is one of the most widely used Java
@@ -2962,7 +2961,7 @@ out of the 5 versions that did compile, there weren't any mismatches.
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
-\caption{\textit{guava} statistics (using AST handler)}
+\caption{\textit{Guava} statistics (using AST handler)}
 \label{GuavaStatistics}
 \begin{tabular}{|lr|}
 All versions & 28 \\
@@ -2985,7 +2984,7 @@ The remaining 4 are clear deviations from Semver. Version
 deeply nested utility methods were removed, which were nevertheless
 part of the public API.
 
-\subsubsection{mockito}
+\subsubsection{Mockito}
 
 \textit{Mockito} \cite{Mockito} is a mocking library. It is one of few
 libraries that outright claim to follow Semver, although that only
@@ -3008,13 +3007,6 @@ Although Semver is followed officially after \textit{2.0.0}, there is
 no difference between the rate of mismatches before and after this
 version (fig. \ref{MockitoCumulativeMismatches}).
 
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.4\textheight]{images/evaluation/mockito_cumulative_mismatches}
-\caption{Cumulative mismatches over time (\textit{mockito})}
-\label{MockitoCumulativeMismatches}
-\end{figure}
-
 Breaking mismatches are mostly due to the same reasons as with other
 libraries -- removing little-used methods or classes, and making small
 backwards-compatible changes to the API without bumping the minor
@@ -3029,6 +3021,13 @@ this reason, the history of the project was manually probed to find
 where those changes are and perform an evaluation for every change.
 The results were then going to be merged together.
 
+\begin{figure}[]
+\centering
+\includegraphics[height=0.4\textheight]{images/evaluation/mockito_cumulative_mismatches}
+\caption{Cumulative mismatches over time (\textit{mockito})}
+\label{MockitoCumulativeMismatches}
+\end{figure}
+
 However, these changes turned out to be more frequent than expected.
 Even when the correct build system was invoked with the correct
 parameters, builds still often times failed with non-descriptive error
@@ -3038,7 +3037,44 @@ approach of passing \codeinline{-x test} to ignore the task
 \codeinline{test} did not work half the time based on some combination
 of the version of Gradle and the configuration.
 
-\subsubsection{gson}
+\subsubsection{GSON}
+
+\textit{GSON} is serialization and deserialization library that
+can convert Java objects to JSON and vice versa.
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 30 \\
+Dropped versions & 0 \\
+Mismatches & 12 \\
+Mismatches (breaking) & 10 \\
+Proportion of mismatches & 40\% \\
+Proportion of mismatches (breaking) & 33\% \\
+\end{tabular}
+\caption{\textit{GSON} statistics (using AST handler)}
+\label{GSONASTStatistics}
+\end{table}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{table}[H]
+\centering
+\begin{tabular}{|lr|}
+All versions & 30 \\
+Dropped versions & 2 \\
+Mismatches & 13 \\
+Mismatches (breaking) & 12 \\
+Proportion of mismatches & 46\% \\
+Proportion of mismatches (breaking) & 42\% \\
+\end{tabular}
+\caption{\textit{GSON} statistics (using native handler)}
+\label{GSONNativeStatistics}
+\end{table}
+\end{minipage}
+
+% Comment that the changes have been the same
 
 \subsection{Clojure}
 
@@ -3059,9 +3095,9 @@ officially. \\
 \end{tabular}
 \end{table}
 
-\subsubsection{cheshire}
+\subsubsection{Cheshire}
 
-\textit{cheshire} is a ``fast JSON encoder and decoder''. It is a
+\textit{Cheshire} is a ``fast JSON encoder and decoder''. It is a
 relatively mature Clojure project, being at major version
 \codeinline{5} at the time of writing and being one of the most
 popular Clojure libraries. Although type hinting is optional, it is
@@ -3074,7 +3110,7 @@ manually created REPL.
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
-\caption{\textit{cheshire} statistics}
+\caption{\textit{Cheshire} statistics}
 \label{CheshireStats}
 \begin{tabular}{|lr|}
 All versions & 38 \\
@@ -3118,13 +3154,13 @@ don't impact the API.
 \begin{figure}[H]
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/cheshire_cumulative_mismatches}
-\caption{Cumulative mismatches over time (\textit{cheshire})}
+\caption{Cumulative mismatches over time (\textit{Cheshire})}
 \label{CheshireCumulativeMismatches}
 \end{figure}
 
-\subsubsection{nippy}
+\subsubsection{Nippy}
 
-\textit{nippy} is a ``high-performance serialization library''. It has
+\textit{Nippy} is a ``high-performance serialization library''. It has
 70 tagged releases, but nearly half of them carry a label after the
 version number. For example version \codeinline{v2.5.0} has 6 variants
 -- the final one, two release candidates and three betas. Only the
@@ -3133,7 +3169,7 @@ brings down the number of releases to 32.
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
-\caption{\textit{nippy} statistics}
+\caption{\textit{Nippy} statistics}
 \label{NippyStats}
 \begin{tabular}{|lr|}
 All versions & 32 \\
@@ -3144,8 +3180,8 @@ Proportion of mismatches (breaking) & 18\% \\
 \end{tabular}
 \end{wraptable}
 
-\textit{nippy} shows a trend of stabilisation similar to
-\textit{cheshire} (fig. \ref{NippyCumulativeMismatches}). For a period
+Nippy shows a trend of stabilisation similar to
+Cheshire (fig. \ref{NippyCumulativeMismatches}). For a period
 of about 2 years between versions \codeinline{1.2.0} and
 \codeinline{2.7.0} there is a large number unnoted breaking changes,
 which then plateaus. The frequency of releases in that interval is
@@ -3155,7 +3191,7 @@ days, compared to only 3.74 per 100 days.
 \begin{figure}[]
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/nippy_cumulative_mismatches}
-\caption{Cumulative mismatches over time (\textit{nippy})}
+\caption{Cumulative mismatches over time (\textit{Nippy})}
 \label{NippyCumulativeMismatches}
 \end{figure}
 
@@ -3326,7 +3362,7 @@ The 12\% median number of breaking mismatches is only slightly higher
 than what was found during the manual evaluation of Python projects
 with structural typing disabled -- 10\%\footnote{Considering only the
 three projects that have reached major version 1, i.e.
-discounting Docopts.}.
+discounting Docopt.}.
 
 Across all projects, there is no clear indication that the length of
 time passed between two adjacent releases has bearing on whether a
