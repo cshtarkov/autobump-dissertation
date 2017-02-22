@@ -2541,13 +2541,14 @@ allows for examining the mindset and motivations of developers.
 The process of evaluation was also important for identifying
 previously unknown errors in Autobump's behaviour, which were covered
 by neither unit nor acceptance tests. Manual inspection of the
-mismatches allowed for those bugs to be corrected. The following
-results were obtained only after correcting Autobump's behaviour, so
-all mismatches are because of a genuine disagreement between what the
-developers claim and what semantic versioning (or at least Autobump's
-interpretation of it) claims. Note that only mismatches are examined
--- versions where the two parties agree are not looked at, because it
-is fairly unlikely that both are wrong.
+mismatches allowed for many of these bugs to be corrected. The
+following results were obtained only after correcting Autobump's
+behaviour, so nearly all mismatches are because of a genuine
+disagreement between what the developers claim and what semantic
+versioning (or at least Autobump's interpretation of it) claims. Note
+that only mismatches are examined -- versions where the two parties
+agree are not looked at, because it is fairly unlikely that both are
+wrong.
 
 % Which version of Autobump was used?
 
@@ -2954,6 +2955,35 @@ was noticeably an order of magnitude slower than \codeinline{java_ast}.
 \textit{Guava} \cite{Guava} is a set of core libraries that extend the
 Java standard library. It is one of the most widely used Java
 projects.
+
+The \codeinline{java_native} handler was not of much use; the version
+ranges \textit{2 -- 6} and \textit{10 -- 18} did not compile. Although
+out of the 5 versions that did compile, there weren't any mismatches.
+
+\begin{wraptable}{r}{0.45\textwidth}
+\centering
+\caption{\textit{guava} statistics}
+\label{GuavaStatistics}
+\begin{tabular}{|lr|}
+All versions & 38 \\
+Dropped versions & 1 \\
+Mismatches & 19 \\
+Mismatches (breaking) & 7 \\
+Proportion of mismatches & 51\% \\
+Proportion of mismatches (breaking) & 18\% \\
+\end{tabular}
+\end{wraptable}
+
+Only 2 out of the 3 detected mismatches are legitimate deviations from
+Semver. Version \textit{2.0.0} introduces many new features compared
+to \textit{1.0.0}, but no breaking changes. In version \textit{10.0.1}
+some deeply nested utility methods were removed, which were
+nevertheless part of the public API.
+
+The final mismatch is in version \textit{11.0.1} where two more utility
+methods were removed, but they were marked as deprecated beforehand.
+Semver is ambiguous as to whether deprecated methods are part of the
+public API, so this is not necessarily a breaking change.
 
 \subsubsection{mockito}
 
