@@ -3089,6 +3089,9 @@ Proportion of mismatches (breaking) & 42\% \\
 officially. \\
 \codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially. \\
 \hline
+\codeinline{core.typed} & 43 000 LOC & 49 & Seems like it, not
+officially. \\
+\hline
 % \\
 % TODO: another Clojure library
 \end{tabular}
@@ -3206,6 +3209,29 @@ The distribution and reasoning behind non-breaking mismatches is
 nearly identical to what was observed in \textit{cheshire} -- nearly
 all such changes are because of a small number of public functions
 being introduced and not bumping the minor version number.
+
+\subsection{Core.Typed}
+
+\textit{Core.Typed} is the library that provides optional static
+typing for Clojure. It is part of Clojure 1.8 and future versions.
+Given that this is a relatively recent addition to Clojure, there are
+not many projects that use it consistently or have been using it long
+enough to warrant evaluation. This made the library itself the only
+candidate to evaluate whether static types in an otherwise dynamic
+language make any difference.
+
+\begin{wraptable}{r}{0.45\textwidth}
+\centering
+\caption{\textit{Core.Typed} statistics}
+\label{CoreTypedStats}
+\begin{tabular}{|lr|}
+All versions & 0 \\
+Mismatches & 0 \\
+Mismatches (breaking) & 0 \\
+Proportion of mismatches & 0\% \\
+Proportion of mismatches (breaking) & 0\% \\
+\end{tabular}
+\end{wraptable}
 
 \subsection{Summary}
 
