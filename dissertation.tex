@@ -467,7 +467,7 @@ Goes into existing projects that to some extent solve the problem
 of automatically assigning version numbers and the approaches that
 they use.
 
-\noindent Chapter \ref{Requirements} -- \textbf{Requirements} \\
+\noindent Chapter \ref{Approach} -- \textbf{Approach} \\
 Lays out the approach that Autobump is going to use for
 determining version numbers and the set of features that would make
 the tool useful.
@@ -712,8 +712,8 @@ a superclass of its original type -- all previous client code is
 guaranteed to compile fine, because of Java's inheritance rules, but
 there's no way that Japicmp would be aware of this.
 
-\chapter{Requirements}
-\label{Requirements}
+\chapter{Approach}
+\label{Approach}
 
 This chapter formalises the approach that the tool for this project,
 Autobump, should use to propose version numbers, and formulates the
@@ -2032,19 +2032,19 @@ kick off the comparison of two trees it's necessary to wrap both in a
 CAPIR unit, so that the first level of recursion actually looks at the
 top-level units in both codebases.
 
-Autobump's core objective, suggesting the new version number, is
-essentially formulated functionally in the main program as follows:
+% Autobump's core objective, suggesting the new version number, is
+% essentially formulated functionally in the main program as follows:
 
-\begin{center}
-\begin{tabular}{c}
-% TODO: real composition
-\begin{python}
-capir_at_commit = codebase_to_units . get_commit
-change = compare(capir_at_commit(previous), capir_at_commit(current))
-new_version = old_version.bump(change)
-\end{python}
-\end{tabular}
-\end{center}
+% \begin{center}
+% \begin{tabular}{c}
+% % TODO: real composition
+% \begin{python}
+% capir_at_commit = codebase_to_units . get_commit
+% change = compare(capir_at_commit(previous), capir_at_commit(current))
+% new_version = old_version.bump(change)
+% \end{python}
+% \end{tabular}
+% \end{center}
 
 $report$ is a simple function that takes care of adding a change to
 the changelog and checking whether the latest reported change is more
@@ -2065,6 +2065,16 @@ comparators used so far are for type checking (on the member $type$)
 and signature checking (on the member $signatures$).
 
 % TODO: talk about individual comparators
+
+Once the dominating change is known after running the comparison
+algorithm, the previous version can just be bumped according to the
+importance of the change. There is a special case when the previous
+version has the major number \textit{0}. If a breaking change is
+detected and that is the case, then Autobump will not bump it major to
+version \textit{1} as that would constitute publishing the API
+according to semantic versioning. The decision to publish the API
+should be left to the developers and cannot be automated. Instead,
+Autobump will default to bumping the minor version number instead.
 
 \section{User interface}
 
