@@ -3073,7 +3073,10 @@ Proportion of mismatches (breaking) & 42\% \\
 \end{table}
 \end{minipage}
 
-% Comment that the changes have been the same
+While the proportions of mismatches for GSON are slightly higher than
+other projects, there are no new unique reasons for them -- the most
+frequent cause of a breaking mismatch is the removal of an unimportant
+method or class. Those changes just happen more often.
 
 \subsection{Clojure}
 
@@ -3216,29 +3219,35 @@ being introduced and not bumping the minor version number.
 typing for Clojure. It is part of Clojure 1.8 and future versions.
 Given that this is a relatively recent addition to Clojure, there are
 not many projects that use it consistently or have been using it long
-enough to warrant evaluation. This made the library itself the only
-candidate to evaluate whether static types in an otherwise dynamic
-language make any difference.
+enough to warrant evaluation. This made it the only viable option.
+% TODO: for what?
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
 \caption{\textit{Core.Typed} statistics}
 \label{CoreTypedStats}
 \begin{tabular}{|lr|}
-All versions & 0 \\
-Mismatches & 0 \\
-Mismatches (breaking) & 0 \\
-Proportion of mismatches & 0\% \\
-Proportion of mismatches (breaking) & 0\% \\
+All versions & 144 \\
+Mismatches & 142 \\
+Proportion of mismatches & 98\% \\
 \end{tabular}
 \end{wraptable}
 
+Unfortunately Core.Typed does not have a stable API, the highest
+version reached so far being \textit{0.3.9}. Every single release has
+breaking changes, and Autobump's behaviour of bumping the minor
+version instead of the major whenever there's a breaking change before
+\textit{1.0.0} leads to a huge number of mismatches.
+
+Another way to handle breaking changes before \textit{1.0.0} is to
+simply ignore them and only consider the other two categories Autobump
+detects. However, it would not have a significant difference for this
+project -- the library has always been in rapid development and nearly
+every patch release includes at least one new function.
+
 \subsection{Summary}
 
-% TODO: histogram of number of releases, number of breaking
-% TODO: cumulative mismatches/breaking changes over time
-
-% TODO: proportion of breaking vs non-breaking
+% TODO: write this
 
 \section{Automated evaluation}
 
@@ -3649,8 +3658,6 @@ in the current one, similarly to Java's \javainline{import} statement.
 \end{clojure}
 \end{tabular}
 \end{center}
-
-% TODO: records, protocols
 
 \subsubsection{Optional static typing}
 
