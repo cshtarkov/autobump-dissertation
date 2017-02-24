@@ -741,7 +741,7 @@ be applied to different languages.
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
 \textbf{any} change to the API which makes it incompatible with the
-last version as breaking. Determining semantic incompatibilities is
+last version as breaking. Determining semantic incompatibility is
 generally undecidable, so this project takes a more strict definition of
 ``incompatible'' -- namely changes that make the new code technically
 incompatible with the old, i.e. it doesn't compile in the case of
@@ -753,7 +753,7 @@ also does not subjectively impart more significance on one change than
 another if both are of the same class, as it can be speculated humans
 tend to do.
 
-In the spirit of Semver, this projects adopts a technical and
+In the spirit of Semver, this project adopts a technical and
 deterministic list of changes to entities that are considered
 to be breaking. There is an important assumption that all
 public-facing entities (i.e. those accessible externally in a normal
@@ -782,9 +782,9 @@ assignment of version numbers, and both of those changes are breaking
 \hline
 \textbf{Change}                                                                               & \textbf{Rationalisation}                                                 \\
 \hline
-Removing an entity.                                                                           & User applications may be using it.                                       \\
+Removing an entity.                                                                           & Client applications may be using it.                                       \\
 \hline
-Changing the type of an entity to an incompatible type.                                       & User applications may be expecting a different type.                     \\
+Changing the type of an entity to an incompatible type.                                       & Client applications may be expecting a different type.                     \\
 \hline
 Adding a parameter with no default value to a function signature.                             & Calls to that function will immediately fail due to a missing parameter. \\
 \hline
@@ -809,33 +809,32 @@ be ``entities''.
 code, which for simplicity's sake are referred to only as ``functions'',
 even though in reality they may be object methods, macros, procedures etc.
 Additionally, some of those functions are callable from outside of the
-program where they are defined, comprising the majority of the API.
+program where they are defined, comprising the API.
 \label{SecondAssumption}
 \item The language has a type system which has the notion of binary
 compatibility:
 \begin{equation}
-\forall(T,Y) \in S, \mathrm{compatible}(T,Y) \in \{\mathrm{True},\mathrm{False}\}
+\forall(T_a,T_b) \in S, \mathrm{compatible}(T_a,Y_b) \in \{\mathrm{True},\mathrm{False}\}
 \end{equation}
 where $S$ is the set of all admissable types in the language and
 program. \\
 
-The notion of type compatibility is defined as the type $T$ being able
-to replace $Y$ without violating the rules of the language -- e.g. the
+The notion of type compatibility is defined as the type $T_a$ being able
+to replace $T_b$ without violating the rules of the language -- e.g. the
 Liskov substitution principle \cite{Liskov} in a typical
 object-oriented language. Note that this notion is also compatible
-with dynamically typed languages where types can not be reasonably
-checked by taking $compatible$ to always be true.
+with situations where types can not be reasonably checked by taking
+$compatible$ to always be true.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
-(e.g. minimalistic ones such as Brainfuck \cite{Brainfuck}), but these
-are also languages where a tool like Autobump would be utterly
-unuseful. There are also languages that partially conform. In those
-cases, as long as assumption \ref{SecondAssumption} is valid (i.e.
-there is an API), the rest can be ignored -- of course making some functionality
-of Autobump obsolete -- namely identifying in which parts of
-the program the changes have occurred and checking type compatibility.
-This project examines the radically different languages
+(e.g. minimalistic or esoteric ones such as Brainfuck
+\cite{Brainfuck}), but these are also languages where a tool like
+Autobump would be utterly unuseful. There are also languages that
+partially conform. In those cases, as long as assumption
+\ref{SecondAssumption} is valid (i.e. there is an API), the rest can
+be ignored -- of course making some functionality of Autobump
+obsolete. This project examines the radically different languages
 Python, Java and Clojure (section \ref{LanguageHandlers}) and chapter
 \ref{Evaluation} discusses whether the assumptions were found to be
 reasonable.
@@ -850,14 +849,13 @@ features were indeed added, they would be backwards-compatible.
 
 However, while changes to the API can be used to identify breaking
 changes with certainty, it is not so with feature additions. The
-version of Semver at the time of writing, Semver 2.0.0, is ambiguous
-regarding whether the public API can be tied to the addition of
+current version of Semver at the time of writing, Semver 2.0.0, is
+ambiguous whether the public API is always affected by the addition of
 features. At one point it claims that ``backwards compatible API
 additions/changes increment the minor version'', however later on it
 stipulates that the minor version number ``MAY be incremented if
 substantial new functionality or improvements are introduced within
 the private code''.
-
 While it would be possible to inspect changes to the private code,
 perhaps in terms of how the abstract syntax tree was modified, the
 line between a patch change and a feature addition would be quite
@@ -869,7 +867,7 @@ the following list:
 
 \begin{itemize}
 \item Adding a new entity.
-\item Changing the type of an entity into a compatible type.
+\item Changing the type of an entity to a compatible type.
 \item Adding a parameter with a default value to a function signature.
 \end{itemize}
 
@@ -878,8 +876,8 @@ indicative of a feature addition. Provided that no breaking changes
 are found, but some of these are, then it would be appropriate to bump
 the minor version number. This is a valid intepretation of the Semver
 specification, and it is the approach that \textit{elm-package} takes
-\cite{ElmPackageVR} as it relates to Elm: it defines a minor version
-bump as ``values have been added, existing values are unchanged''.
+\cite{ElmPackageVR}: it defines a minor version bump as ``values have
+been added, existing values are unchanged''.
 
 Note that while backwards-compatible additions to the API virtually
 always indicate a feature addition (at least for a flexible enough
@@ -891,8 +889,8 @@ feature.
 While Autobump is guaranteed to disagree with authors in some of the
 cases where a feature was added because it had no bearing on the API,
 this does not devalue its usefulness. The main point of semantic
-versioning is to guard against breaking changes, which can be reliably
-done just by looking at the API.
+versioning is to guard against breaking changes, which can be done
+reliably just by looking at the API.
 
 \section{Feature set and usage}
 
@@ -3258,6 +3256,7 @@ every patch release includes at least one new function.
 \subsection{Summary}
 
 % TODO: write this
+% TODO: were the assumptions reasonable?
 
 \section{Automated evaluation}
 
