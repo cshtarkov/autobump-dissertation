@@ -2974,14 +2974,15 @@ However, these changes turned out to be more frequent than expected.
 Even when the correct build system was invoked with the correct
 parameters, builds still often times failed with non-descriptive error
 messages like \codeinline{NullPointerException}. Moreover, there was
-no consistent way to skip running the test suite. The standard Gradle
+no consistent way to skip running the test suite. Later versions of
+Mockito are built using Gradle, and the the standard
 approach of passing \codeinline{-x test} to ignore the task
 \codeinline{test} did not work half the time based on some combination
 of the version of Gradle and the configuration.
 
 \subsubsection{GSON}
 
-\textit{GSON} is serialization and deserialization library that
+\textit{GSON} \cite{GSON} is serialization and deserialization library that
 can convert Java objects to JSON and vice versa.
 
 \noindent
@@ -3033,6 +3034,7 @@ method or class. Those changes just happen more often.
 \hline
 \codeinline{cheshire} & 1200 LOC & 961 & Seems like it, not
 officially. \\
+\hline
 \codeinline{nippy} & 2200 LOC & 105 & Seems like it, not officially. \\
 \hline
 \codeinline{core.typed} & 43 000 LOC & 49 & Seems like it, not
@@ -3190,8 +3192,41 @@ every patch release includes at least one new function.
 
 \subsection{Summary}
 
-% TODO: write this
-% TODO: were the assumptions reasonable?
+Several observations about the projects themselves and Autobump can be
+made from the first round data:
+
+\begin{enumerate}[(i)]
+\item Projects that officially claim to follow semantic versioning
+don't appear to do any better than projects that don't.
+\item The proportions of mismatches are comparable across the different
+languages, and it does not seem that language-specific features impact
+them.
+\item The most frequent causes for mismatches are very similar for the
+different languages. Even if a project claims to follow semantic
+versioning, some version bumps are still done according to a
+subjectively determined relative importance of the change, rather than
+what the scheme actually demands.
+\item The impact of most unnoted changes is likely not hugely
+significant for the majority of users, but has the potential to be.
+\item The length of time passed since the previous release of a
+project may be proportional to the likelihood of the new release
+introducing an unnoted breaking change.
+\item Using a common representation for all languages does not seem to
+handicap the ability to detect API changes for any particular
+language.
+\item Structural typing may be an unnecessary or even harmful feature:
+for some projects, like Requests, the proportion of mismatches doubles
+when enabled.
+\item The assumption made by \codeinline{java_native} that one build
+command can be used to build a project at all revisions is
+unrealistic, as 2 out of the 3 Java projects have shown. It may be a
+good idea to consider an approach where Autobump is invoked by the
+build system at appropriate times, rather than the other way around.
+\end{enumerate}
+
+Overall, the data suggests that these projects would have slightly
+benefited from using a tool such as Autobump to prevent subjectivity
+from influencing versioning decisions.
 
 \section{Automated evaluation}
 
