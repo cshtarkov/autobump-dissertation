@@ -1956,23 +1956,19 @@ which returns a directory location, where the state of the repository
 at that particular commit identifier can be found. How the handler
 obtains that is an implementation detail. Both version control systems
 that Autobump supports out of the box (Git and Mercurial) are
-distributed, so their preferred approach is to clone the repository to
-a temporary created location (not necessarily on disk, but in the file
-system), and then issue the appropriate command, e.g.
-\codeinline{checkout}), to get the working tree at a particular
+distributed, so their the approach is to clone the repository to a
+temporary created location (not necessarily on disk, but still in the
+file system), and then issue the appropriate command, e.g.
+\codeinline{checkout}, to get the working tree at a particular
 revision. Appropriate Python features are used so that the temporary
 directories get cleaned up after Autobump is done using them.
 
 The function \pythoninline{get_commit} is used in conjuction with the
-language handlers' \pythoninline{codebase_to_units}, which takes in a
-location in the file system and converts the code there to CAPIR.
-
-Autobump's main program essentially simple function composition to
-obtain the CAPIR of code as it was at some revision:
+language handlers' \pythoninline{codebase_to_units} to get the CAPIR
+of particular commit:
 
 \begin{center}
 \begin{tabular}{c}
-% TODO: real composition
 \begin{python}
 capir_at_commit = codebase_to_units . get_commit
 \end{python}
@@ -1985,10 +1981,11 @@ capir_at_commit = codebase_to_units . get_commit
 After the language handler has run twice and generated two CAPIR
 trees, the comparison algorithm can be invoked to find the differences
 between the two variants. It itself is fairly straightforward and
-defined recursively:
+defined recursively.
 
 \begin{algorithm}
 \caption{CAPIR Entity Comparison}
+\label{CAPIREntityComparison}
 \begin{algorithmic}[1]
 \Procedure{Compare}{A, B}
 \State $assert(type(A)$ is $type(B))$
@@ -2097,7 +2094,7 @@ the new version.
 
 Alternatively, a changelog can be generated in addition to just
 providing the version number. The option \codeinline{--changelog
-[filename]} saves the changelog to a file, and
+[filename]} saves the changelog to a file, while
 \codeinline{--changelog-stdout} just prints it. The very last line of
 output is still guaranteed to be new version number, so it can be
 easily extracted using tools like \codeinline{tail}.
@@ -2152,7 +2149,7 @@ non-zero to indicate that it failed.
 
 A full rundown of all options is given in appendix \ref{RundownOptions}.
 
-% TODO: fill this in
+% TODO: return things like --silence, --debug if there is enough space
 
 \chapter{Testing}
 \label{Testing}
