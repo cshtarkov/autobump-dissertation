@@ -2345,19 +2345,19 @@ commit_history = [
 % TODO: in essence, conflate semantic versioning with
 % how-big-the-change-was versioning
 
-This chapter applies Autobump retroactively to real-world libraries
-written in the different target languages. It compares the version
-numbers output of Autobump to what the developers of these libraries
-assigned manually and interprets the findings. Looking at the data, it
-is discussed whether the authors and users of those libraries would
-have benefited had they used a tool such as Autobump. Additionally,
-some of Autobump's design decisions are put to the test.
+This chapter shows how Autobump was applied retroactively to
+real-world libraries written in the different target languages.
+Versions numbers output by Autobump were compared to what the
+developers of these libraries assigned manually and the findings are
+interpreted. Looking at the data, it is discussed whether the authors
+and users of those libraries would have benefited had they used a tool
+such as Autobump. Additionally, some of Autobump's features are
+evaluated in terms of their success and usefulness.
 
 Two rounds of evaluation were performed. In the first round, Autobump
 was manually ran against the history of ten projects across the
 three languages. The reasons for the mismatches are examined manually
-and the differences in the findings for the individual languages are
-discussed.
+and the most common ones are noted.
 
 In the second round, a large-scale, mostly automated evaluation was
 performed on 632 Python projects. Overall trends are discussed, as
@@ -2377,10 +2377,8 @@ similarities allowed for a large part of the testing mechanism to be
 incorporated into Autobump itself. By passing the option
 \codeinline{-e} or \codeinline{--evaluate} when invoking the program,
 it will take the revisions specified by \codeinline{--from} and
-\codeinline{--to} as a range instead of them being an ealier and a
-latter commit. In essence, running an acceptance test is evaluating an
-artificially constructed repository.
-% TODO: what if --to is before --from?
+\codeinline{--to} as a range. In essence, running an acceptance test
+is evaluating an artificially constructed repository.
 
 Autobump expects that the tag names correspond to versions, and it
 attempts to extract the semantic version. For example, the tag
@@ -2389,7 +2387,8 @@ attempts to extract the semantic version. For example, the tag
 \codeinline{gson-release-2.8} and \codeinline{gson-release-2.9}, the
 tool compares the two, figures out that the earlier one is
 \codeinline{2.8.0} and issues a warning if the latter one is not
-\codeinline{2.9.0}.
+\codeinline{2.9.0}. Tags from which a version cannot be reliably
+extracted are omitted.
 
 While running in evaluation mode, Autobump prints to
 \codeinline{stdout} all the pairs it compares. If the option
@@ -2408,10 +2407,10 @@ docopt.Command.match: Type was changed to an incompatible type
 \end{BVerbatim}
 \end{center}
 
-This allows to measure the portion of mismatches, and whether Autobump
+This allows to measure the proportion of mismatches, and whether Autobump
 suggested a major version bump when the authors didn't. In combination
 with metadata from the repository itself, the change in those metrics
-over time can be shown. Appendix \ref{EvaluationScripts} shows the
+over time can be shown. Appendix \ref{Listings} shows the
 various scripts that operate on this format to assist with evaluation.
 
 Ten libraries in total across all languages were evaluated. They were
@@ -2520,18 +2519,17 @@ When evaluating Python projects, not all released versions were taken
 into account. Even though only projects with Python 3 support were
 selected, some of them are old enough that they have versions from
 before they added support. If that is the case, it is noted and the
-version and mismatch counts and ratios are adusted appropriately.
+version and mismatch counts and ratios are adjusted appropriately.
 
 Although the Python language does have information hiding mechanisms,
 they are relatively weak and seem like more of an afterthought.
 Autobump does take into account Python's official policy of
 considering symbol names prefixed with an underscore private and
-ignores them. However, this project found that this policy is not
+ignores them. However, this policy is not
 universally applied in the Python ecosystem. Almost all examined
 libraries contained code that is obviously not meant for public use
-but is nevertheless publically accessible. Strictly speaking this is
-allowed by Semver -- it does allow the public API to be ``public'' by
-documentation and intention, not only language mechanisms. To reduce
+but is nevertheless publically accessible. As discussed before, this
+is allowed by Semver. To reduce
 the number of false positives, custom configuration files were created
 for each project that ignore certain files and directories that are
 obviously not meant to be part of the public API. Initial attempts at
@@ -2546,7 +2544,7 @@ and then enabled.
 \subsubsection{Requests}
 
 % TODO: put links to libraries, footnote or bibliography?
-\textit{Requests} is a large-ish (for Python standards) library for
+\textit{Requests} \cite{Requests} is a large (for Python standards) library for
 making HTTP requests that officially claims to follow Semver, as
 specified in their contributing guidelines. The evaluation range was
 from version \codeinline{1.0.0} to \codeinline{2.13.0}, which was the
@@ -2665,20 +2663,20 @@ interval (\textit{Requests})}
 
 \subsubsection{Simplejson}
 
-\textit{Simplejson} is a JSON parsing library which has the highest
-number of downloads on PyPI across all projects. It is also bundled
-with a standard CPython installation as part of the standard library.
-Version \codeinline{3.0.0} is the lower bound for evaluation as that
-is first one that supports Python 3. The upper bound is
-\codeinline{3.10.0}, the latest one at the time of writing.
+\textit{Simplejson} \cite{Simplejson} is a JSON parsing library which
+has the highest number of downloads on PyPI across all projects. It is
+also bundled with a standard CPython installation as part of the
+standard library. Version \codeinline{3.0.0} is the lower bound for
+evaluation as that is first one that supports Python 3. The upper
+bound is \codeinline{3.10.0}, the latest one at the time of writing.
 
 The reported number of mismatches with and without structural typing
 is identical (tables \ref{SimplejsonNonStructural} and
 \ref{SimplejsonStructural}). Evidently the method set used on a
-parameter changes, either the authors consider some aspect of that
-worthy of a version bump, or it happened to coincide with another
-change that warrants the same bump. Given that only 39 versions were
-evaluated, it is not unreasonable to say that the latter is possible.
+parameter doesn't change significantly, and when it does change, it
+happens to coincide with other changes that warrant the same version
+bump. Given that only 39 versions were evaluated, it is not
+unreasonable to say that the latter is possible.
 
 \noindent
 \begin{minipage}[t]{0.5\textwidth}
@@ -2714,8 +2712,8 @@ The sole unnoted breaking change is at the patch from
 \codeinline{3.0.9} to \codeinline{3.1.0}. One exceptions and two
 functions were moved from one module to another. That is noted in the
 changelog, but evidently the authors did not consider it significant
-enough to warrant a major version bump. However, Simplejson
-never officially claims that it follows semantic versioning.
+enough to warrant a major version bump. Simplejson never officially
+claims that it follows semantic versioning.
 
 The remaining 5 mismatches are very similar to what was observed with
 Requests. Very small additive changes to the API of some functions was
@@ -2740,12 +2738,12 @@ interval (\textit{Simplejson})}
 
 \subsubsection{Docopt}
 
-\textit{Docopt} is ``Pythonic argument parser'' for creating
-command-line user interfaces. It is different from all other evaluated
-projects because at the time of writing it does not yet have a
-\codeinline{1.0.0} release. The API is not stable according to Semver,
-so this project was mainly used to evaluate Autobump's handling of
-projects with major version \codeinline{0}.
+\textit{Docopt} \cite{Docopt} is ``Pythonic argument parser'' for
+creating command-line user interfaces. It is different from all other
+evaluated projects because at the time of writing it does not yet have
+a \codeinline{1.0.0} release. The API is not stable according to
+Semver, so this project was mainly used to evaluate Autobump's
+handling of projects with major version \codeinline{0}.
 
 Only one mismatch is found when not using structural typing. A
 function called \codeinline{parse_args} was renamed to
@@ -2789,13 +2787,13 @@ Requests, Autobump is being overzealous.
 
 \subsubsection{Hashids}
 
-\textit{Hashids} is a very small (one class with four methods) library
-for generating unique string identifiers from integers. It is a fairly
-recent projects, so all 10 released versions support Python 3 and were
-evaluated. 4 out of them have major version \codeinline{0} similarly
-to Docopt, whereas the 5\textsuperscript{th} one is
-\codeinline{1.0.0}. This is useful to check whether Autobump handles
-the boundary between unstable and stable API sensibly.
+\textit{Hashids} \cite{Hashids} is a very small (one class with four
+methods) library for generating unique string identifiers from
+integers. It is a fairly recent projects, so all 10 released versions
+support Python 3 and were evaluated. 4 out of them have major version
+\codeinline{0} similarly to Docopt, whereas the 5\textsuperscript{th}
+one is \codeinline{1.0.0}. This is useful to check whether Autobump
+handles the boundary between unstable and stable API sensibly.
 
 Similarly to Simplejson there is no difference in the
 mismatches with structural typing enabled and disabled.
