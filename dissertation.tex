@@ -929,7 +929,6 @@ expensive than developing a new tool from scratch.
 
 \chapter{Implementation}
 \label{Implementation}
-% TODO: do I explain handling 0.* version numbers?
 
 This chapter looks at how Autobump works internally in terms of its
 architecture, as well as how it exposes its functionality to the end
@@ -939,17 +938,17 @@ the different target languages.
 \section{Architecture}
 \label{Architecture}
 
-Autobump is written mainly in Python and establishes a common
+Autobump is written mainly in Python and establishes a common user
 interface and version comparison framework that form the core of the
 program. Support for different languages and version control systems
 is added on top of that through the use of handlers, which are also
 written in Python when appropriate, or are written in another language
-and use Python as a middleware language to link back to Autobump.
+and only use Python as a middleware language to link back to the core.
 
 \begin{figure}[t]
 \label{ArchitectureFig}
 \centering
-\includegraphics[height=0.4\textheight]{images/dot/architecture}
+\includegraphics[height=0.3\textheight]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
 
@@ -971,13 +970,13 @@ revisions to construct common\footnote{Common between different
 source languages, not the two representations.} representations of the
 codebase out of the public APIs. If the language handler needs
 introspection, this may require building the two revisions of the project.
-The nature of this common representation is discussed in \ref{CAPIR}
+The nature of this common representation is discussed in section \ref{CAPIR}
 and the exact mechanism that language handlers use for the conversion
-in \ref{LanguageHandlers}.
-\item Run the core comparison logic on both representations to find
+in section \ref{LanguageHandlers}.
+\item Run the comparison logic on both representations to find
 out how the public API has changed in the later one compared to the
 earlier one. This step can generate a changelog and will identify what
-the version bump should be. This is discussed in \ref{Logic}.
+the version bump should be. This is discussed in section \ref{Logic}.
 \item Output the new version number by applying the bump to the old
 one. At this point, a changelog may be output as well if requested.
 \end{enumerate}
@@ -985,7 +984,7 @@ one. At this point, a changelog may be output as well if requested.
 \section{Configuration}
 
 The configuration module lies at the very bottom of Autobump (as seen
-in figure \ref{ArchitectureFig}). It made sense that the behaviour of
+in figure \ref{ArchitectureFig}). It is necessary that the behaviour of
 some components is user-configurable. The exact options that are
 available are discussed in later sections, but for a rundown of every
 tweakable see appendix \ref{RundownConfigurables}.
@@ -1001,7 +1000,7 @@ environment variables are meant to be used for quickly overriding
 options.
 \item A configuration file \codeinline{autobump.ini} present in the
 working directory, which has a section \codeinline{[Component]} with a
-setting of the form \codeinline{[option=...]} nested inside. This matches
+setting of the form \codeinline{option=...} nested inside. This matches
 the informal standard \codeinline{INI} format for configuration files. The reason
 this format is preferred is that Python comes with the module
 \pythoninline{configparser} for reading those types of files out of
@@ -1062,22 +1061,25 @@ influence external applications that depend on the packages in question.
 There is interest only in the public APIs which are meant for external
 use, as changing these indicates an incrementation of the semantic version.
 
-% TODO: public only in java
 Most general-purpose languages provide ways to restrict visibility of
 entities in the source code (such as classes, functions and so on).
-Technically all externally visible entities, usually indicated with the keyword
-\javainline{public}, are accessible from client applications. In practice,
-however, it may be that not all of these form the intended, official
-and documented public API. Faced with this problem, Autobump takes the
-safer approach and only considers visibility when determining whether
-an entity is part of the public API. The reason for that is that there
-is nothing technically restricting client applications from using
-visible entities that are otherwise undocumented or not formally
-intended for outside use.
+Technically all externally visible entities, often indicated with a
+keyword like \javainline{public}, are accessible from client
+applications. In practice, however, it may be that not all of these
+form the intended, official and documented public API. Faced with this
+problem, Autobump takes the safer approach and by default assumes that
+all visible entities form the public API. The reason for that is that
+there is nothing technically restricting client applications from
+using visible entities that are otherwise undocumented or not formally
+intended for outside use. It can, of course, be configured to ignore
+specific files or directories which are technically public but not
+meant for public use. Semver does allow for a public API to be public
+through documentation and convention, rather than only language
+mechanisms. % [citation needed]
 
 By relying on language-specific handlers to extract the public API of
 a codebase and convert it into a common representation, the same
-comparison logic can be reused. Beside reducing repetitiveness in the
+comparison logic can be reused. Besides reducing repetitiveness in the
 code, this has the additional effect of allowing handlers for new
 languages to be ``plugged in'' with virtually no changes to the
 program itself.
@@ -1093,8 +1095,9 @@ was certainly possible, this project opted to use its own model instead for
 several reasons.
 
 \begin{itemize}
-\item Barely any features are needed except for API representation.
-Using an established IDL may be considered overkill.
+\item The only required feature is API representation. Using an
+established IDL grants additional ones, such as the ability to do
+remote procedure calls, which are just not necessary.
 \item Using an established IDL would mean either importing an external
 library as a dependency, or writing a new one just for this
 dissertation, and both are undesirable.
@@ -1107,14 +1110,13 @@ experience issues.
 
 The representation that Autobump uses (fig. \ref{RepresentationUML})
 consists of several entities that are common across public APIs
-exposed by different languages. From now on, this model will be
-referred to as \textbf{CAPIR} (standing for ``common API
-representation'') for the sake of brevity.
+exposed by different languages. This model will be referred to as
+\textbf{CAPIR} (standing for ``common API representation'') in this
+document for the sake of brevity.
 
 \pythoninline{Entity} is a base class representing an entity of
-interest found in source code. Python does not enforce
-object-orientation so this class is not crucial. It is only present to
-complete the taxonomy.
+interest found in source code. This class is not crucial. It is only
+present to complete the taxonomy.
 
 \pythoninline{Type} is a base class that is the basis of the type
 systems used by the language handlers. This is discussed in further
@@ -1127,17 +1129,18 @@ classes, interfaces, mixins, traits etc. In fact, Autobump uses a
 single top-level Unit to represent an entire codebase.
 
 \pythoninline{Field}s and \pythoninline{Function}s are found in units.
-Fields have a type and typically denote the setting of a variable or a
-constant. Functions represent callable pieces of code -- functions,
-methods, routines, or whatever the source language calls them. The
-names given to these two entities are not ideal, because it reality
-they can be used for more general concepts. For example, Clojure
-records (described in detail in appendix \ref{ClojurePrimer}) are
-intuitively seen as \pythoninline{Unit}s because they indicate a
-grouping of entities. However, Clojure is a functional programming
-language and they are internally represented with just a few
-functions. In this case CAPIR follows the language's representation
-and treats those as \pythoninline{Function}s as well.
+Fields have a type and typically denote a variable or a constant.
+Functions represent callable pieces of code -- functions, methods,
+routines, or whatever the source language allows for. The names given
+to these two entities are not ideal, because in reality they can be
+used for more general concepts. For example, Clojure records
+(described in appendix \ref{ClojurePrimer}) are intuitively
+seen as \pythoninline{Unit}s because they indicate a grouping of
+entities. However, Clojure is a functional programming language and
+they are internally represented with functions. In this
+case CAPIR follows the language's representation and treats those as
+\pythoninline{Function}s as well.
+% TODO: clojre records are not described
 
 Every function has one or more \pythoninline{Signature}s which in turn
 are lists of \pythoninline{Parameter}s. Parameters have a type and can
