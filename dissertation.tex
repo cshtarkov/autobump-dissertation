@@ -1133,14 +1133,12 @@ Fields have a type and typically denote a variable or a constant.
 Functions represent callable pieces of code -- functions, methods,
 routines, or whatever the source language allows for. The names given
 to these two entities are not ideal, because in reality they can be
-used for more general concepts. For example, Clojure records
-(described in appendix \ref{ClojurePrimer}) are intuitively
-seen as \pythoninline{Unit}s because they indicate a grouping of
-entities. However, Clojure is a functional programming language and
-they are internally represented with functions. In this
+used for more general concepts. For example, Clojure records are
+intuitively seen as \pythoninline{Unit}s because they indicate a
+grouping of entities. However, Clojure is a functional programming
+language and they are internally represented with functions. In this
 case CAPIR follows the language's representation and treats those as
 \pythoninline{Function}s as well.
-% TODO: clojre records are not described
 
 Every function has one or more \pythoninline{Signature}s which in turn
 are lists of \pythoninline{Parameter}s. Parameters have a type and can
@@ -3048,11 +3046,11 @@ officially. \\
 
 \subsubsection{Cheshire}
 
-\textit{Cheshire} is a ``fast JSON encoder and decoder''. It is a
-relatively mature Clojure project, being at major version
-\codeinline{5} at the time of writing and being one of the most
-popular Clojure libraries. Although type hinting is optional, it is
-used for almost every function in the library.
+\textit{Cheshire} \cite{Cheshire} is a ``fast JSON encoder and
+decoder''. It is a relatively mature Clojure project, being at major
+version \codeinline{5} at the time of writing and being one of the
+most popular Clojure libraries. Although type hinting is optional, it
+is used for almost every function in the library.
 
 The very first pair of versions was ignored during evaluation, because
 the first version \codeinline{1.1.0} has misconfigured paths and the
@@ -3111,12 +3109,13 @@ don't impact the API.
 
 \subsubsection{Nippy}
 
-\textit{Nippy} is a ``high-performance serialization library''. It has
-70 tagged releases, but nearly half of them carry a label after the
-version number. For example version \codeinline{v2.5.0} has 6 variants
--- the final one, two release candidates and three betas. Only the
-actual final version is compared to its successor in evaluation, which
-brings down the number of releases to 32.
+\textit{Nippy} \cite{Nippy} is a ``high-performance serialization
+library''. It has 70 tagged releases, but nearly half of them carry a
+label after the version number. For example version
+\codeinline{v2.5.0} has 6 variants -- the final one, two release
+candidates and three betas. Only the actual final version is compared
+to its successor in evaluation, which brings down the number of
+releases to 32.
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
@@ -3161,12 +3160,12 @@ being introduced and not bumping the minor version number.
 
 \subsection{Core.Typed}
 
-\textit{Core.Typed} is the library that provides optional static
-typing for Clojure. It is part of Clojure 1.8 and future versions.
-Given that this is a relatively recent addition to Clojure, there are
-not many projects that use it consistently or have been using it long
-enough to warrant evaluation. This made it the only viable option.
-% TODO: for what?
+\textit{Core.Typed} \cite{CoreTyped} is the library that provides
+optional static typing for Clojure. It is part of Clojure 1.8 and
+future versions. Given that this is a relatively recent addition to
+Clojure, there are not many projects that use it consistently or have
+been using it long enough to warrant evaluation -- so the library
+itself was chosen for evaluation.
 
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
@@ -3643,6 +3642,44 @@ in the current one, similarly to Java's \javainline{import} statement.
 \end{center}
 
 \subsubsection{Optional static typing}
+
+Starting with version 1.8, Clojure has support for optional static
+typing through the library Core.Typed \cite{CoreTyped}. This is done
+by assigning a type annotation vector to functions. There are several
+ways annotations can be defined, but the most frequently used option
+is by using the annotation macro:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[otherkeywords=ann]
+(ann sum [Int Int :-> Int])
+(defn sum [a b] (+ a b))
+\end{clojure}
+\end{tabular}
+\end{center}
+
+By invoking macros manually, as part of the source file, or
+through code injection from the build system, the function's
+conformance to its annotation can be validated:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{clojure}[otherkeywords={ann,cf,check-ns}]
+(ann sum [Int Int :-> Int])
+(defn sum [a b] (concat a b))
+
+(cf sum)   ;; checks only this form
+(check-ns) ;; checks the entire namespace
+\end{clojure}
+\end{tabular}
+\end{center}
+
+In this example both will fail, because the function
+\clojureinline{concat} cannot be used on integers. Note that
+invocations of the annotated functions are not checked at all;
+attempting to call \clojureinline{(sum [1] [2 3])} will successfully
+concatenate the vectors even though the function is annotated as only
+accepting integers.
 
 \chapter{Source code listings}
 \label{Listings}
