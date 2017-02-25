@@ -71,7 +71,7 @@ language=Java,
 basicstyle=\ttm,
 otherkeywords={},
 keywordstyle=\ttb\color{keyword},
-emph={method,MyClass,OtherClass,somePackage,YetAnotherClass,SomeClass,InnerClass,field,String,Integer},
+emph={method,MyClass,somePackage,SomeClass,InnerClass,field,String,Integer},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -1201,8 +1201,11 @@ class Discombobulator(object):
 
 This section discusses the overall idea behind how this project goes
 about implementing support for multiple programming languages in the
-same tool using the ideas described in section \ref{EstimatingSemver},
-and then moves on to the specifics for each supported language.
+same tool using the ideas described in section
+\ref{EstimatingNextSemver}, and then moves on to the specifics for
+each supported language.
+
+\subsection{Transforming source code into CAPIR}
 
 The conversion of source code into CAPIR is delegated to separate
 modules that expose a single function to the rest of the program:
@@ -1216,7 +1219,7 @@ def codebase_to_units(location):
 \end{tabular}
 \end{center}
 
-This function takes in a location on disk where some version of a
+This function takes in a location on disk where some revision of a
 repository is checked out, and returns a list of units that represent
 every top-level entity found in the codebase -- e.g. for Python, that
 would be individual \codeinline{.py} files.
@@ -1227,7 +1230,9 @@ similar pattern in how they work:
 \begin{enumerate}
 \item Recursively walk the file system tree at \pythoninline{location} and
 filter file names of interest with some regular expression -- e.g.
-only \codeinline{.py} files are considered, but not if they begin with \codeinline{test-}.
+only \codeinline{.py} files are considered, but not if they begin with
+\codeinline{test-}. Certain file names and directories can be ignored
+at this point if configured to do so.
 \item For every file of interest, convert it to a CAPIR unit in some
 way appropriate for the language.
 \item Return the list of units.
@@ -1236,31 +1241,21 @@ way appropriate for the language.
 This workflow is not enforced and it is completely up to the handler
 to decide how to implement the function and the CAPIR conversion.
 Sometimes it is viable to have more than one handler per language --
-see \ref{JavaHandlers}.
+e.g. Java (section \ref{JavaHandlers}).
 
-Autobump comes with handlers for three languages -- Python,
-Java and Clojure. The rationale for picking those is that they are
-different from one another by characteristics that matter when trying
-to convert source code into the internal API representation. Having a
-handler for a dynamically typed, interpreted language like Python
-would make it easier to write one for a similar language, like Ruby,
-in the future.
+Autobump comes with handlers for three languages -- Python, Java and
+Clojure. The rationale for picking those is that they are different
+from one another by characteristics that matter when trying to convert
+source code into the internal API representation. This broadens the
+baseline functionality of the tool -- having a handler for a
+dynamically typed, interpreted language like Python would make it
+easier to write one for a similar language, like Ruby, in the future.
 
-% TODO: Table of handlers, build required, so on
-% TODO: what language are the handlers in?
-
-\subsection{Transforming source code into CAPIR}
-
-Each language handler, as part of its implementation, essentially has
-to have a function that maps a source file to a CAPIR unit. In
-general, there are two convenient ways to achieve this: through
-introspection, and through inspecting the abstract syntax tree.
-Introspection would usually yield better results, but it requires
-first compiling the library. In dynamic languages, there is virtually no
-difference between using introspection and the AST.
-
-% TODO: Dynamic?
-% TODO: Not true, what about method generation?
+In general, there are two convenient ways to implement
+\pythoninline{codebase_to_units}: through introspection, and through
+inspecting the abstract syntax tree. Introspection would usually yield
+better results, but it requires compiling or evaluating the library
+first.
 
 \subsection{Type systems}
 \label{TypeSystems}
@@ -1276,27 +1271,21 @@ identify whether it is compatible or not with another type. It does
 not matter whether or not they are the same type, or what those
 types actually are\footnote{The point is that what the types actually
 are is irrelevant to determining the next semantic version. It may be
-of interest only to Autobump's secondary function, that is generating
-changelogs.}.
-
-In the following sections on the individual language handlers, we
-discuss how the three languages determine compatibility of types.
+of interest only when generating changelogs.}.
 
 \subsection{Python}
 % TODO: use CPython, but should work with anything
 
 Python is a general-purpose, dynamically typed, interpreted language.
 That makes it an interesting target and a good first choice,
-especially compounded with the fact that Python is a good middleware
-language and Autobump itself is written in Python.
-% TODO: is it though?
+especially considering that Autobump itself is written in Python.
 
 In 2008 Python 3 was released, which broke backwards compatibility
-with the widely spread Python 2. Adoption has been sluggish, but at
-the time of writing virtually all libraries that matter fully support
-Python 3 along with 2, or are exclusive to Python 3. Seeing as how
-Python 2 is deprecated and will not receive any further development,
-this project is concerned solely with Python 3. Moreover,
+with the still popular Python 2. Adoption has been sluggish, but at
+the time of writing virtually all libraries of importance fully
+support Python 3 along with 2, or are exclusive to Python 3. Seeing as
+how Python 2 is deprecated and will not receive any further
+development, this project is concerned solely with Python 3. Moreover,
 some interesting features of the language that matter for Autobump
 (like type hinting) are only available in Python 3.
 
@@ -1316,16 +1305,16 @@ several problems. It's not guaranteed that Autobump runs in the same
 environment as the library, so missing dependencies would halt the
 whole process. But probably the biggest problem is that this approach
 essentially evaluates the code it comes across -- after all, in order
-to perform introspection on a function for example, a \pythoninline{def} has
+to perform introspection on a function, for example, a \pythoninline{def} has
 to be evaluated first. If there is top-level code that has side
 effects it will get executed along with the function definitions.
 
 Python, as a dynamic language, can modify the structure of objects at
 runtime by using functions such as \pythoninline{setattr}. This makes
 it possible for a library to construct its functionality at runtime
-instead of defining outright. This is fairly unlikely to happen in the
+instead of defining it outright. This is fairly unlikely to happen in the
 real-world libraries that Autobump would be useful for, so that possibility
-is discounted.
+is ignored.
 
 \subsubsection{Types}
 
@@ -1359,7 +1348,7 @@ the task of figuring out how the types of parameters have changed more
 difficult. It would be unnecessary and even misleading to attempt to
 look up usage of a function inside the project itself, for example in
 tests. Even though it may be found that all parameters passed into the
-function are instances of a particular class, client code absolutely
+function are instances of a particular class, client code
 could pass in objects of a different type that happen to have the same
 properties and methods as needed by the function.
 
@@ -1379,8 +1368,8 @@ properties and methods are no longer expected.
 However, if $S_a \subset S_b$, then there are additional properties
 and methods that the later version expects. It's not necessary that
 client code breaks in this case, but it is definitely a possibility.
-Likewise in all other less likely scenarios, like $S_a$ and $S_b$
-being neither super nor subsets of one another.
+The Same applies in all other less likely scenarios, like $S_a$ and
+$S_b$ being neither super nor subsets of one another.
 
 Consider the following example:
 
@@ -1410,7 +1399,7 @@ Depending on whether the configuration option
 \codeinline{Python/Structural Typing} is set, Autobump can examine the use
 of a parameter inside a function and determine those two sets. This is
 accomplished by walking the AST of the function definition and
-checking what methods are called on that object in all possible
+checking what attributes are requested from that object in all possible
 branches of execution. Afterwards, it takes the pessimistic view that
 unless $S_a \supseteq S_b$ there was definitely a breaking change and
 bumps the version number accordingly.
@@ -1425,9 +1414,9 @@ never considers the types of entities and assumes them to be compatible.
 As of Python 3.5 there is support for type hinting in the language
 itself. It is purely syntactic and only affects the metadata of
 objects when evaluated in the interpreter. No actual type checking is
-done and this is done to static analysis tools, mostly type checkers.
-The Python handler functions as another static analysis tool, but with
-a somewhat different goal -- checking compatibility between different
+done -- this is delegated to external static analysis tools. The
+Python handler functions as another static analysis tool, but with a
+somewhat different goal -- checking compatibility between different
 versions of the same code, not validating invocations.
 
 In Python 3.5 and 3.6, which are the only versions of Python with
@@ -1443,15 +1432,14 @@ expected that this fork will get merged back into mainline Python
 eventually, but for the time being Autobump uses it as an external
 library.
 
-If the option \codeinline{Python/Type Hinting} is enabled, whenever there
-is type hinting information for a function or field it's actual usage
-in the AST is ignored regardless of whether \codeinline{Python/Use
-Structural Typing} is enabled. Given the obvious incompatibility of
-having one version be parsed with structural typing, and another one
-having a type hint, Autobump always pessimistically assumes that the two are
+If the option \codeinline{Python/Type Hinting} is enabled, whenever
+there is type hinting information for a function or field it's actual
+usage in the AST is ignored even if \codeinline{Python/Use Structural
+Typing} is enabled. Given the obvious incompatibility of having one
+version be parsed with structural typing, and another one having a
+type hint, Autobump always pessimistically assumes that the two are
 not going to be compatible. If both versions have type hints, they are
 compared using Python's native facilities.
-% TODO: no they're not
 
 \begin{halfmini}{Variant A}
 \begin{python}
@@ -1481,16 +1469,16 @@ Java is a compiled, statically-typed language which makes it very
 different from Python. Nevertheless, the two approaches -- AST
 and introspection -- are still reasonable options for transforming a
 Java source tree into CAPIR. Java is the only language supported by
-Autobump that actually has two separate handlers.
+Autobump that has two separate handlers.
 
 \subsubsection{Using the abstract syntax tree}
 
-\codeinline{java_ast} is written entirely in Python and
-values speed over corectness. It is a quick-and-dirty handler that
-visits all Java source files in the repository and generates their
-ASTs via the third-party package \codeinline{javalang} \cite{Javalang}.
-Transforming the AST into CAPIR is not quite as straightforward as it
-is in Python, because Java is statically typed.
+The handler \codeinline{java_ast} is written entirely in Python and
+values speed over corectness. It visits all Java source files in the
+repository and generates their ASTs via the third-party package
+\codeinline{javalang} \cite{Javalang}. Transforming the AST into CAPIR
+is not quite as straightforward as it is in Python, because Java is
+statically typed.
 
 Consider this trivial example:
 
@@ -1570,35 +1558,37 @@ reference type \javainline{OtherClass}, because it can't be qualified
 before having visited all other files. If it is indeed defined in the
 same package, there is the opportunity to check whether its
 descendants include \javainline{YetAnotherClass} and identify whether
-this particular change is going to be breaking. Note that even if the handler
-was aware that \javainline{OtherClass} was declared in the same
-package and it could be fully qualified on the first pass, it is still
-possible that \javainline{YetAnotherClass} hasn't been visited and the
-relationship between the two is unknown.
+this particular change is going to be breaking\footnote{Same applies
+if they are not in the same package, but still in the same project,
+and the names are already fully-qualified.}. Note that even if the
+handler was aware that \javainline{OtherClass} was declared in the
+same package and it could be fully qualified on the first pass, it is
+still possible that \javainline{YetAnotherClass} hasn't been visited
+and the relationship between the two is unknown.
 
 The handler has obvious shortcomings in that it simply misses cases
-that can be determined only by introspection. Considering the same
-example as befor, it could be that both parameters types are after all
-declared in some external dependency and not in the same package. In
-that case there would be no way of knowing the relationship between
-the two using this handler. The optional configuration option
-\codeinline{Java/Error On External Types} forces the handler to give up
-when the AST of a source file is needed, but not present in the
-project.
+that can be determined only by introspection. Considering a situation
+similar to the one before, but there are specific \javainline{import}
+statements that qualify the two parameter types as coming from an
+external library. In that case there would be no way of knowing the
+relationship between the two using this handler. The optional
+configuration option \codeinline{Java/Error On External Types} forces
+the handler to give up when the AST of a source file is needed, but
+not present in the project.
 
 \subsubsection{Using reflection}
 
-The alternative is \codeinline{java_native}. It consists of two utilities
-written in Java, along with some Python middleware that interacts with
-the rest of Autobump. It relies solely on introspection of the
-\codeinline{.class} files generated after a full compilation of the
-project. One tool, the \codeinline{Inspector}, loads a list of class files
-and then prints to standard out an XML representation of all classes,
-including fields, methods, inner classes and so on. This is invoked
-once, immediately after compilation. Note that the XML representation
-is semantically absolutely indentical to CAPIR. The Python middleware then
-translates this XML representation into a list of CAPIR units, which is
-almost trivial.
+The alternative handler is \codeinline{java_native}. It consists of
+two utilities written in Java, along with some Python middleware that
+interacts with the rest of Autobump. It relies solely on introspection
+of the \codeinline{.class} files generated after a full compilation of
+the project. One tool, the \codeinline{Inspector}, loads a list of
+class files and then prints to standard out an XML representation of
+all classes, including fields, methods, inner classes and so on. It
+is invoked once, immediately after compilation. Note that the XML
+representation is semantically indentical to CAPIR. The
+Python middleware then translates this XML representation into a list
+of CAPIR units, which is trivial.
 
 There is one small modification that the Python middleware does when
 translating the XML. Note how CAPIR allows for a function to have
@@ -1666,7 +1656,7 @@ invoke this utility when \pythoninline{is_compatible} is called
 later on in the comparison.
 
 Having to compile the project first and then run these tools
-introduced substantial complexity to the handler. It would be naïve to
+introduces substantial complexity to the handler. It would be naïve to
 hardcode any commands that compile the project. Instead, it is better to
 delegate to the build system that comes with the project to properly
 handle things like dependencies and \codeinline{CLASSPATH} issues.
@@ -1707,7 +1697,7 @@ CAPIR type representations and modifying the
 \subsection{Clojure}
 \label{Clojure}
 
-Clojure is interpreted, general-purpose variant of the Lisp
+Clojure is an interpreted, general-purpose variant of the Lisp
 programming language, with an emphasis on functional programming. It
 has several properties that make it noticeably different from the
 previous two languages considered:
@@ -1716,7 +1706,7 @@ previous two languages considered:
 \item While not purely functional, it heavily emphasises programming
 in a functional style and discourages stateful programming both through the
 language itself and the culture surrounding the language.
-\item It is homoiconic, that is programs are written in terms of the
+\item It is homoiconic. Programs are written in terms of the
 language's own data structures (``code is data''). In essence the
 programmer is always creating and editing the AST directly. This
 allows for powerful metaprogramming features.
@@ -1757,14 +1747,14 @@ because it is functional and the risk of side effects can be disregarded.
 \subsubsection{Mapping AST to CAPIR}
 
 At the core of every Lisp sits the \textit{reader}. This is the
-function that converts Lisp objects from their textual form into
-their internal representation. Clojure provides us with the
+function that converts Lisp objects from their textual form into their
+internal representation. Clojure provides the
 \clojureinline{read-string} function that reads in the string
 representation of a form and returns it as a proper Lisp object.
 Combining this with the \clojureinline{slurp} function that returns
-the contents of a file as a string, a function can be built that
-given a file name, returns the Clojure program stored inside as a list
-of forms (other lists):
+the contents of a file as a string, a function can be built that given
+a file name, returns the Clojure program stored inside as a list of
+forms (other lists):
 
 \begin{center}
 \begin{tabular}{c}
@@ -1886,7 +1876,7 @@ penalties except for making the handler slightly slower:
 
 \begin{itemize}
 \item It's impossible to get the types of fields without evaluating
-their values.
+their values unless there are type hints.
 \item It's unreasonably difficult to guard against all sorts of macro
 trickery, and it cannot be claimed for certain what a form does without
 evaluating it.
@@ -1898,22 +1888,25 @@ new one is compatible with the old one.
 \end{itemize}
 
 The vast majority of Clojure projects use the build system Leiningen
-\cite{Leiningen}. A typical development workflow that it exposes (as
-do other similar build systems) is starting a REPL that evaluates all
-files in the project and makes the namespaces and functions available
-for manual probing. This feature is usually not used directly, but
-further abstracted into some integrated development environment, e.g.
-CIDER \cite{CIDER}.
+\cite{Leiningen}. A typical development workflow that it encourages
+(as do other similar build systems) is starting a REPL and then
+evaluating all files in the project, which makes the namespaces and
+functions available for manual probing. This feature is usually not
+used directly, but further abstracted into some integrated development
+environment, e.g. CIDER \cite{CIDER}.
 
 The Clojure handler can be modified in such a way that it keeps its
 \clojureinline{describe-...} architecture, but sources its data from
-the runtime instead of the AST. This necessitates running it in the
-same environment as the project itself, which is identical to what a
-REPL offers. For this reason, the Clojure executable that Autobump
-invokes can be configured to be one such that it presents this
-environment for execution. A convenient solution that is specific for
-Leiningen is the plugin \codeinline{lein-exec} \cite{LeinExec}, which
-allows running scripts as if they were piped into a REPL.
+the runtime instead of the AST\footnote{Note that even if data is
+sourced from the runtime, AST manipulation needs to be done for some
+things, like determining function signatures.}. This necessitates
+running it in the same environment as the project itself, which is
+identical to what a REPL offers. For this reason, the Clojure
+executable that Autobump invokes can be configured to be one that
+presents this environment for execution. A convenient solution that is
+specific for Leiningen is the plugin \codeinline{lein-exec}
+\cite{LeinExec}, which allows running scripts as if they were piped
+into a REPL.
 
 The accuracy of functions such as \codeinline{public-fn-def?} can now
 be greatly improved by simply invoking Clojure built-ins instead of
