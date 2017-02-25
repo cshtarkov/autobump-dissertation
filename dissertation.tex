@@ -2165,7 +2165,7 @@ Autobump's development and was done from very early on.
 \section{Unit testing}
 
 Non-trivial modules from the implementation, namely the comparison
-logic and the language handlers, are tested in isolation by using
+logic and the handlers, are tested in isolation by using
 Python's built-in \pythoninline{unittest} framework. This has been very
 useful for identifying edge cases where the modules don't quite do the
 correct thing. Also, adding new features to the language handlers has
@@ -2173,14 +2173,11 @@ proven to be very error-prone, so having the unit tests in place
 serves well for identifying regressions.
 
 All tests treat the module they're testing as a black box. This is
-very easy to do, because virtually all modules have a single
-entrypoint that abstracts all implementation detail. Different inputs
-are given to that function and then the results are compared against
-the expected ones.
+very easy to do, because most all modules have a single entrypoint
+that abstracts away all implementation details. Different inputs are
+given to that function and then the results are compared against the
+expected ones.
 
-\subsection{Comparison logic}
-
-% TODO: What about VCS handlers?
 \subsection{Language handlers}
 
 The entrypoint of every language handler is the function
@@ -2198,10 +2195,6 @@ to temporary files as part of the set up process. By holding onto the
 handle obtained by calling functions from \codeinline{tempfile}, it can
 be ensured that everything is cleaned up during the tear down phase of
 testing.
-
-A fixture consists of a list of tuples, each tuple representing the
-path to a file and its content. A minimal Clojure fixture looks like
-this:
 
 \begin{figure}[H]
 \begin{center}
@@ -2221,10 +2214,10 @@ sources = [
 \end{figure}
 
 Having the fixture actually present in the filesystem is necessary
-because the handlers rely on external utilities, which need to load
+because the handlers can rely on external utilities, which need to load
 and parse those files. The notable exception is the Python handler,
-which is the only one written entirely in Python. For that reason we
-can take a shortcut when writing tests for it. Instead of calling the
+which is the only one written entirely in Python. For that reason
+a shortcut can be taken when writing tests for it. Instead of calling the
 entrypoint \pythoninline{codebase_to_units} which scans a location for
 relevant files and only then converts them to CAPIR units,
 \pythoninline{_source_to_unit} can be called directly. That is an
@@ -2248,7 +2241,7 @@ error-prone. For that reason it was crucial to develop acceptance, or
 end-to-end, tests that can quickly show that Autobump works correctly
 when applied to a full-blown repository.
 
-The entirety of Autobump can be considered as a single entity, with the
+The entirety of Autobump can be considered as a single black box, with the
 input being a repository\footnote{There are of course additional
 inputs, like what handler to use or which revision to compare.
 However, those are trivial to mock.} and the output the proposed
@@ -2285,13 +2278,12 @@ instructions like these into an actual repository that can be fed into Autobump.
 \item Reconstruct a Git repository from a series of patches kept in
 text form as part of test itself. Every patch would have metadata that
 indicates the expected version of the project at that commit. This is
-the option that Autobump uses, as it achieves a convenient
+the option that Autobump uses, as it is a convenient
 middleground between the other two: it allows for the history of the
-project to be edited relatively easily, and it has much smaller
-boilerplate needs. The only accompanying code (i.e. the test runner)
-is one that creates a Git repository in a temporary directory from
-that series of patches, and then runs Autobump against every pair of
-consecutive revisions.
+project to be edited relatively easily, and less supporting code has
+to be implemented. The test runner only needs to create a Git
+repository in a temporary directory from that series of patches, and
+then run Autobump against every pair of consecutive revisions.
 \end{enumerate}
 
 % TODO: clarify test vs suite
@@ -2308,93 +2300,45 @@ is properly set up before running Autobump. In normal operation, the
 or by setting the environment variable, but that is not an option when
 automatically running multiple acceptance tests.
 
-Appendix \ref{ExampleAcceptanceTest} shows an example of a minimal
-sensible acceptance test.
+\begin{figure}[H]
+\caption{Example acceptance test}
+\label{ExampleAcceptanceTest}
+\begin{center}
+\begin{tabular}{c}
+\begin{python}
+handler = "python"
 
-% TODO: move this to appendix
-% \begin{figure}[H]
-% \label{SampleAcceptanceTest}
-% \caption{Example acceptance test for the Python handler}
-% \begin{minipage}[t]{0.7\textwidth}
-% \begin{python}
-% handler = "python"
+commit_history = [
+    ("Initial commit", "1.0.0",
+     """
+     diff --git a/module_a.py b/module_a.py
+     new file mode 100644
+     index 0000000..ab92b1d
+     --- /dev/null
+     +++ b/module_a.py
+     @@ -0,0 +1,2 @@
+     +def some_function():
+     +    pass
+     --
+     """),
 
-% def setUp(repo):
-%     pass
-
-% def tearDown(repo):
-%     pass
-
-% commit_history = [
-
-%     ("1.0.0",
-%      "Initial commit",
-%      """
-%      diff --git a/module_a.py b/module_a.py
-%      new file mode 100644
-%      index 0000000..ab92b1d
-%      --- /dev/null
-%      +++ b/module_a.py
-%      @@ -0,0 +1,2 @@
-%      +def some_function():
-%      +    pass
-%      --
-%      """),
-
-%     ("1.1.0",
-%      "Add parameter with default value to function",
-%      """
-%      diff --git a/module_a.py b/module_a.py
-%      index ab92b1d..f700cc9 100644
-%      --- a/module_a.py
-%      +++ b/module_a.py
-%      @@ -1,2 +1,2 @@
-%      -def some_function():
-%      +def some_function(a=True):
-%      pass
-%      --
-%      """),
-
-%     ("2.0.0",
-%      "Remove parameter to function",
-%      """
-%      diff --git a/module_a.py b/module_a.py
-%      index ab92b1d..f700cc9 100644
-%      --- a/module_a.py
-%      +++ b/module_a.py
-%      @@ -1,2 +1,2 @@
-%      -def some_function(a):
-%      +def some_function():
-%      pass
-%      --
-%      """)
-% ]
-% \end{python}
-% \end{minipage}
-% \begin{minipage}[t]{0.3\textwidth}
-% \noindent A symbol called exactly \pythoninline{handler} needs to be
-% set specifying the handler to use as a string. This is effectively the
-% same as setting the command-line option.
-% \\
-% \noindent Python lacks any special requirements because it does not use a build
-% system, so those functions can either be left empty or even left undefined.
-% \\
-% \noindent The scenario this acceptance test describes begins with a
-% single module which has a single empty function that does nothing and
-% accepts no parameters.
-% \\
-% \noindent Then, an optional parameter is added to the function
-% signature. At this point both the previous signature (with no
-% parameters) and the current one can be used, so that constitutes a
-% feature additing and the version number is bumped to
-% \codeinline{1.1.0} accordingly.
-% \\
-% \noindent In the last diff, the optional parameter is removed. Client
-% code calling the function and passing that parameter is expected to
-% fail, so that constitutes a breaking change and the version is bumped
-% to \codeinline{2.0.0}.
-% \end{minipage}
-% \end{figure}
+    ("1.1.0", "Add parameter with default value to function",
+     """
+     diff --git a/module_a.py b/module_a.py
+     index ab92b1d..f700cc9 100644
+     --- a/module_a.py
+     +++ b/module_a.py
+     @@ -1,2 +1,2 @@
+     -def some_function():
+     +def some_function(a=True):
+     pass
+     --
+     """)
+]
+\end{python}
+\end{tabular}
+\end{center}
+\end{figure}
 
 \chapter{Evaluation}
 \label{Evaluation}
