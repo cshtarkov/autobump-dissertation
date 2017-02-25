@@ -2893,14 +2893,6 @@ was noticeably an order of magnitude slower than \codeinline{java_ast}.
 
 \subsubsection{Guava}
 
-\textit{Guava} \cite{Guava} is a set of core libraries that extend the
-Java standard library. It is one of the most widely used Java
-projects.
-
-The \codeinline{java_native} handler was not of much use; the version
-ranges \textit{2 -- 6} and \textit{10 -- 18} did not compile. Although
-out of the 5 versions that did compile, there weren't any mismatches.
-
 \begin{wraptable}{r}{0.45\textwidth}
 \centering
 \caption{\textit{Guava} statistics (using AST handler)}
@@ -2913,6 +2905,14 @@ Proportion of mismatches & 21\% \\
 Proportion of mismatches (breaking) & 10\% \\
 \end{tabular}
 \end{wraptable}
+
+\textit{Guava} \cite{Guava} is a set of core libraries that extend the
+Java standard library. It is one of the most widely used Java
+projects.
+
+The \codeinline{java_native} handler was not of much use; the version
+ranges \textit{2 -- 6} and \textit{10 -- 18} did not compile. Although
+out of the 5 versions that did compile, there weren't any mismatches.
 
 One mismatch in version \textit{11.0.1} sees two utility methods
 removed, but they were marked as deprecated beforehand. Semver is
@@ -2955,6 +2955,7 @@ backwards-compatible changes to the API without bumping the minor
 version number. These happen frequently both before and after Mockito
 started to follow semantic versioning.
 
+
 Evaluation using the native handler was hugely problematic and did not
 yield any results. Mockito at several points changes the build system
 configuration (and sometimes the build system itself), making it
@@ -2963,7 +2964,7 @@ this reason, the history of the project was manually probed to find
 where those changes are and perform an evaluation for every change.
 The results were then going to be merged together.
 
-\begin{figure}[]
+\begin{figure}[H]
 \centering
 \includegraphics[height=0.4\textheight]{images/evaluation/mockito_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{mockito})}
@@ -3058,7 +3059,16 @@ the first version \codeinline{1.1.0} has misconfigured paths and the
 namespaces it defines are inaccessible, not even when working from a
 manually created REPL.
 
-\begin{wraptable}{r}{0.45\textwidth}
+There seems to be a clear indication that the project has stabilised
+over time (fig. \ref{CheshireCumulativeMismatches}), seeing frequent,
+unnoted in the version number, breaking changes for the first 2 years
+of development, and then not for the next 4 years. It's noteworthy
+that this stabilisation happened only at major version \codeinline{5}
+and that the frequency of releases has gone down since then. There
+were 3.96 releases per 100 days in that 2-year interval, compared to
+only 1.70 for the entirety of the project's history.
+
+\begin{table}[H]
 \centering
 \caption{\textit{Cheshire} statistics}
 \label{CheshireStats}
@@ -3070,16 +3080,7 @@ Mismatches (breaking) & 7 \\
 Proportion of mismatches & 51\% \\
 Proportion of mismatches (breaking) & 18\% \\
 \end{tabular}
-\end{wraptable}
-
-There seems to be a clear indication that the project has stabilised
-over time (fig. \ref{CheshireCumulativeMismatches}), seeing frequent,
-unnoted in the version number, breaking changes for the first 2 years
-of development, and then not for the next 4 years. It's noteworthy
-that this stabilisation happened only at major version \codeinline{5}
-and that the frequency of releases has gone down since then. There
-were 3.96 releases per 100 days in that 2-year interval, compared to
-only 1.70 for the entirety of the project's history.
+\end{table}
 
 Breaking mismatches are evenly divided between two causes:
 
@@ -3211,6 +3212,9 @@ significant for the majority of users, but has the potential to be.
 \item The length of time passed since the previous release of a
 project may be proportional to the likelihood of the new release
 introducing an unnoted breaking change.
+\item \textit{Some} projects have demonstrated a trend of stabilising
+over time, i.e. better following semantic versioning in later stages
+of development.
 \item Using a common representation for all languages does not seem to
 handicap the ability to detect API changes for any particular
 language.
