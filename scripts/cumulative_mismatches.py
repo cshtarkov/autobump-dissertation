@@ -46,8 +46,19 @@ assert len(dates_tags) > 0
 dates_mismatches = OrderedDict()
 total_mismatches = 0
 total_breaking = 0
+stable_boundary = None
+previous_major = 0
 for date in sorted(dates_tags.keys()):
     versions = dates_tags.get(date)
+    for v in versions:
+        try:
+            v = Semver.guess_from_string(v)
+            if v.major > previous_major:
+                if previous_major == 0:
+                    stable_boundary = date
+            previous_major = v.major
+        except Semver.NotAVersionNumber:
+            pass
     mismatches_count = len([v for v in versions if v in mismatches])
     breaking_count = len([v for v in versions if v in mismatches and mismatches[v].minor == 0 and mismatches[v].patch == 0])
     assert breaking_count <= mismatches_count
@@ -55,6 +66,9 @@ for date in sorted(dates_tags.keys()):
     total_breaking += breaking_count
     dates_mismatches[date] = total_mismatches, total_breaking
 assert len(dates_mismatches) > 0
+
+if stable_boundary:
+    print(stable_boundary)
 
 # Measure time between releases
 dates = list(dates_mismatches.keys())
@@ -74,6 +88,23 @@ for diff in diffs:
 for all_version in all_versions:
     print("all_version", all_version)
 
+# Print before and after stable boundary
+if stable_boundary:
+    [print("before_stable", breaking)
+     for (_, breaking)
+     in
+     [dates_mismatch[1]
+      for dates_mismatch
+      in dates_mismatches.items()
+      if dates_mismatch[0] < stable_boundary]]
+    [print("after_stable", breaking)
+     for (_, breaking)
+     in
+     [dates_mismatch[1]
+      for dates_mismatch
+      in dates_mismatches.items()
+      if dates_mismatch[0] >= stable_boundary]]
+
 # Plot cumulative mismatches
 total = [total for (total, _) in dates_mismatches.values()]
 breaking = [breaking for (_, breaking) in dates_mismatches.values()]
@@ -85,11 +116,12 @@ total_plt = plt.scatter(dates, total, s=25, label="Total", color=COLORS["blue"])
 breaking_plt = plt.scatter(dates, breaking, s=25, label="Just breaking", color=COLORS["red"])
 plt.legend(handles=[total_plt, breaking_plt])
 plt.gcf().autofmt_xdate()
-plt.yticks(range(min(total), math.ceil(max(total))+1, 2))
-# plt.annotate(xy=(datetime(2013, 4, 12), 7), s="v5.1.0",
-#              textcoords="offset pixels", xytext=(50,-40),
-#              arrowprops=dict(facecolor="black", shrink=0.03, width=2, headwidth=12),
-#              verticalalignment="bottom", horizontalalignment="right")
+plt.yticks(range(min(total), math.ceil(max(total))+1, 10))
+if stable_boundary:
+    plt.annotate(xy=(stable_boundary, dates_mismatches[stable_boundary][1]), s="First public API",
+                textcoords="offset pixels", xytext=(50,-40),
+                arrowprops=dict(facecolor="black", shrink=0.03, width=2, headwidth=12),
+                verticalalignment="bottom", horizontalalignment="right")
 plt.savefig("cumulative_mismatches.pdf")
 
 # Plot histogram of time intervals
