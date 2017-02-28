@@ -910,6 +910,7 @@ this does not devalue its usefulness. The main point of semantic
 versioning is to guard against breaking changes, which can be done
 reliably just by looking at the API.
 
+\clearpage
 \section{Feature set and usage}
 
 Autobump is a a tool which given two revisions in a version
@@ -3427,14 +3428,114 @@ sample size shows that this is not the case.
 \chapter{Conclusion}
 \label{Conclusion}
 
-% TODO: handler for binaries using debugging information, supports
-% multiple languages
+\section{Summary}
 
-% TODO: better automated versioning scheme
+The goal of this project was to develop and evaluate Autobump -- a
+tool that can automatically propose the next semantic version of
+projects in different languages based on changes to the public API.
+For this task, a common API representation was constructed and two
+different approaches were considered for converting to it -- parsing
+the AST and introspection -- and both were implemented where suitable.
 
-% TODO: integration with dev tools
+The tool was demonstrated to work reasonably well through acceptance
+testing and evaluation against real-world libraries. Two rounds of
+evaluation found that semantic versioning is indeed not adhered to
+strictly in all considered languages, even by projects that claim to
+do so. It was also shown that had they employed a tool such as
+Autobump, their adherence would have been higher.
 
-% TODO: evaluation: does LOC impact adherence?
+The final\footnote{Meaning the latest version as of the date of
+submission of this dissertation.} version of Autobump is not a
+prototype, but is still beta-quality software that may not be suited
+to production use. It is, however, almost fully functional and usable.
+
+\section{Future work}
+
+\subsection{Changelog generation}
+
+The common API representation has not lended itself nicely to
+generating sensible changelogs. CAPIR abstracts away language-specific
+terminology, which does not impact version assignment, but it does
+lead to less intelligible changelogs. One of the worst examples, as
+seen in the Mockito library, is how replacing the signature of a
+method with another one is logged:
+
+\begin{center}
+\begin{BVerbatim}
+org.mockito.Mockito.mock: Function was overloaded
+org.mockito.Mockito.mock: Overloaded function removed
+\end{BVerbatim}
+\end{center}
+
+Although logs like these do shed light on the versioning decisions
+that Autobump makes, they may not always be useful for direct
+consumption by customers. One possible solution to this problem would
+be to have the language handlers provide appropriate labels for CAPIR
+change patterns, although that would complicate the current implementation's
+architecture.
+
+\subsection{Language handler for binary files}
+
+It is possible to build a language handler that does not work with a
+specific language, but rather a specific binary file format. This, in
+effect, monitors changes to the ABI.
+
+The ABI could be determined only if the binary file contains debugging
+information in a known format, such as DWARF \cite{Dwarf}. The handler
+would require a build command, similarly to the
+\codeinline{java_native} handler, which generates binary files
+containing debugging information.
+
+An extension like that would be of benefit when clients are provided
+binary files directly and expected to link to that. It is also
+language-agnostic, with a handler that reads DWARF being able to work
+with C, C++, Rust and others that allow for C interoperability.
+
+\subsection{Integration with development tools}
+
+The natural continuation of Autobump's development would be to
+integrate with other development tools, mostly continuous integration
+systems. Integrating with plugins such as \textit{Release}
+\cite{JenkinsRelease} for Jenkins would allow for automated and frequent
+deployments with the correct semantic version.
+
+Another possibility, albeit less useful, would be developing a plugin
+for integrated development environments, so that changes to the API
+determined by Autobump can be immediately highlighted for the
+developer and visited.
+
+\subsection{A better automated versioning scheme}
+
+Semantic versioning is designed to be suitable for both humans and
+machines. As noted by Jeremy Ashkenas \cite{WhySemanticVersioningIsnt}
+it tries to compress too much information into just a few numbers.
+This is presumably done so that it remains intelligible to human
+readers. Because the automated suggestion of the next semantic version
+by code inspection was found to be viable by this project and others,
+it may be worthwhile to consider a new versioning scheme that contains
+additional information found by looking at the code. One extension to
+semantic versioning that would be immediately useful is:
+
+\begin{center}
+$\mathrm{Major.Minor.Patch}:\mathrm{Difference}$ \\
+where $\mathrm{Difference}$ is the tree edit distance between this
+version's AST and the previous one's
+\end{center}
+
+Consider having two sequential patch releases: \textit{1.0.2:120} and
+\textit{1.0.3:1}. Because of the large AST edit distance between
+\textit{1.0.2:120} and the previous version, it is likely that this
+version fixes one or more major bugs. Similarly, it can be said that
+if the version were \textit{1.1.0:120}, it is likely to contain
+significant performance improvements or a larger number of new
+features. In contrast, \textit{1.0.3:1} is most definitely a minor
+correction. If an automated package manager was making decisions about
+upgrading dependencies, it may decide to withhold upgrading on
+relatively unimportant releases like \textit{1.0.3:1} in some
+situations.
+
+There is a myriad of possibilities about what sort of additional
+information can be encoded into the version number.
 
 %=== Appendices ===
 
@@ -3461,8 +3562,88 @@ running \codeinline{python -m autobump}. This approach is not recommended.
 \section{Rundown of options}
 \label{RundownOptions}
 
+\begin{itemize}
+\item \codeinline{-h}: prints usage information
+\item \codeinline{--changelog CHANGELOG}: generates a changelog in the
+file \codeinline{CHANGELOG}
+\item \codeinline{--changelog-stdout}: prints a changelog to standard
+out
+\item \codeinline{--debug}: prints debugging information to standard
+error (implies \codeinline{--information})
+\item \codeinline{--information}: print progress information to
+standard error
+\item \codeinline{--silence}: silence all output except for fatal
+errors and final results
+\item \codeinline{--repo REPO}: location of repository, defaults to current
+directory
+\item \codeinline{--from IDENTIFIER}: identifier of earlier revision,
+defaults to last tag
+\item \codeinline{--to IDENTIFIER}: identifier of later revision, defaults to
+last commit
+\item \codeinline{--from-version FROM_VERSION}: considers the earlier
+revision to be version \codeinline{FROM_VERSION}, attempts to guess
+from identifier name if not specified
+\item \codeinline{--build-command BUILD_COMMAND}: executes
+\codeinline{BUILD_COMMAND} as a shell command in the root of the
+project in order to build it
+\item \codeinline{--build-root BUILD_ROOT}: location relative to
+project root where generated artefacts get placed after building
+\item \codeinline{--evaluate}: run in evaluation mode
+\item \codeinline{--export-config}: print current configuration
+\end{itemize}
+
 \section{Rundown of configurables}
 \label{RundownConfigurables}
+
+Configurable options are grouped into categories.
+
+\begin{itemize}
+\item \codeinline{autobump}
+\begin{itemize}
+\item \codeinline{git}: path to Git executable
+\item \codeinline{hg}: path to Mercurial executable
+\item \codeinline{clojure}: path to Clojure executable
+\item \codeinline{java}: path to Java class runner
+\item \codeinline{javac}: path to Java compiler
+\end{itemize}
+\item \codeinline{ignore}
+\begin{itemize}
+\item \codeinline{files}
+\item \codeinline{dirs}
+\item \codeinline{entities}
+\end{itemize}
+\item \codeinline{only_consider}
+\begin{itemize}
+\item \codeinline{files}
+\item \codeinline{dirs}
+\item \codeinline{entities}
+\end{itemize}
+\item \codeinline{python}
+\begin{itemize}
+\item \codeinline{omit_on_error}: skip a Python source file that
+can't be parsed
+\item \codeinline{structural_typing}: determine type of parameters by
+looking at their usage
+\item \codeinline{type_hinting}: consider type hints
+\end{itemize}
+\item \codeinline{java_native}
+\begin{itemize}
+\item \codeinline{classpath}
+\end{itemize}
+\item \codeinline{java_ast}
+\begin{itemize}
+\item \codeinline{omit_on_error}: skip a Java source file that can't
+be parsed
+\item \codeinline{error_on_external_types}: immediately give if the
+AST of a class is not available
+\end{itemize}
+\item \codeinline{clojure}
+\begin{itemize}
+\item \codeinline{classpath}
+\item \codeinline{omit_on_error}: skip a Clojure source file that
+can't be parsed
+\end{itemize}
+\end{itemize}
 
 \section{Task management}
 
