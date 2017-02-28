@@ -3387,6 +3387,26 @@ highest observed ratio of breaking mismatches to all released versions
 is around the 100-day mark, but it does not dominate the other time
 intervals.
 
+Additionally, out of the 172 projects that have a stable API, 164 were
+found to have at least one release before major version 1. The ratio
+$\frac{\text{mismatches before first major release}}{\text{mismatches
+after first major release}}$ for projects that have at least one
+mismatch from before the first release with a stable API
+\footnote{Projects with no mismatches before the first release most
+likely indicate that those versions don't support Python 3 and are
+skewing the data.} was found to be in the range $(0, 1]$ (fig.
+\ref{StableBoundaryRatio}) for the majority of projects -- indicating
+that major version 1 is indeed considered (at least partly) to publish
+an API.
+
+\begin{figure}[H]
+\centering
+\caption{Histogram of ratios $\frac{\text{mismatches before first
+major release}}{\text{mismatches after first major release}}$}
+\label{StableBoundaryRatio}
+\includegraphics[height=0.3\textheight]{images/evaluation/ls_stable_boundary}
+\end{figure}
+
 \subsubsection{With structural typing}
 
 With structural typing enabled, somewhat suprisingly, there is a very
@@ -3397,7 +3417,7 @@ in the first round, where for some projects structural typing almost
 doubled the number of breaking mismatches.
 
 The proportions of breaking mismatches to all released versions in
-different time intervals are uniformly, slightly higher. (fig.
+different time intervals are uniformly slightly higher (fig.
 \ref{StrHistogramAllProjects}).
 
 \subsubsection{Summary}
