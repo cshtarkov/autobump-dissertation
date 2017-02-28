@@ -74,10 +74,17 @@ if stable_boundary:
 dates = list(dates_mismatches.keys())
 diffs = list()
 all_versions = list()
+before_stable = 0
+after_stable = 0
 for date_a, date_b in zip(dates, dates[1:]):
     date_diff = (date_b - date_a).days
     total_diff = dates_mismatches[date_b][0] - dates_mismatches[date_a][0]
     breaking_diff = dates_mismatches[date_b][1] - dates_mismatches[date_a][1]
+    if stable_boundary:
+        if date_b < stable_boundary:
+            before_stable += total_diff
+        else:
+            after_stable += total_diff
     if breaking_diff > 0:
         diffs.append(date_diff)
     all_versions.append(date_diff)
@@ -87,23 +94,8 @@ for diff in diffs:
     print("diff", diff)
 for all_version in all_versions:
     print("all_version", all_version)
-
-# Print before and after stable boundary
-if stable_boundary:
-    [print("before_stable", breaking)
-     for (_, breaking)
-     in
-     [dates_mismatch[1]
-      for dates_mismatch
-      in dates_mismatches.items()
-      if dates_mismatch[0] < stable_boundary]]
-    [print("after_stable", breaking)
-     for (_, breaking)
-     in
-     [dates_mismatch[1]
-      for dates_mismatch
-      in dates_mismatches.items()
-      if dates_mismatch[0] >= stable_boundary]]
+print("before_stable", before_stable)
+print("after_stable", after_stable)
 
 # Plot cumulative mismatches
 total = [total for (total, _) in dates_mismatches.values()]
