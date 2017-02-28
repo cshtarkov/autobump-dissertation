@@ -360,7 +360,7 @@ updating dependencies. This dissertation argues that this situation is
 undesirable and can be alleviated.
 
 In practice, semantic versioning is applied poorly. A
-study \cite{SemverMaven} of more than 22,000 libraries in the Maven \cite{Maven}
+study \cite{SemverMaven} of more than 22,000 libraries in the Maven
 repository found that there was virtually no difference in the
 frequency of breaking changes in major and minor version increments.
 It also found that this has a significant impact on client
@@ -663,12 +663,12 @@ but also inspects and notes differences in accompanying documentation
 strings. Those may indicate a change in the behaviour of some functionality,
 even if its interface remains the same.
 
-JDiff is intended to be used in conjuction with the build system Ant
-\cite{Ant}, where an \textit{old} and a \textit{new} project have to
-be defined so that JDiff knows what to compare. It requires that the
-project is compiled (twice) and that its dependencies are available in
-Java's \codeinline{CLASSPATH}, because it uses the Java reflection API
-which allows for compiled code to be loaded and inspected at runtime.
+JDiff is intended to be used in conjuction with the build system Ant ,
+where an \textit{old} and a \textit{new} project have to be defined so
+that JDiff knows what to compare. It requires that the project is
+compiled (twice) and that its dependencies are available in Java's
+\codeinline{CLASSPATH}, because it uses the Java reflection API which
+allows for compiled code to be loaded and inspected at runtime.
 
 At the time of writing, the tool seems to be somewhat outdated with
 the last release being JDiff \textit{1.1.1} from November 2008.
@@ -3242,21 +3242,20 @@ gathering metrics.
 
 The number 632 is not arbitrary. To gather Python projects with
 varying popularity, the websites \textit{http://pypi-ranking.info} and
-\textit{http://pypi.org} were scraped (see listing
-\ref{ScraperScript}). The first one was used to get a listing of all
-published projects in decreasing order of popularity and check for
-Python 3 compatibility, and the second one was used to visit the
-official page of each project and search via a regular expression for
-a GitHub\footnote{Earlier iterations of the scraper script tried to
-use a more general regular expression, but that proved to be very
-erroneous, so it was limited to the most popular hosting for
-repositories.} repository. As projects get less popular, their support
-for Python 3 decreases rapidly, as they have not seen a release in
-some time. After reaching zero (number of downloads) the ones that
-support it get extremely sparse, so the scraping was cut off soon
-after that point. That is not to say that there are only 632 Python
-projects that support Python 3 and have a download count larger than
-zero -- these are only the ones for which a GitHub link was found
+\textit{http://pypi.org} were scraped. The first one was used to get a
+listing of all published projects in decreasing order of popularity
+and check for Python 3 compatibility, and the second one was used to
+visit the official page of each project and search via a regular
+expression for a GitHub\footnote{Earlier iterations of the scraper
+script tried to use a more general regular expression, but that proved
+to be very erroneous, so it was limited to the most popular hosting
+for repositories.} repository. As projects get less popular, their
+support for Python 3 decreases rapidly, as they have not seen a
+release in some time. After reaching zero (number of downloads) the
+ones that support it get extremely sparse, so the scraping was cut off
+soon after that point. That is not to say that there are only 632
+Python projects that support Python 3 and have a download count larger
+than zero -- these are only the ones for which a GitHub link was found
 reliably on the module's PyPI page.
 
 Note that not all of these projects are guaranteed to be libraries;
@@ -3270,11 +3269,11 @@ there will be no difference whether they are applications or
 libraries.
 
 After the list of repositories was obtained, each one was cloned in a
-separate directory (listing \ref{CloneScript}). Of 632 repositories,
+separate directory. Of 632 repositories,
 605 were cloned successfully, the rest failing because they were
 private or removed.
 
-A generic configuration file (\ref{GenericConfigFile}) was constructed
+A generic configuration file was constructed
 that ignores frequently encountered directories and files such as
 \codeinline{tests} and \codeinline{setup.py}. After that, all projects
 were evaluated from their very first release to the very last, all
