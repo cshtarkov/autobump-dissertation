@@ -1,5 +1,7 @@
 \pdfoutput=1
 
+%=== Packages and Package Configuration ===
+
 \documentclass{l4proj}
 \usepackage{amsmath}
 \usepackage{algorithm}
@@ -26,6 +28,8 @@ urlcolor={blue!80!black}
 }
 \setlength{\belowcaptionskip}{17pt plus 3pt minus 2pt}
 
+%=== Custom Macros ===
+
 \newcommand\textttd[1]{\texttt{\detokenize{#1}}}
 \newenvironment{halfmini}[1]
 {
@@ -36,7 +40,8 @@ urlcolor={blue!80!black}
 \end{minipage}
 }
 
-% Source listings
+%=== Source Code Listings ===
+
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10}
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}
 \DeclareFixedFont{\ttbs}{T1}{txtt}{bx}{n}{8}
@@ -52,8 +57,8 @@ language=Python,
 basicstyle=\ttm,
 otherkeywords={self},
 keywordstyle=\ttb\color{keyword},
-emph={__init__,ThingDoer,accept_foo_bar,THING_QUOTA,do_thing,Discombobulator,discombobulate,
-Discombobulated,func},
+emph={__init__,ThingDoer,accept_foo_bar,THING_QUOTA,do_thing,Discombobulator,
+discombobulate, Discombobulated,func},
 emphstyle=\ttb\color{name},
 stringstyle=\color{PineGreen},
 rulecolor=\color{gray},
@@ -102,7 +107,8 @@ showstringspaces=false
 }
 {}
 \newcommand\clojureinline[1]{{\clojurestyle\lstinline!#1!}}
-\newcommand\clojureinlinedef{{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!\enspace}}
+\newcommand\clojureinlinedef{
+{\clojurestyle\lstset{otherkeywords=def}\lstinline!def!\enspace}}
 \newcommand\xmlstyle{\lstset{
 language=XML,
 basicstyle=\ttm,
@@ -122,10 +128,7 @@ showstringspaces=false
 {}
 \newcommand\xmlinline[1]{{\xmlstyle\lstinline!#1!}}
 
-% Body
-
-% TODO: inconsistent british/american spelling
-% TODO: label after caption!
+%=== Before Contents ===
 
 \begin{document}
 \title{Automatic Suggestion of Semantic Versioning}
@@ -168,7 +171,8 @@ meetings.
 
 \tableofcontents
 
-%% Contents
+%=== Contents ===
+
 \chapter{Introduction}
 \pagenumbering{arabic}
 
@@ -461,7 +465,6 @@ different languages.
 The rest of this dissertation is comprised of the following chapters
 and appendices:
 
-% TODO: chapters go here
 \noindent Chapter \ref{PreviousWork} -- \textbf{Previous work} \\
 Goes into existing projects that to some extent solve the problem
 of automatically assigning version numbers and the approaches that
@@ -475,20 +478,19 @@ the tool useful.
 \noindent Chapter \ref{Implementation} -- \textbf{Implementation} \\
 Discusses how Autobump works in great detail, both internally and
 in terms of being exposed to the end user.
-% TODO: rewrite?
 
 \noindent Chapter \ref{Testing} -- \textbf{Testing} \\
 Goes into the techniques used to show that Autobump indeed works
 as advertised.
 
 \noindent Chapter \ref{Evaluation} -- \textbf{Evaluation} \\
-% TODO: does it though?
-Evaluates Autobump's multi-language design and ``replays'' the history
-of different libraries across the target languages to find out whether
-a tool like Autobump would have been beneficial in their development.
+``Replays'' the history of different libraries across the target
+languages to find out whether a tool like Autobump would have been
+beneficial in their development.
 
 \noindent Chapter \ref{Conclusion} -- \textbf{Conclusion} \\
-Summarizes what was accomplished by this project and proposes future work.
+Summarizes what was accomplished by this project and proposes future
+work. \\
 
 \noindent Appendix \ref{AutobumpInPractice} -- \textbf{Running
 Autobump in practice} \\\\
@@ -573,17 +575,27 @@ Consider an example usage of GitVersion on a history of commits.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|}
-\textbf{Commit} & \textbf{Version} & \textbf{Explanation}                              \\
-0      & 1.0.0                 & First commit that has a version.                      \\
-1      & 1.0.1+1               & Patch was introduced, and one commit since then.      \\
-2      & 1.0.1-feature-foo.1+1 & Feature was introduced, and one commit since then.    \\
-3      & 1.0.1+3               & Three commits since the last patch.                   \\
-4      & 1.1.0-rc.1            & First release candidate for the new feature.          \\
-5      & 1.1.0                 & Feature branch was merged.                            \\
-6      & 1.1.1+1               & Patch was introduced, and one commit since then.      \\
-7      & 1.1.1+2               & Patch was introduced, and two commits since then.     \\
-8      & 2.0.0-rc.1            & First release candidate for the new breaking changes. \\
-9      & 2.0.0                 & Breaking release branch was merged.
+\textbf{Commit} & \textbf{Version} & \textbf{Explanation} \\
+0      & 1.0.0
+& First commit that has a version.                      \\
+1      & 1.0.1+1
+& Patch was introduced, and one commit since then.      \\
+2      & 1.0.1-feature-foo.1+1
+& Feature was introduced, and one commit since then.    \\
+3      & 1.0.1+3
+& Three commits since the last patch.                   \\
+4      & 1.1.0-rc.1
+& First release candidate for the new feature.          \\
+5      & 1.1.0
+& Feature branch was merged.                            \\
+6      & 1.1.1+1
+& Patch was introduced, and one commit since then.      \\
+7      & 1.1.1+2
+& Patch was introduced, and two commits since then.     \\
+8      & 2.0.0-rc.1
+& First release candidate for the new breaking changes. \\
+9      & 2.0.0
+& Breaking release branch was merged.
 \end{tabular}
 \caption{Proposed semantic version numbers by GitVersion, if every
 commit were to be released}
@@ -637,18 +649,20 @@ reminiscent of it \cite{ElmPackageVR}:
 \item Versions are incremented based on how the API changes:
 \begin{itemize}
 \item \codeinline{PATCH} -- the API is the same, no risk of breaking code
-\item \codeinline{MINOR} -- values have been added, existing values are unchanged
+\item \codeinline{MINOR} -- values have been added, existing values
+are unchanged
 \item \codeinline{MAJOR} -- existing values have been changed or removed
 \end{itemize}
 \end{itemize}
 
 The most notable change from semantic versioning is that elm-package
-disallows versions smaller than \textit{1.0.0}. Semver claims that \textit{1.0.0}
-defines the public API, so it would make sense for a tool like this to
-disallow versions smaller than that. If the previously published
-version of the package is \textit{0.9.0} and the new changeset is breaking,
-elm-package would have no way of knowing whether the next one should
-be \textit{0.9.1}, \textit{0.10.0} or \textit{1.0.0}.
+disallows versions smaller than \textit{1.0.0}. Semver claims that
+\textit{1.0.0} defines the public API, so it would make sense for a
+tool like this to disallow versions smaller than that. If the
+previously published version of the package is \textit{0.9.0} and the
+new changeset is breaking, elm-package would have no way of knowing
+whether the next one should be \textit{0.9.1}, \textit{0.10.0} or
+\textit{1.0.0}.
 
 \section{Java-specific tooling}
 
@@ -719,7 +733,8 @@ Autobump, should use to propose version numbers, and formulates the
 set of features that should be expected. It also goes into some brief
 discussion of non-functional requirements.
 
-\section{Estimating next semantic version through code analysis}
+\section{Estimating next semantic version
+through code analysis}
 \label{EstimatingNextSemver}
 
 Much like \textit{elm-package}, Autobump looks at how the code itself
@@ -735,8 +750,6 @@ be applied to different languages.
 \subsection{Breaking changes}
 \label{BreakingChanges}
 
-% TODO: where do you draw the line? if we say 2 changes are breaking,
-% then... which ones
 For the definition of breaking change to be useful, it ought to be
 strict -- and that is the way Semver approaches it. It defines
 \textbf{any} change to the API which makes it incompatible with the
@@ -779,17 +792,22 @@ assignment of version numbers, and both of those changes are breaking
 \caption{List of changes that are considered breaking}
 \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
 \hline
-\textbf{Change}                                                                               & \textbf{Rationalisation}                                                 \\
+\textbf{Change} & \textbf{Rationalisation} \\
 \hline
-Removing an entity.                                                                           & Client applications may be using it.                                       \\
+Removing an entity. & Client applications may be using it. \\
 \hline
-Changing the type of an entity to an incompatible type.                                       & Client applications may be expecting a different type.                     \\
+Changing the type of an entity to an incompatible type.
+& Client applications may be expecting a different type. \\
 \hline
-Adding a parameter with no default value to a function signature.                             & Calls to that function will immediately fail due to a missing parameter. \\
+Adding a parameter with no default value to a function signature.
+& Calls to that function will immediately fail due to a missing parameter. \\
 \hline
-Removing a parameter from a function signature, regardless of whether it had a default value. & Calls to that function \textit{may} fail due to a missing parameter.     \\
+Removing a parameter from a function signature,
+regardless of whether it had a default value.
+& Calls to that function \textit{may} fail due to a missing parameter. \\
 \hline
-Removing the default value of a parameter.                                                    & Calls to that function may be relying on the now missing default value.  \\
+Removing the default value of a parameter.
+& Calls to that function may be relying on the now missing default value. \\
 \hline
 \end{tabular}
 \end{table}
@@ -813,7 +831,8 @@ program where they are defined, comprising the API.
 \item The language has a type system which has the notion of binary
 compatibility:
 \begin{equation}
-\forall(T_a,T_b) \in S, \mathrm{compatible}(T_a,Y_b) \in \{\mathrm{True},\mathrm{False}\}
+\forall(T_a,T_b) \in S, \mathrm{compatible}(T_a,Y_b) \in
+\{\mathrm{True},\mathrm{False}\}
 \end{equation}
 where $S$ is the set of all admissable types in the language and
 program. \\
@@ -892,8 +911,6 @@ versioning is to guard against breaking changes, which can be done
 reliably just by looking at the API.
 
 \section{Feature set and usage}
-
-% TODO: check tense usage
 
 Autobump is a a tool which given two revisions in a version
 controlled project reliably determines what the version of the later
@@ -999,11 +1016,11 @@ environment variables are meant to be used for quickly overriding
 options.
 \item A configuration file \codeinline{autobump.ini} present in the
 working directory, which has a section \codeinline{[Component]} with a
-setting of the form \codeinline{option=...} nested inside. This matches
-the informal standard \codeinline{INI} format for configuration files. The reason
-this format is preferred is that Python comes with the module
-\pythoninline{configparser} for reading those types of files out of
-the box.
+setting of the form \codeinline{option=...} nested inside. This
+matches the informal standard \codeinline{INI} format for
+configuration files. The reason this format is preferred is that
+Python comes with the module \pythoninline{configparser} for reading
+those types of files out of the box.
 \item A default value, hardcoded in the configuration module itself.
 \end{enumerate}
 
@@ -1022,9 +1039,9 @@ make their success or failure not dependent on Autobump's current
 configuration.
 
 \begin{figure}[H]
-\label{ConfigOverrideCM}
 \centering
 \caption{Overriding with a context manager}
+\label{ConfigOverrideCM}
 \begin{tabular}{c}
 \begin{python}
 from autobump.config import get, config_overrides
@@ -1036,9 +1053,9 @@ with config_overrides({"category": {"option": "value"}}):
 \end{figure}
 
 \begin{figure}[H]
-\label{ConfigOverrideD}
 \centering
 \caption{Overriding with a function decorator}
+\label{ConfigOverrideD}
 \begin{tabular}{c}
 \begin{python}
 from autobump.config import get, config_override
@@ -1145,8 +1162,6 @@ have a default value. Note that the \pythoninline{Function}s themselves
 don't have return values; instead they can be put as part of the
 signature if necessary.
 
-% TODO: shoehorning languages into CAPIR, drawbacks for changelog generation
-
 \begin{figure}[H]
 \centering
 \includegraphics[height=0.3\textheight]{images/dot/repr}
@@ -1160,7 +1175,7 @@ As an example of what CAPIR looks like in practice, fig.
 simple Python codebase consisting of two modules. Note how a tree is
 formed akin to simplified abstract syntax tree -- this is instrumental
 in allowing the comparison logic to be recursively defined later
-(\ref{Logic}).
+(section \ref{Logic}).
 
 \begin{halfmini}{moduleA.py}
 \begin{python}
@@ -1271,7 +1286,6 @@ are is irrelevant to determining the next semantic version. It may be
 of interest only when generating changelogs.}.
 
 \subsection{Python}
-% TODO: use CPython, but should work with anything
 
 Python is a general-purpose, dynamically typed, interpreted language.
 That makes it an interesting target and a good first choice,
@@ -1348,9 +1362,6 @@ tests. Even though it may be found that all parameters passed into the
 function are instances of a particular class, client code
 could pass in objects of a different type that happen to have the same
 properties and methods as needed by the function.
-
-% TODO: What about types of entities? Need to implement AST scanning
-% as well
 
 A better choice is to consider two sets $S_a$ and $S_b$ -- the sets of
 all properties and methods requested from the object in the two
@@ -1529,7 +1540,8 @@ passes are necessary, consider a Java file in the codebase which has
 these two variants:
 
 \begin{halfmini}{Variant A}
-\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},
+emphstyle=\ttbs\color{name}]
 package somePackage;
 
 public class MyClass {
@@ -1538,7 +1550,8 @@ public class MyClass {
 \end{java}
 \end{halfmini}
 \begin{halfmini}{Variant B}
-\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},
+emphstyle=\ttbs\color{name}]
 package somePackage;
 
 public class MyClass {
@@ -1605,7 +1618,8 @@ comparison algorithm detects only changes in the signatures.
 \begin{figure}[H]
 \caption{Java source and the resultant CAPIR in intermediary XML}
 \begin{halfmini}{Java Source}
-\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},emphstyle=\ttbs\color{name}]
+\begin{java}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword},
+emphstyle=\ttbs\color{name}]
 package com.autobump.somepackage;
 
 public class SomeClass {
@@ -1619,8 +1633,8 @@ public class SomeClass {
 \end{java}
 \end{halfmini}
 \begin{halfmini}{CAPIR (XML)}
-% TODO: remove extra $
-\begin{xml}[basicstyle=\ttmt,keywordstyle=\ttbt\color{keyword},emphstyle=\ttbt\color{name}]
+\begin{xml}[basicstyle=\ttmt,keywordstyle=\ttbt\color{keyword},
+emphstyle=\ttbt\color{name}]
 <class name="com.autobump.somepackage.SomeClass">
  <field name="field" type="int"/>
  <method name="method" returns="void">
@@ -1659,7 +1673,6 @@ delegate to the build system that comes with the project to properly
 handle things like dependencies and \codeinline{CLASSPATH} issues.
 \codeinline{java_ast} requires that a build command and a build root are
 passed in to Autobump as command-line arguments.
-% TODO: why arguments and not in config?
 
 The build command is a shell command that runs before using the
 \codeinline{Inspector} to introspect all classes, for example
@@ -1738,8 +1751,6 @@ rely on just the AST, because evaluating code and then trying to do
 introspection risks executing side effects. It is not so. The Clojure
 handler can use a mixture of both approaches with no penalties,
 because it is functional and the risk of side effects can be disregarded.
-
-% TODO: here we discuss.... ???
 
 \subsubsection{Mapping AST to CAPIR}
 
@@ -2020,20 +2031,6 @@ kick off the comparison of two trees it's necessary to wrap both in a
 CAPIR unit, so that the first level of recursion actually looks at the
 top-level units in both codebases.
 
-% Autobump's core objective, suggesting the new version number, is
-% essentially formulated functionally in the main program as follows:
-
-% \begin{center}
-% \begin{tabular}{c}
-% % TODO: real composition
-% \begin{python}
-% capir_at_commit = codebase_to_units . get_commit
-% change = compare(capir_at_commit(previous), capir_at_commit(current))
-% new_version = old_version.bump(change)
-% \end{python}
-% \end{tabular}
-% \end{center}
-
 $report$ is a simple function that takes care of adding a change to
 the changelog and checking whether the latest reported change is more
 notable than the most notable so far. For example, reporting a feature
@@ -2051,8 +2048,6 @@ principle of comparing members of CAPIR entities, even if eventually
 CAPIR is modified or extended and the comparators change. The only
 comparators used so far are for type checking (on the member $type$)
 and signature checking (on the member $signatures$).
-
-% TODO: talk about individual comparators
 
 Once the dominating change is known after running the comparison
 algorithm, the previous version can just be bumped according to the
@@ -2079,7 +2074,6 @@ the new version.
 \begin{figure}[H]
 \centering
 \caption{Most frequent manual use case}
-% TODO: git history of most frequent use case
 \begin{BVerbatim}
 > git tag | tail -n1
 1.2.0
@@ -2116,7 +2110,6 @@ used to check for previous mistakes or when changing the release
 history. It is also used for running Autobump in evaluation mode,
 where it is automatically run multiple times against chronologically
 adjacent revisions, as discussed in chapter \ref{Evaluation}.
-% TODO: wtf is "changing the release history"?
 
 \begin{figure}[H]
 \centering
@@ -2151,7 +2144,7 @@ A full rundown of all options is given in appendix \ref{RundownOptions}.
 \chapter{Testing}
 \label{Testing}
 
-% TODO: coverage.py
+% TODO: mention coverage.py?
 
 This chapter looks at how it can be demonstrated that Autobump indeed
 works and what testing techniques were used throughout development.
@@ -2227,7 +2220,6 @@ create temporary files and directories, and it simplifies the fixtures
 -- they can be the source code of a single file with no metadata.
 
 \section{Acceptance testing}
-% TODO: 1.0.0 -> 2.0.0 should have been, but 1.0.1 -> 1.0.2 is fine
 
 Even if the unit tests all pass and reasonably cover edge cases for
 the individial modules, Autobump itself can still misbehave and
@@ -2283,7 +2275,6 @@ repository in a temporary directory from that series of patches, and
 then run Autobump against every pair of consecutive revisions.
 \end{enumerate}
 
-% TODO: clarify test vs suite
 However, it's not quite enough to just have a series of patches to
 construct the acceptance test. At the bare minimum, the test also
 needs to say which handler should be used when running Autobump. Tests
@@ -2339,8 +2330,6 @@ commit_history = [
 
 \chapter{Evaluation}
 \label{Evaluation}
-% TODO: in essence, conflate semantic versioning with
-% how-big-the-change-was versioning
 
 This chapter shows how Autobump was applied retroactively to
 real-world libraries written in the different target languages.
@@ -2362,7 +2351,6 @@ well as a comparison with the findings from the manual evaluation of
 Python projects.
 
 \section{Running Autobump against existing libraries}
-% TODO: rename this section if doing a large-scale Python study
 
 Retroactively running Autobump against a specific library was done
 much in the same way as running an acceptance test. In testing, a
@@ -2476,7 +2464,6 @@ The sample size in this round is very small and cannot be used to
 extrapolate overarching themes. However, because it is reasonably
 small manual inspection of the mismatches can be done, which in turn
 allows for examining the mindset and motivations of developers.
-% TODO: mindset and motivations?
 
 The process of evaluation was also important for identifying
 previously unknown errors in Autobump's behaviour, which were covered
@@ -2490,8 +2477,6 @@ that only mismatches are examined -- versions where the two parties
 agree are not looked at, because it is fairly unlikely that both are
 wrong.
 
-% Which version of Autobump was used?
-
 \subsection{Python}
 
 \begin{table}[H]
@@ -2500,10 +2485,12 @@ wrong.
 \label{PythonProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
-\textbf{Project} & \textbf{Size} & \textbf{Downloads} & \textbf{Semantically versioned} \\
+\textbf{Project} & \textbf{Size} & \textbf{Downloads}
+& \textbf{Semantically versioned} \\
 \hline
 \codeinline{requests} & 4500 LOC & 53 million & Yes, officially. \\
-\codeinline{simplejson} & 2000 LOC & 182 million & Seems like it, but not officially. \\
+\codeinline{simplejson} & 2000 LOC & 182 million
+& Seems like it, but not officially. \\
 \codeinline{docopt} & 600 LOC & 9 million & Seems like it, but not
 officially. \\
 \codeinline{hashids} & 300 LOC & 154 000 & \codeinline{README} claims
@@ -2532,7 +2519,6 @@ for each project that ignore certain files and directories that are
 obviously not meant to be part of the public API. Initial attempts at
 evaluating Python libraries did not do this and legitimate data was
 being drowned out by changes to these private-by-convention entities.
-% TODO; config files
 
 Given that structural typing is a configurable option for the Python
 handler, each project was evaluated twice -- with the option disabled
@@ -2540,7 +2526,6 @@ and then enabled.
 
 \subsubsection{Requests}
 
-% TODO: put links to libraries, footnote or bibliography?
 \textit{Requests} \cite{Requests} is a large (for Python standards) library for
 making HTTP requests that officially claims to follow Semver, as
 specified in their contributing guidelines. The evaluation range was
@@ -2645,14 +2630,16 @@ version bumps are in the triple digits.
 
 \begin{figure}[]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/requests_cumulative_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/requests_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{Requests})}
 \label{RequestsCumulativeMismatches}
 \end{figure}
 
 \begin{figure}[]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/requests_introduced_changes}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/requests_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval (\textit{Requests})}
 \label{RequestsHistogram}
@@ -2727,7 +2714,8 @@ one (see fig. \ref{SimplejsonHistogram}).
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth,height=0.25\textheight]{images/evaluation/simplejson_introduced_changes}
+\includegraphics[width=0.5\textwidth,height=0.25\textheight]
+{images/evaluation/simplejson_introduced_changes}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval (\textit{Simplejson})}
 \label{SimplejsonHistogram}
@@ -2857,7 +2845,8 @@ dangerously) a patch change.
 \label{JavaProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
-\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\textbf{Project} & \textbf{Size} & \textbf{Dependants}
+& \textbf{Semantically versioned} \\
 \hline
 \codeinline{guava} & 150 000 LOC & 10700 & A contributor remarks ``we
 actually do use semantic versioning with
@@ -2963,7 +2952,8 @@ The results were then going to be merged together.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/mockito_cumulative_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/mockito_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{mockito})}
 \label{MockitoCumulativeMismatches}
 \end{figure}
@@ -3028,7 +3018,8 @@ method or class. Those changes just happen more often.
 \label{ClojureProjectsForEvaluation}
 \begin{tabular}{|l|l|l|p{10cm}|}
 \hline
-\textbf{Project} & \textbf{Size} & \textbf{Dependants} & \textbf{Semantically versioned} \\
+\textbf{Project} & \textbf{Size} & \textbf{Dependants}
+& \textbf{Semantically versioned} \\
 \hline
 \codeinline{cheshire} & 1200 LOC & 961 & Seems like it, not
 officially. \\
@@ -3039,7 +3030,6 @@ officially. \\
 officially. \\
 \hline
 % \\
-% TODO: another Clojure library
 \end{tabular}
 \end{table}
 
@@ -3101,7 +3091,8 @@ don't impact the API.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/cheshire_cumulative_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/cheshire_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{Cheshire})}
 \label{CheshireCumulativeMismatches}
 \end{figure}
@@ -3139,7 +3130,8 @@ days, compared to only 3.74 per 100 days.
 
 \begin{figure}[]
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/nippy_cumulative_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/nippy_cumulative_mismatches}
 \caption{Cumulative mismatches over time (\textit{Nippy})}
 \label{NippyCumulativeMismatches}
 \end{figure}
@@ -3432,10 +3424,6 @@ breaking changes may be proportional to the time interval that has
 elapsed since the last release. However, data gathered from a larger
 sample size shows that this is not the case.
 
-% TODO: what about all mismatches, not just breaking?
-
-% TODO: how much of a problem mismatches are
-
 \chapter{Conclusion}
 \label{Conclusion}
 
@@ -3447,6 +3435,8 @@ sample size shows that this is not the case.
 % TODO: integration with dev tools
 
 % TODO: evaluation: does LOC impact adherence?
+
+%=== Appendices ===
 
 \begin{appendices}
 
@@ -3479,7 +3469,6 @@ running \codeinline{python -m autobump}. This approach is not recommended.
 Autobump's source code comes with a regular \textit{GNU Make} Makefile
 that is used for task management. The different targets are:
 
-% TODO: fullstops after items
 \begin{itemize}
 \item \codeinline{lint}: runs a linter against all source code (except
 for tests) and fails the target if there are formatting issues
@@ -3707,7 +3696,7 @@ accepting integers.
 Projects listed in red were not evaluated because the Git repository
 couldn't be cloned, or they had less than 2 releases.
 
-% -- begin all projects
+%=== Enumerating All Projects ===
 \noindent\parbox[t]{0.32\textwidth}{\raggedright%
 \begin{itemize}
 \item acora
@@ -4439,7 +4428,7 @@ couldn't be cloned, or they had less than 2 releases.
 \item zorro
 \end{itemize}
 }%
-% -- end all projects
+% -- End Enumerating All Projects
 
 \section{Figures}
 
@@ -4447,21 +4436,24 @@ couldn't be cloned, or they had less than 2 releases.
 \centering
 \caption{Distribution of the number of releases}
 \label{DistributionAllVersions}
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_all_versions}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/distribution_all_versions}
 \end{figure}
 
 \begin{figure}[]
 \caption{Distribution of largest major versions}
 \label{DistributionLargestMajor}
 \centering
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_major_versions}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/distribution_major_versions}
 \end{figure}
 
 \begin{figure}[]
 \centering
 \caption{Data sets}
 \label{Datasets}
-\includegraphics[height=0.4\textheight]{images/evaluation/datasets}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/datasets}
 \end{figure}
 
 \begin{figure}[]
@@ -4469,7 +4461,8 @@ couldn't be cloned, or they had less than 2 releases.
 \caption{Percentage of total mismatches across projects (w/o structural
 typing)}
 \label{BoxplotsMismatches}
-\includegraphics[height=0.4\textheight]{images/evaluation/boxplots_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/boxplots_mismatches}
 \end{figure}
 
 \begin{figure}[]
@@ -4477,7 +4470,8 @@ typing)}
 \caption{Percentages of breaking mismatches across projects (w/o
 structural typing)}
 \label{BoxplotsBreaking}
-\includegraphics[height=0.4\textheight]{images/evaluation/boxplots_breaking}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/boxplots_breaking}
 \end{figure}
 
 \begin{figure}[]
@@ -4485,7 +4479,8 @@ structural typing)}
 \caption{Distribution of percentage of mismatches across projects with
 a published API (w/o structural typing)}
 \label{DistributionPublishedAPI}
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_major_version_1}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/distribution_mismatches_major_version_1}
 \end{figure}
 
 \begin{figure}[]
@@ -4493,7 +4488,8 @@ a published API (w/o structural typing)}
 \caption{Distribution of percentage of mismatches across projects with
 more than 10 releases (w/o structural typing)}
 \label{DistributionTenReleases}
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_more_than_10}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/distribution_mismatches_more_than_10}
 \end{figure}
 
 \begin{figure}[]
@@ -4501,7 +4497,8 @@ more than 10 releases (w/o structural typing)}
 \caption{Distribution of percentage of mismatches across all projects
 (w/o structural typing)}
 \label{DistributionAllProjects}
-\includegraphics[height=0.4\textheight]{images/evaluation/distribution_mismatches_all_projects}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/distribution_mismatches_all_projects}
 \end{figure}
 
 \begin{figure}[]
@@ -4509,7 +4506,8 @@ more than 10 releases (w/o structural typing)}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval for all projects (w/o structural typing)}
 \label{HistogramAllProjects}
-\includegraphics[height=0.4\textheight]{images/evaluation/ls_nonstr_introduced_changes}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/ls_nonstr_introduced_changes}
 \end{figure}
 
 \begin{figure}[]
@@ -4517,7 +4515,8 @@ interval for all projects (w/o structural typing)}
 \caption{Percentage of total mismatches across projects (w/ structural
 typing)}
 \label{StrBoxplotsMismatches}
-\includegraphics[height=0.4\textheight]{images/evaluation/str_boxplots_mismatches}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/str_boxplots_mismatches}
 \end{figure}
 
 \begin{figure}[]
@@ -4525,7 +4524,8 @@ typing)}
 \caption{Percentages of breaking mismatches across projects (w/
 structural typing)}
 \label{StrBoxplotsBreaking}
-\includegraphics[height=0.4\textheight]{images/evaluation/str_boxplots_breaking}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/str_boxplots_breaking}
 \end{figure}
 
 \begin{figure}[]
@@ -4533,7 +4533,8 @@ structural typing)}
 \caption{Distribution of percentage of mismatches across projects with
 a published API (w/ structural typing)}
 \label{StrDistributionPublishedAPI}
-\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_major_version_1}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/str_distribution_mismatches_major_version_1}
 \end{figure}
 
 \begin{figure}[]
@@ -4541,7 +4542,8 @@ a published API (w/ structural typing)}
 \caption{Distribution of percentage of mismatches across projects with
 more than 10 releases (w/ structural typing)}
 \label{StrDistributionTenReleases}
-\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_more_than_10}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/str_distribution_mismatches_more_than_10}
 \end{figure}
 
 \begin{figure}[]
@@ -4549,7 +4551,8 @@ more than 10 releases (w/ structural typing)}
 \caption{Distribution of percentage of mismatches across all projects
 (w/ structural typing)}
 \label{StrDistributionAllProjects}
-\includegraphics[height=0.4\textheight]{images/evaluation/str_distribution_mismatches_all_projects}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/str_distribution_mismatches_all_projects}
 \end{figure}
 
 \begin{figure}[]
@@ -4557,18 +4560,19 @@ more than 10 releases (w/ structural typing)}
 \caption{Histogram of total versions vs. breaking mismatches in a time
 interval for all projects (w/ structural typing)}
 \label{StrHistogramAllProjects}
-\includegraphics[height=0.4\textheight]{images/evaluation/ls_str_introduced_changes}
+\includegraphics[height=0.4\textheight]
+{images/evaluation/ls_str_introduced_changes}
 \end{figure}
 
 \end{appendices}
 
-%% Bibliography
+%=== Bibliography ===
 \bibliographystyle{plain}
 \bibliography{dissertation}
 
 \end{document}
 
-% The below list of file-local variables enables
+% This list of file-local variables enables
 % auto filling of text and completely nukes all indentation
 % except for code blocks.
 
