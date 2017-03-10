@@ -879,23 +879,18 @@ perhaps in terms of how the abstract syntax tree was modified, the
 line between a patch change and a feature addition would be quite
 fuzzy.
 
-Revisiting the established list of breaking changes and replacing
-the destructive aspect of each item with a constructive one results in
-the following list:
-
-\begin{itemize}
-\item Adding a new entity.
-\item Changing the type of an entity to a compatible type.
-\item Adding a parameter with a default value to a function signature.
-\end{itemize}
-
-Autobump can monitor changes like these and suggest that those are
-indicative of a feature addition. Provided that no breaking changes
-are found, but some of these are, then it would be appropriate to bump
-the minor version number. This is a valid intepretation of the Semver
-specification, and it is the approach that \textit{elm-package} takes
-\cite{ElmPackageVR}: it defines a minor version bump as ``values have
-been added, existing values are unchanged''.
+Revisiting the established list of breaking changes and replacing the
+destructive aspect of each item with a constructive one results in the
+following list: adding a new entity; changing the type of an entity to
+a compatible type; adding a parameter with a default value to a
+function signature. Autobump can monitor changes like these and
+suggest that those are indicative of a feature addition. Provided that
+no breaking changes are found, but some of these are, then it would be
+appropriate to bump the minor version number. This is a valid
+intepretation of the Semver specification, and it is the approach that
+\textit{elm-package} takes \cite{ElmPackageVR}: it defines a minor
+version bump as ``values have been added, existing values are
+unchanged''.
 
 Note that while backwards-compatible additions to the API virtually
 always indicate a feature addition (at least for a flexible enough
@@ -903,14 +898,12 @@ definition of ``feature''), not all feature additions have to be
 accompanied by such a change. For example, a major performance
 improvement may be notable enough that the authors consider it a
 feature.
-
 While Autobump is guaranteed to disagree with authors in some of the
 cases where a feature was added because it had no bearing on the API,
 this does not devalue its usefulness. The main point of semantic
 versioning is to guard against breaking changes, which can be done
 reliably just by looking at the API.
 
-\clearpage
 \section{Feature set and usage}
 
 Autobump is a a tool which given two revisions in a version
@@ -919,7 +912,6 @@ revision should be\footnote{In some contexts, ``version'' and
 ``revision'' may be identical. This dissertation refers to the
 semantic version of a release as ``version'', and the commit
 identifier in a VCS as ``revision''}.
-
 Although technically Autobump could be used with any project, this
 dissertation focuses on libraries, frameworks and otherwise projects
 whose main usefulness comes from the ability to be integrated in
@@ -929,7 +921,6 @@ projects that semantic versioning is most practical.
 Because identifying the version delta requires first identifying a
 list of changes to the public API, a secondary function of Autobump is
 the generation of a changelog in preparation for a release.
-
 Autobump can be part of a manual or automated workflow of bumping the
 version number with every release, generating a changelog, or both. It
 is a command-line application with behaviour driven by passing
@@ -1611,7 +1602,7 @@ That is why it takes the return value of every method and makes it
 part of the signature. The signature of the method \javainline{void
 m(int a)} is considered to be \javainline{(void, int)} instead of
 just \javainline{(int)}. This extra ``argument'' takes the special
-name \pythoninline{$AUTOBUMP_RETURN$} as can be seen in figure
+name \pythoninline{AUTOBUMP_RETURN} as can be seen in figure
 \ref{CAPIRXMLExample}. The return type of the function in CAPIR is set
 to some dummy type that is compatible with everything, so that the
 comparison algorithm detects only changes in the signatures.
