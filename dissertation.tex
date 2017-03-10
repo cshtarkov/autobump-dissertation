@@ -956,7 +956,7 @@ and only use Python as a middleware language to link back to the core.
 \begin{figure}[t]
 \label{ArchitectureFig}
 \centering
-\includegraphics[height=0.3\textheight]{images/dot/architecture}
+\includegraphics[height=0.5\textheight]{images/dot/architecture}
 \caption{\textit{Autobump} architecture}
 \end{figure}
 
@@ -1023,41 +1023,11 @@ current configuration.
 
 Additionally, the configuration module provides standard Python
 mechanisms for overriding configuration programmatically -- a context
-manager and a function decorator, as shown in figures
-\ref{ConfigOverrideCM} and \ref{ConfigOverrideD}. Those can be useful
+manager and a function decorator. Those can be useful
 if using Autobump as a library from an external application. For
 example, Autobump's own unit tests override configuration options to
 make their success or failure not dependent on Autobump's current
 configuration.
-
-\begin{figure}[H]
-\centering
-\caption{Overriding with a context manager}
-\label{ConfigOverrideCM}
-\begin{tabular}{c}
-\begin{python}
-from autobump.config import get, config_overrides
-
-with config_overrides({"category": {"option": "value"}}):
-    get("category", "option") == "value"
-\end{python}
-\end{tabular}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\caption{Overriding with a function decorator}
-\label{ConfigOverrideD}
-\begin{tabular}{c}
-\begin{python}
-from autobump.config import get, config_override
-
-@config_override("category", "option", "value")
-def this_test_requires_a_particular_option_to_be_set():
-    get("category", "option") == "value"
-\end{python}
-\end{tabular}
-\end{figure}
 
 \section{Common representation for APIs}
 \label{CAPIR}
@@ -1154,9 +1124,10 @@ have a default value. Note that the \pythoninline{Function}s themselves
 don't have return values; instead they can be put as part of the
 signature if necessary.
 
+\vspace{\fill}
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.3\textheight]{images/dot/repr}
+\includegraphics[height=0.4\textheight]{images/dot/repr}
 \caption{Class diagram -- Autobump's public API representation (CAPIR)}
 \label{RepresentationUML}
 \end{figure}
@@ -1828,12 +1799,6 @@ directly to intermediary S-expressions}
 \end{clojure}
 \end{halfmini}
 \end{figure}
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.5\textheight]{images/dot/sexpcapir}
-\caption{CAPIR of Clojure source code produced from intermediary S-expressions}
-\label{CAPIRSexpExample}
-\end{figure}
 
 Note how the type of \clojureinline{cst} is \clojureinline{nil} and not
 \clojureinline{java.lang.Double} as Clojure would report if the type
@@ -2114,24 +2079,14 @@ adjacent revisions, as discussed in chapter \ref{Evaluation}.
 \end{figure}
 
 Autobump is also able to provide debugging information in case the
-user suspects that something is not working quite right. The level of
-information can be controlled using the options \codeinline{--info},
-\codeinline{--debug} and \codeinline{--silence}. By default Autobump
-doesn't provide any except for warnings.
-
-All debugging information is printed to \codeinline{stderr} so as not
-to interfere with the regular output of the program. This was very
-important during development, as the debugging information could
-easily be piped to a separate file for later analysis.
+user suspects that something is not working quite right. It is printed
+to \codeinline{stderr} and the logging level can be controlled by
+passing in options (see appendix \ref{RundownOptions}) for a rundown).
 
 Errors are always shown and cannot be silenced. That is desirable,
 because Autobump treats all errors as fatal and immediately terminates
 when one is encountered. The return code of the program is set to
 non-zero to indicate that it failed.
-
-A full rundown of all options is given in appendix \ref{RundownOptions}.
-
-% TODO: return things like --silence, --debug if there is enough space
 
 \chapter{Testing}
 \label{Testing}
