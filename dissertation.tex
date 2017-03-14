@@ -316,10 +316,17 @@ If the versioning rules had started applying from the first ever
 release of the project, either the developers would be discouraged
 from versioning unstable work or version numbers would balloon.
 
-Semver, explicitly or implicitly, is by far the most popular
-versioning scheme. As its specification claims, ``these rules are
-based on but not necessarily limited to pre-existing widespread common
-practices in use in both closed and open-source software.''
+Semver, explicitly or implicitly, is the ``default'' versioning
+scheme. This is so by virtue of the fact that in practice the version
+numbers of most modern software closely resemble it, at least
+syntactically \cite{SemanticVersioning}. As its specification claims,
+``these rules are based on but not necessarily limited to pre-existing
+widespread common practices in use in both closed and open-source
+software.'' It's important to realise that Semver is designed around
+the status quo, not the other way around. For example, the Eclipse
+project has its own formalised four-segment versioning scheme
+\cite{EclipseVersions} which gives slightly different meaning to its
+fields than Semver but is very similar nonetheless.
 
 \subsubsection{Benefits}
 
