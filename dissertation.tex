@@ -39,6 +39,8 @@ urlcolor={blue!80!black}
 {
 \end{minipage}
 }
+\newcommand\tricksubsection[1]{
+\vspace{-1\baselineskip}\subsection{#1}\vspace{-0.3\baselineskip}}
 
 %=== Source Code Listings ===
 
@@ -697,7 +699,7 @@ allows for compiled code to be loaded and inspected at runtime.
 At the time of writing, the tool seems to be somewhat outdated with
 the last release being JDiff \textit{1.1.1} from November 2008.
 
-\subsection{Clirr}
+\tricksubsection{Clirr}
 
 \textit{Clirr} \cite{Clirr} is another tool that does not explicitly
 assign a version number, but instead only lists changes and warns
@@ -714,7 +716,7 @@ JDiff produces.
 Just like JDiff, Clirr seems to be relatively out of date as well, the
 last release being  \textit{0.6} from September 2005.
 
-\subsection{japicmp}
+\tricksubsection{japicmp}
 
 \textit{japicmp} \cite{Japicmp} measures compatibility between
 provided Jar files. It can tie into the build system Maven and
@@ -2101,7 +2103,7 @@ adjacent revisions, as discussed in chapter \ref{Evaluation}.
 
 \begin{figure}[H]
 \centering
-\caption{Changelog generation}
+\caption{Specifying range}
 \begin{BVerbatim}
 > autobump python --from 1.0.0 --to 1.1.0
 1.1.0
@@ -3450,7 +3452,17 @@ be to have the language handlers provide appropriate labels for CAPIR
 change patterns, although that would complicate the current implementation's
 architecture.
 
-\subsection{Language handler for binary files}
+An alternative is to even further decentralise and reduce Autobump to
+a very small core or even just a standard which can then be
+implemented in the target languages. However, in doing that the point
+of having a single tool and a common API representation is somewhat
+lost. This way of doing things is arguably worse than both the current
+implementation and having standalone, unrelated tools. Given that
+changelog generation is the only major problem area as the final
+version of Autobump stands, there is little benefit to pursuing this
+approach.
+
+\tricksubsection{Language handler for binary files}
 
 It is possible to build a language handler that does not work with a
 specific language, but rather a specific binary file format. This, in
@@ -3467,7 +3479,7 @@ binary files directly and expected to link to that. It is also
 language-agnostic, with a handler that reads DWARF being able to work
 with C, C++, Rust and others that allow for C interoperability.
 
-\subsection{Integration with development tools}
+\tricksubsection{Integration with development tools}
 
 The natural continuation of Autobump's development would be to
 integrate with other development tools, mostly continuous integration
@@ -3480,7 +3492,7 @@ for integrated development environments, so that changes to the API
 determined by Autobump can be immediately highlighted for the
 developer and visited.
 
-\subsection{A better automated versioning scheme}
+\tricksubsection{A better automated versioning scheme}
 
 Semantic versioning is designed to be suitable for both humans and
 machines. As noted by Jeremy Ashkenas \cite{WhySemanticVersioningIsnt}
