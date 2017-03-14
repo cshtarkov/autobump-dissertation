@@ -545,10 +545,14 @@ not meant to be a major release. However, it raises some issues.
 \begin{itemize}
 \item It could be that the library in question has whitebox unit
 tests. If they start failing, that does not necessarily constitute a
-breaking change, because while the internal implementation of those
-methods may have changed, the public API could still be the same. Cracks has
-no way of differentiating blackbox from whitebox tests unless manually
-specified.
+breaking change\footnote{As far as the public API is concerned. It
+could be that the modification of implementation details implies that
+the function now has different semantics or purpose. This is really
+another view on what is a ``breaking'' change.}, because while the
+internal implementation of
+those methods may have changed, the public API could still be the
+same. Cracks has no way of differentiating blackbox from whitebox
+tests unless manually specified.
 \item The unit tests may not cover the public API in its entirety.
 Modifying the signature of a public method, for example, that's not
 covered by the tests may go completely unnoticed.
@@ -604,15 +608,16 @@ Consider an example usage of GitVersion on a history of commits.
 \caption{Proposed semantic version numbers by GitVersion, if every
 commit were to be released}
 \end{table}
+\vspace{-1.5\baselineskip}%m-m-m-monster hack
 
 Notice that similarly to semantic-release, GitVersion relies on user
 input -- in this case, branch names. This results in the same set of
 drawbacks, with the addition that GitVersion is heavily dependent on
 Git as a version control system and cannot trivially be ported to
 another one. The naming scheme has to be applied consistently, and
-forces contributors to all use the same one\footnote{Arguably, that
-can be a good thing. However, such requirements should not be imposed
-by software like this.} . The choice of naming scheme can be somewhat
+forces contributors to all use the same one. Arguably, this can be a
+good thing but it should not be up to software like this to impose
+such requirements. The choice of naming scheme can be somewhat
 alleviated, as the workflow GitVersion expects is highly configurable
 \cite{GitVersionConfiguration}.
 
@@ -668,6 +673,8 @@ new changeset is breaking, elm-package would have no way of knowing
 whether the next one should be \textit{0.9.1}, \textit{0.10.0} or
 \textit{1.0.0}.
 
+\vspace{-1\baselineskip}%
+
 \section{Java-specific tooling}
 
 \subsection{JDiff}
@@ -680,7 +687,7 @@ but also inspects and notes differences in accompanying documentation
 strings. Those may indicate a change in the behaviour of some functionality,
 even if its interface remains the same.
 
-JDiff is intended to be used in conjuction with the build system Ant ,
+JDiff is intended to be used in conjuction with the build system Ant,
 where an \textit{old} and a \textit{new} project have to be defined so
 that JDiff knows what to compare. It requires that the project is
 compiled (twice) and that its dependencies are available in Java's
@@ -728,6 +735,26 @@ replacing the type of a parameter in an otherwise unchanged method to
 a superclass of its original type -- all previous client code is
 guaranteed to compile fine, because of Java's inheritance rules, but
 there's no way that Japicmp would be aware of this.
+
+\section{Summary}
+
+The two most popular approaches for assigning numbers employed by
+existing tools are: relying on special naming conventions in the source
+repository (semantic-release, GitVersion); and inspecting the code
+itself (elm-package and Java-specific tools).
+
+Using naming conventions is trivial to implement, but problematic
+because of the additional overhead it imposes on developers. In that
+sense it doesn't truly ``automate'' versioning, it simply diminishes one
+part of the manual labour involved in development and augments another.
+
+Reading the code itself is a more robust approach, but still has its
+own issues. It is naturally tied to a specific language or runtime
+environment (not to say this cannot be overcome) and encounters
+problems when not all components of the software are accessible. The
+latter can be resolved to a degree by integrating into the appropriate
+build system (JDiff and Clirr) or by rewriting parts of the code on
+the go (Japicmp). Both are non-trivial.
 
 \chapter{Approach}
 \label{Approach}
@@ -850,12 +877,12 @@ $compatible$ to always be true.
 \end{enumerate}
 
 There are languages that do not conform at all to these assumptions
-(e.g. minimalistic or esoteric ones such as Brainfuck
-\cite{Brainfuck}), but these are also languages where a tool like
-Autobump would be utterly unuseful. There are also languages that
-partially conform. In those cases, as long as assumption
-\ref{SecondAssumption} is valid (i.e. there is an API), the rest can
-be ignored -- of course making some functionality of Autobump
+(e.g. minimalistic or esoteric ones such as Brainfuck \cite{Brainfuck}
+and Whitespace \cite{Whitespace}), but these are also languages where
+a tool like Autobump would be utterly unuseful. There are also
+languages that partially conform. In those cases, as long as
+assumption \ref{SecondAssumption} is valid (i.e. there is an API), the
+rest can be ignored -- of course making some functionality of Autobump
 obsolete. This project examines the radically different languages
 Python, Java and Clojure (section \ref{LanguageHandlers}) and chapter
 \ref{Evaluation} discusses whether the assumptions were found to be
@@ -1563,7 +1590,7 @@ the project. One tool, the \codeinline{Inspector}, loads a list of
 class files and then prints to standard out an XML representation of
 all classes, including fields, methods, inner classes and so on. It
 is invoked once, immediately after compilation. Note that the XML
-representation is semantically indentical to CAPIR. The
+representation is semantically identical to CAPIR. The
 Python middleware then translates this XML representation into a list
 of CAPIR units, which is trivial.
 
