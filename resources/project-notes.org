@@ -252,3 +252,21 @@
 
   less than 1.0.0, are breaking changes more frequent
   do people publish the public api consciously?
+* Final meeting <2017-03-14 Tue>
+
+  *party* /party/ *party* /party/ =party= +party+ *party* /party/ =party=
+
+  - Thanks for feedback
+  - Been working through the suggestions
+  - no longer semver is most popular, but "default"
+
+  Changes since last draft:
+  - removed examples with overriding config, enlarged architecture and UML
+  - removed visual representation of CAPIR S-expressions (Clojure)
+  - removed discussion on debugging options
+
+  Final questions:
+  - are figures OK as they are?
+  - listing of evaluation scripts?
+  - voluminous documentation?
+  - out of personal interest -- what could have been done better if I had more time?
