@@ -255,12 +255,7 @@ such as \textit{sed} or \textit{awk} from a script.} to avoid
 duplication of effort.
 
 The way that client code usually interacts with these libraries is
-through a publically\footnote{There is a distinction between an
-internal and public API in that the internal is meant for parts of the
-library interacting with other parts. The public API is a superset of
-that, exposing functionality to end users without allowing them to
-meddle in the internals of the program. In this dissertation, we
-always refer to the public API.} declared interface known as the
+through a publically declared interface known as the
 \textit{application program interface} (API). In some languages, such
 as C, depending on how the vendor provides the library a binary
 interface may be used instead (\textit{application binary interface},
@@ -382,14 +377,24 @@ applications, mostly by causing compilation errors. The study goes on
 to suggest that similar results could be found in other ecosystems.
 
 The study suggests that one possible explanation of this low adherence
-could be the presence of ``internal'' packages. Those are parts of the
-library designated as internal only in name, when they are actually
+could be the presence of ``internal'' packages. There is a distinction
+between an internal and public API in that the internal is meant for
+parts of the library interacting with other parts. The public API is a
+superset of that, exposing functionality to end users without allowing
+them to meddle in the internals of the program. Internal packages are
+designated as such only in name, while they are actually
 publically available in order to work around Java's access modifiers.
 Although they may not be intended for public use, they are certainly
 available to client code. An additional explanation may be that
 libraries that poorly follow Semver are intended for use only by the
 developers themselves. However, the authors argue, such libraries
 should have probably never been released into a public repository.
+
+There is a distinction between an
+internal and public API in that the internal is meant for parts of the
+library interacting with other parts. The public API is a superset of
+that, exposing functionality to end users without allowing them to
+meddle in the internals of the program.
 
 Another possible reason might be that some authors are reluctant to follow
 semantic versioning, or may be completely unaware that there is a
@@ -932,14 +937,18 @@ always indicate a feature addition (at least for a flexible enough
 definition of ``feature''), not all feature additions have to be
 accompanied by such a change. For example, a major performance
 improvement may be notable enough that the authors consider it a
-feature.
+feature. Autobump deals only with additions as far as the API is
+concerned; it does not address non-functional improvements like
+performance or security.
 While Autobump is guaranteed to disagree with authors in some of the
 cases where a feature was added because it had no bearing on the API,
 this does not devalue its usefulness. The main point of semantic
 versioning is to guard against breaking changes, which can be done
 reliably just by looking at the API.
 
+\vspace{-1.4\baselineskip}
 \section{Feature set and usage}
+\vspace{-0.6\baselineskip}
 
 Autobump is a a tool which given two revisions in a version
 controlled project reliably determines what the version of the later
@@ -2172,7 +2181,7 @@ testing.
 \begin{figure}[H]
 \begin{center}
 \begin{tabular}{c}
-\begin{python}
+\begin{python}[basicstyle=\ttms,keywordstyle=\ttbs\color{keyword}]
 sources = [
     ("lib/core.clj",
     "
@@ -2185,6 +2194,7 @@ sources = [
 \caption{Clojure test fixture}
 \end{center}
 \end{figure}
+\vspace{-2\baselineskip}
 
 Having the fixture actually present in the filesystem is necessary
 because the handlers can rely on external utilities, which need to load
@@ -2271,9 +2281,15 @@ is properly set up before running Autobump. In normal operation, the
 or by setting the environment variable, but that is not an option when
 automatically running multiple acceptance tests.
 
+Having opted for reconstructing Git repositories, a suitable text
+format was established (fig. \ref{ExampleAcceptanceTest}). It is in
+essence a Python module that gets imported by the test runner, which
+looks for certain special variables being set.
+
 \begin{figure}[H]
 \caption{Example acceptance test}
 \label{ExampleAcceptanceTest}
+\vspace{-\baselineskip}
 \begin{center}
 \begin{tabular}{c}
 \begin{python}
