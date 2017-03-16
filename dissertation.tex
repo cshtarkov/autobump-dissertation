@@ -313,10 +313,13 @@ If the versioning rules had started applying from the first ever
 release of the project, either the developers would be discouraged
 from versioning unstable work or version numbers would balloon.
 
-Semver, explicitly or implicitly, is the ``default'' versioning
-scheme. This is so by virtue of the fact that in practice the version
-numbers of most modern software closely resemble it, at least
-syntactically \cite{SemanticVersioning}. As its specification claims,
+Semver is highly recommended by influential software engineering
+tooling providers such as Apache Maven \cite{MavenRec} and GitHub
+\cite{GitHubRec}. When first creating a release of a project on
+GitHub, authors are advised that ``if [they] are new to releasing
+software, we highly recommend reading about semantic versioning''.
+That gives it a good standing as more or less the ``default''
+versioning scheme. In addition, its specification claims that
 ``these rules are based on but not necessarily limited to pre-existing
 widespread common practices in use in both closed and open-source
 software.'' It's important to realise that Semver is designed around
