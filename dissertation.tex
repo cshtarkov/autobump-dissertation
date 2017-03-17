@@ -228,7 +228,7 @@ versions in this format follows these rules:
 the right, i.e. bumping the middle element of \textit{3.5.4} results
 in \textit{3.6.0}.
 \item Incrementing a version which has a label attached at the end
-necessitates either changing the label or droping it, i.e.
+necessitates either changing the label or dropping it, i.e.
 \textit{3.5.4-beta} $\rightarrow$ \textit{3.5.4} or \textit{3.5.4-rc1}
 $\rightarrow $ \textit{3.5.4-rc2}.
 \end{enumerate}
@@ -747,14 +747,14 @@ there's no way that Japicmp would be aware of this.
 The two most popular approaches for assigning numbers employed by
 existing tools are: relying on special naming conventions in the source
 repository (semantic-release, GitVersion); and inspecting the code
-itself (elm-package and Java-specific tools).
+itself via reflection (elm-package and Java-specific tools).
 
 Using naming conventions is trivial to implement, but problematic
 because of the additional overhead it imposes on developers. In that
 sense it doesn't truly ``automate'' versioning, it simply diminishes one
 part of the manual labour involved in development and augments another.
 
-Reading the code itself is a more robust approach, but still has its
+Reflection is a more robust approach, but still has its
 own issues. It is naturally tied to a specific language or runtime
 environment (not to say this cannot be overcome) and encounters
 problems when not all components of the software are accessible. The
@@ -868,7 +868,7 @@ program where they are defined, comprising the API.
 \item The language has a type system which has the notion of binary
 compatibility:
 \begin{equation}
-\forall(T_a,T_b) \in S, \mathrm{compatible}(T_a,Y_b) \in
+\forall(T_a,T_b) \in S, \mathrm{compatible}(T_a,T_b) \in
 \{\mathrm{True},\mathrm{False}\}
 \end{equation}
 where $S$ is the set of all admissable types in the language and
